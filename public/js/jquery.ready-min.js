@@ -1,0 +1,2 @@
+
+$(document).ready(function(){$(function(){$("input:submit, input:button",".form").button();$("input:submit, input:button",".buttonbar").button();$("button").button();$("a",".button").click(function(){return false;});});$(function(){$("input.datepicker").datepicker();});$("ul.sf-menu").superfish({pathClass:'current',speed:'fast'});});
