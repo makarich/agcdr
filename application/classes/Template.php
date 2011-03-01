@@ -1,8 +1,9 @@
 <?php
 
 /**
- * Template.php		Template control class and supporting functions.
+ * Template control class and supporting functions.
  * 
+ * @package		AGCDR
  * @author		Various, SBF
  * @copyright		2010-2011
  */

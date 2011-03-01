@@ -1,9 +1,9 @@
 <?php
 
 /**
- * IndexController.php.
+ * ReportsController.php
  * 
- * Presents landing page, introduction main options.
+ * Main reporting functions.
  * 
  * @package	AGCDR.
  * @author	Various, SBF
@@ -11,9 +11,9 @@
  */
 
 /**
- * IndexController.
+ * ReportsController.
  */
-class IndexController extends BaseController {
+class ReportsController extends BaseController {
 	
 	/**
 	 * Construct via parent.

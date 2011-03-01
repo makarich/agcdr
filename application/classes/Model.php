@@ -1,9 +1,9 @@
 <?php
 
 /**
- * Model management class
+ * Model management class.
  * 
- * @package	House
+ * @package	AGCDR
  * @author	SBF
  * @copyright	2010-2011
  */
@@ -194,6 +194,22 @@ abstract class Model {
 		
 		// return new object
 		return $newobj;
+		
+	}
+
+	/**
+	 * Convert object into serialised JSON data.
+	 * 
+	 * @return string		- JSON data, or false if json_encode function is not available.
+	 * @access public
+	 */
+	public function toJSON() {
+		
+		if (function_exists("json_encode")) {
+			return json_encode((array) $this);
+		} else {
+			return false;
+		}
 		
 	}
 	

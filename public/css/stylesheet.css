@@ -1,0 +1,89 @@
+@CHARSET "UTF-8";
+
+/* Main stylesheet - edit this and minify using minify-css.php */
+
+/* main page objects */
+
+BODY {
+	margin: 10px;
+	background: #EEEEEE;
+	font-family: Helvetica, Arial, sans-serif;
+	font-size: 10pt;
+}
+
+#frame {
+	padding: 10px;
+	border: 2px solid #999999;
+	background: white;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+}
+
+#copyright {
+	text-align: center;
+	font-size: 8pt;
+	color: #808080;
+	margin: 5px;	
+}
+
+/* heading styles */
+
+
+
+/* other text styles */
+
+.small {
+	font-size: 7pt !important;
+}
+
+.grey {
+	background: #EEE;	
+}
+
+/* basic report table (for when DataTables is overkill) */
+
+TABLE.basicreport {
+	border-collapse: collapse;
+}
+
+	TABLE.basicreport THEAD {
+		font-weight: bold;
+		border-bottom: 1px solid #808080;
+	}
+	
+	TABLE.basicreport TFOOT {
+		font-weight: bold;
+		border-top: 1px solid #808080;
+	}
+	
+	TABLE.basicreport TBODY TD {
+		padding: 2px 4px 2px 4px;
+	}
+	
+/* normal hyperlinks */
+
+A, A:visited {
+	color: #17365d;
+}
+
+A:active, A:hover {
+	color: #556E8D;	
+}
+
+/* Development information label */
+
+#devinfo {
+	background: #BF0000;
+	color: white;
+	padding: 4px 5px 4px 5px;
+	font-size: 10pt;
+	letter-spacing: 0px;
+	position: absolute;
+	left: 0;
+	top: 0;
+	z-index: 999;
+	opacity: 0.75;
+	border-bottom-right-radius: 5px;
+	-moz-border-radius-bottomright: 5px;
+}

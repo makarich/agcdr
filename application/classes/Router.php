@@ -1,12 +1,16 @@
 <?php
 
 /**
- * Router.php		MVC router class
+ * MVC router class.
  * 
+ * @package		AGCDR
  * @author		Various, SBF
- * @copyright		2010
+ * @copyright		2010-2011
  */
 
+/**
+ * Router.
+ */
 class Router {
 
 	/**
@@ -126,13 +130,7 @@ class Router {
 			
 			// default to index controller if there is no route 
 			$route = "index";
-			
-		} elseif (!isset($_SESSION["staff"]) && $route != "index/login/") {
 
-			// default to index controller if there is no logged-in user
-			// and the request isn't to the login processor
-			$route = "index";
-			
 		} else {
 			
 			// build controller name
