@@ -29,7 +29,24 @@ BODY {
 
 /* heading styles */
 
+H1 {
+	margin: 0px;
+	border-bottom: 2px solid #17365d;
+	color: #17365d;
+	font-weight: normal;
+	font-size: 24pt;
+	letter-spacing: -1px;
+	text-shadow: 1px 1px 1px #8db3e2;
+}
 
+H2 {
+	margin: 0.5em 0em;
+	color: #8db3e2;
+}
+
+H3 {
+	color: #17365d;
+}
 
 /* other text styles */
 
@@ -39,6 +56,24 @@ BODY {
 
 .grey {
 	background: #EEE;	
+}
+
+PRE.code {
+	background: #EEE;
+	padding: 2px 4px;
+	border: 1px dashed #808080;
+}
+
+/* server selection menu */
+
+#serverselect {
+	float: right;
+	background: #EEE;
+	padding: 2px 4px;
+	border: 1px solid #C0C0C0;	
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
 }
 
 /* basic report table (for when DataTables is overkill) */
@@ -71,7 +106,74 @@ A:active, A:hover {
 	color: #556E8D;	
 }
 
-/* Development information label */
+/* main navigation */
+
+#navigation {
+	margin: 0.5em 0em;
+	padding: 0px 0px 0.5em 0px;
+	border-bottom: 2px solid #17365d;
+}
+
+	#navigation LI {
+		list-style: none;
+		margin: 0px;
+		display: inline;
+	}
+	
+	#navigation LI.selected {
+		font-weight: bold;
+	}
+	
+	#navigation LI A:before {
+		content: "► ";
+		color: #808080;
+	}
+	
+	#navigation LI A,
+	#navigation LI A:visited {
+		text-decoration: none !important;
+		color: #17365d;
+		padding: 3px 6px;
+	}
+	
+	#navigation LI A:hover,
+	#navigation LI A:active {
+		background: #EEE;
+	}
+
+/* overview grid */
+
+#overviewgrid {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+}
+
+	#overviewgrid LI {
+		margin: 0px 6px 6px 0px;
+		padding: 3px;
+		float: left;
+		width: 300px;
+		height: 300px;
+		border: 1px solid #17365d;
+		background: white;
+		box-shadow: 3px 3px 3px #C0C0C0;
+	}
+
+	#overviewgrid LI DIV.title {
+		background: url('/libraries/jquery-ui-1.8.10.custom/development-bundle/themes/cupertino/images/ui-bg_highlight-soft_100_deedf7_1x100.png') repeat-x scroll 50% 50% #DEEDF7;
+		padding: 2px 4px;
+	}
+	
+	#overviewgrid LI DIV.content {
+		padding: 5px 2px 0px 2px;
+	}
+	
+	#overviewgrid LI DIV.content P {
+		margin: 0px 0px 0.5em 0px;
+	}
+
+/* development information label */
 
 #devinfo {
 	background: #BF0000;

@@ -28,6 +28,7 @@ session_start();
 define('PUB_PATH',realpath(dirname(__FILE__)));
 define('APP_PATH',PUB_PATH."/../application");
 define('DATA_PATH',PUB_PATH."/../data");
+define('CHART_CACHE',PUB_PATH."/images/charts");
 
 // include configuration script
 require_once(APP_PATH."/config.php");
@@ -36,20 +37,30 @@ require_once(APP_PATH."/config.php");
 require_once(APP_PATH."/libraries/adodb5/adodb.inc.php");
 require_once(APP_PATH."/libraries/Smarty-3.0.7/libs/Smarty.class.php");
 
-// determine server choice
+// check that at least one server is defined in the configuration
+// this is a basic installation step, so be blunt if it's missing
+if (!isset($_SESSION["servers"]) || count($_SESSION["servers"]) == 0) {
+	$stopmsg = "No CDR database servers are configured in application/config.php.";
+	print "<h3>{$stopmsg}</h3>";
+	throw new Exception($stopmsg);
+}
+
+// determine server choice, either from session, switcher menu or default
+if (isset($_POST["switchto"])) $_SESSION["server"] = $_POST["switchto"];
 if (!isset($_SESSION["server"])) {
-	$server = array_shift(array_keys($db_servers));
+	$server = array_shift(array_keys($_SESSION["servers"]));
 	$_SESSION["server"] = $server;
 } else {
 	$server = $_SESSION["server"];
 }
 
 // set database connection constants
-define('DB_PASS',$db_servers[$server]["password"]);
-define('DB_NAME',$db_servers[$server]["dbname"]);
-define('DB_USER',$db_servers[$server]["username"]);
-define('DB_HOST',$db_servers[$server]["hostname"]);
-define('DB_TYPE',$db_servers[$server]["dbtype"]);
+define('DB_PASS',$_SESSION["servers"][$server]["password"]);
+define('DB_NAME',$_SESSION["servers"][$server]["dbname"]);
+define('DB_USER',$_SESSION["servers"][$server]["username"]);
+define('DB_HOST',$_SESSION["servers"][$server]["hostname"]);
+define('DB_TYPE',$_SESSION["servers"][$server]["dbtype"]);
+define('DB_TABLE',$_SESSION["servers"][$server]["tablename"]);
 
 // if not the live version, create a label for the version we're running
 if (DEVMODE == true) {
@@ -61,7 +72,7 @@ if (DEVMODE == true) {
 	define('DEVINFO',"<b>Development:</b> {$devdir} revision {$rev} (v".VERSION.")");
 }
 
-// register class autoloader
+// register class autoloader function
 spl_autoload_register("ClassAutoloader");
 
 // create router and run requested controller
@@ -69,7 +80,13 @@ $router = new Router();
 $router->setPath(APP_PATH."/controllers");
 $router->loader();
 
-// class autoloader function saves having to manually include each class and model file
+/**
+ * Class autoloader function saves having to manually include each class and model file.
+ * 
+ * @param string $class		- class or model
+ * 
+ * @return void
+ */
 function ClassAutoloader($class) {
 	foreach (array("classes","models") as $dir) {
 		if (file_exists(APP_PATH."/{$dir}/{$class}.php")) {
@@ -77,6 +94,5 @@ function ClassAutoloader($class) {
 		}
 	}
 }
-
 
 ?>

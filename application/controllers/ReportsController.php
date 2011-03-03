@@ -1,8 +1,6 @@
 <?php
 
 /**
- * ReportsController.php
- * 
  * Main reporting functions.
  * 
  * @package	AGCDR.
@@ -20,7 +18,7 @@ class ReportsController extends BaseController {
 	 * 
 	 * @return void
 	 */
-	function __construct() {
+	public function __construct() {
 		parent::__construct(get_class());	
 	}
 	
@@ -28,6 +26,7 @@ class ReportsController extends BaseController {
 	 * Prepare and render static index page.
 	 * 
 	 * @return void
+	 * @access public
 	 */
 	public function index() {
 
@@ -36,6 +35,66 @@ class ReportsController extends BaseController {
 		
 	}
 
+	/**
+	 * Detailed month report.
+	 * 
+	 * @return void
+	 * @access public
+	 */
+	public function month() {
+		
+
+		
+		// render page
+		$this->template->show("month");
+		
+	}
+	
+	/**
+	 * Detailed year report.
+	 * 
+	 * @return void
+	 * @access public
+	 */
+	public function year() {
+		
+		
+		
+		// render page
+		$this->template->show("year");
+		
+	}
+	
+	/**
+	 * Quick search.
+	 * 
+	 * @return void
+	 * @access public
+	 */
+	public function quick_search() {
+		
+		
+		
+		// render page
+		$this->template->show("quick_search");
+		
+	}
+	
+	/**
+	 * Advanced search.
+	 * 
+	 * @return void
+	 * @access public
+	 */
+	public function advanced_search() {
+		
+		
+		
+		// render page
+		$this->template->show("advanced_search");
+		
+	}
+	
 }
 
 ?>

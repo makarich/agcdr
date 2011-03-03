@@ -24,14 +24,26 @@ define('LONG_TITLE','Asterisk CDR Statistics');
 // live URL
 define('LIVE_URL','http://agcdr.heddonconsulting.com/');
 
-// main database server configuration
-$db_servers = array(
+// main database server configuration (first server is the default)
+$_SESSION["servers"] = array(
 	"zaleriza.snwo.org" => array(
-		"password"	=> "NMeHBpWdFUrtGFPj",
-		"username"	=> "root",
+		"description"	=> "Heddon PBX",
+		"dbtype"	=> "mysql",
 		"hostname"	=> "zaleriza.snwo.org",
+		"username"	=> "root",
+		"password"	=> "NMeHBpWdFUrtGFPj",
 		"dbname"	=> "asterisk",
-		"dbtype"	=> "mysql"
+		"tablename"	=> "cdr"
+		
+	),
+	"voip.glide.uk.com" => array(
+		"description"	=> "Glide PBX",
+		"dbtype"	=> "mysql",
+		"hostname"	=> "voip.glide.uk.com",
+		"username"	=> "root",
+		"password"	=> "passw0rd",
+		"dbname"	=> "asteriskcdrdb",
+		"tablename"	=> "cdr"
 	)
 );
 
@@ -44,34 +56,4 @@ if (isset($_SERVER["SERVER_NAME"])) {
 	}
 }
 
-/*
-
-Suitable Apache virtual host configuration
-
-<VirtualHost *:port>
-
-        DocumentRoot /path/to/public/dir
-
-        <Directory /path/to/public/dir/>
-                Options SymLinksIfOwnerMatch
-                AllowOverride All
-                Order deny,allow
-                allow from all
-        </Directory>
-
-	RewriteCond %{REQUEST_URI} !^/images/
-	RewriteCond %{REQUEST_URI} !^/libraries/
-        RewriteCond %{REQUEST_URI} !^/css
-        RewriteCond %{REQUEST_URI} !^/js
-	RewriteCond %{REQUEST_URI} !^/Favicon.ico
-        RewriteRule ^(.*)$ /index.php?route=$1
-
-        ErrorLog /path/to/error.log
-        LogLevel debug
-        CustomLog /path/to/access.log combined
-
-</VirtualHost>
-
-*/
-	
 ?>

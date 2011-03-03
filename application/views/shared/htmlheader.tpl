@@ -22,12 +22,6 @@
 	<script type="text/javascript" src="/libraries/DataTables-1.7.5/media/js/jquery.dataTables.min.js"></script>
 	<script type="text/javascript" src="/js/jquery.dataTables.extensions-min.js"></script>
 	<link rel="stylesheet" type="text/css" href="/css/demo_table_jui-min.css"/>
-	
-	<!-- Superfish navigation -->
-	<link rel="stylesheet" media="screen" href="/css/superfish-min.css" /> 
-	<link rel="stylesheet" media="screen" href="/css/superfish-navbar-min.css" />
-	<script type="text/javascript" src="/libraries/superfish-1.4.8/js/superfish.js"></script>
-	<script type="text/javascript" src="/libraries/superfish-1.4.8/js/hoverIntent.js"></script>
 
 </head>
 
@@ -36,6 +30,22 @@
 {if "DEVINFO"|defined}<div id="devinfo" onclick="this.style.display='none';">{$smarty.const.DEVINFO}</div>{/if}
 
 <div id="frame">
+
+<div id="serverselect">
+
+	<form method="POST" action="/" name="serverswitch">
+
+	Select database server:
+
+	<select name="switchto" id="switchto" onchange="document.serverswitch.submit();" {if $smarty.session.servers|@count <= 1}disabled{/if}>
+	{foreach from=$smarty.session.servers key=hostname item=server}
+		<option value="{$hostname}" {if $hostname eq $smarty.session.server}selected{/if}>{$server.description}</option>
+	{/foreach}
+	</select>
+	
+	</form>
+
+</div>
 
 <h1>{$smarty.const.LONG_TITLE}</h1>
 

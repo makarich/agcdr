@@ -14,7 +14,7 @@
  * @package	GoogleChart
  * @version	0.990 (beta)
  * @author	Stuart Benjamin Ford <stuartford@me.com>
- * @copyright	23/02/2011
+ * @copyright	03/03/2011
  */
 
 /**
@@ -290,6 +290,32 @@ abstract class GoogleChart {
 	 */
 	public function makeHash() {
 		return md5($this->getURL());
+	}
+	
+	/**
+	 * Generate chart image data and save to a given directory.
+	 * 
+	 * Charts will be named <md5 hash>.png within the directory.
+	 * 
+	 * @param string $dir		- path to directory
+	 * 
+	 * @return string		- image filename
+	 * @access public
+	 */
+	public function saveFile($dir) {
+		
+		// generate image data
+		$image = $this->getImageData();
+		
+		// generate filename
+		$filename = $this->makeHash().".png";
+		
+		// save file
+		file_put_contents("{$dir}/{$filename}",$image);
+		
+		// return filename
+		return $filename;
+		
 	}
 	
 }
