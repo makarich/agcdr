@@ -59,6 +59,14 @@ class BarChart extends GoogleChart {
 	public $values;
 	
 	/**
+	 * Bar width (pixels).
+	 * 
+	 * @var integer
+	 * @access public
+	 */
+	public $barwidth = 23;
+	
+	/**
 	 * Construct via parent, adding chart title if passed.
 	 * 
 	 * @param string $title		- chart title
@@ -90,13 +98,14 @@ class BarChart extends GoogleChart {
 		// if there are no Y labels then make them from the values
 		if (!isset($this->y_labels)) {
 			$this->y_labels = array_unique($this->values);
-			$this->y_labels[] = $minimum;
+			if (!in_array($minimum,$this->y_labels)) $this->y_labels[] = $minimum;
 			sort($this->y_labels);
 		}
 		
 		// create options array
 		$options = array(
 			"chxt"		=> "x,y",
+			"chbh"		=> $this->barwidth,
 			"chd"		=> "t:".implode(",",$this->values),
 			"chds"		=> "{$minimum},".max($this->values)
 		);

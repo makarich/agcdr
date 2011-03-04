@@ -64,6 +64,36 @@ PRE.code {
 	border: 1px dashed #808080;
 }
 
+/* form tables */
+
+TABLE.form {
+	border-collapse: collapse;
+}
+
+	TABLE.form TD {
+		padding: 4px 6px 4px 6px;
+	}
+	
+	TABLE.form TD.label {
+		background: #EEF3FA;
+		text-align: right;
+		white-space: nowrap;
+	}
+	
+	TABLE.form TD.value {
+		text-align: left;
+	}
+	
+	TABLE.form TD.buttonbar {
+		background: #EEF3FA;
+		text-align: right;
+		padding: 4px;
+	}
+	
+	TABLE.form INPUT.wide {
+		width: 100%;	
+	}
+
 /* server selection menu */
 
 #serverselect {
@@ -74,6 +104,17 @@ PRE.code {
 	-webkit-border-radius: 5px;
 	-moz-border-radius: 5px;
 	border-radius: 5px;
+}
+
+/* clock on the right */
+
+#clock {
+	float: right;
+	color: #808080;
+	font-weight: bold;
+	padding-top: 5px;
+	padding-right: 5px;
+	white-space: nowrap;
 }
 
 /* basic report table (for when DataTables is overkill) */
@@ -112,6 +153,7 @@ A:active, A:hover {
 	margin: 0.5em 0em;
 	padding: 0px 0px 0.5em 0px;
 	border-bottom: 2px solid #17365d;
+	white-space: nowrap;
 }
 
 	#navigation LI {
@@ -158,6 +200,7 @@ A:active, A:hover {
 		border: 1px solid #17365d;
 		background: white;
 		box-shadow: 3px 3px 3px #C0C0C0;
+		overflow: auto;
 	}
 
 	#overviewgrid LI DIV.title {
@@ -172,6 +215,16 @@ A:active, A:hover {
 	#overviewgrid LI DIV.content P {
 		margin: 0px 0px 0.5em 0px;
 	}
+
+/* jQuery UI overrides */
+
+.ui-state-error, .ui-state-highlight {
+	padding: 5px;
+}
+
+.ui-dialog {
+	opacity: .98;
+}
 
 /* development information label */
 

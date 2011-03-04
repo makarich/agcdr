@@ -3,7 +3,7 @@
 /**
  * Main reporting functions.
  * 
- * @package	AGCDR.
+ * @package	AGCDR
  * @author	Various, SBF
  * @copyright	2011
  */
@@ -23,17 +23,13 @@ class ReportsController extends BaseController {
 	}
 	
 	/**
-	 * Prepare and render static index page.
+	 * There is no index for this controller but we have to define the method
+	 * because the abstract class demands it.
 	 * 
 	 * @return void
 	 * @access public
 	 */
-	public function index() {
-
-		// render page
-		$this->template->show("index");
-		
-	}
+	public function index() { }
 
 	/**
 	 * Detailed month report.

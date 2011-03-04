@@ -298,20 +298,25 @@ abstract class GoogleChart {
 	 * Charts will be named <md5 hash>.png within the directory.
 	 * 
 	 * @param string $dir		- path to directory
+	 * @param boolean $forcepurge	- (optional) set to true to force overwrite of existing file (default false)
 	 * 
 	 * @return string		- image filename
 	 * @access public
 	 */
-	public function saveFile($dir) {
-		
-		// generate image data
-		$image = $this->getImageData();
+	public function saveFile($dir,$forcepurge=false) {
 		
 		// generate filename
 		$filename = $this->makeHash().".png";
 		
-		// save file
-		file_put_contents("{$dir}/{$filename}",$image);
+		if (!is_file("{$dir}/{$filename}") || $forcepurge) {
+		
+			// generate image data
+			$image = $this->getImageData();
+			
+			// save file
+			file_put_contents("{$dir}/{$filename}",$image);
+		
+		}
 		
 		// return filename
 		return $filename;

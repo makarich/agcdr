@@ -30,6 +30,7 @@ if (isset($argv[0])) {
 // create command list
 $commands = array(
 //	"{$mypath}/mkdocs.php",
+	"rm -f {$mypath}/../public/images/charts/*.png",
 	"svn status {$mypath}/..",
 	"svn commit -m \"{$commit}\" {$mypath}/.."
 );

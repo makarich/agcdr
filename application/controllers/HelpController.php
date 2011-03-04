@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Manages help pages
+ * Manages help pages.
  * 
  * @package	AGCDR.
  * @author	Various, SBF

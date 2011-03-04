@@ -13,9 +13,9 @@
  */
 
 /**
- * CDR.
+ * cdr.
  */
-class CDR extends Model {
+class cdr extends Model {
 	
 	/**
 	 * Call date and time.

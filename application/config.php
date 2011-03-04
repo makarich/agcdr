@@ -30,8 +30,8 @@ $_SESSION["servers"] = array(
 		"description"	=> "Heddon PBX",
 		"dbtype"	=> "mysql",
 		"hostname"	=> "zaleriza.snwo.org",
-		"username"	=> "root",
-		"password"	=> "NMeHBpWdFUrtGFPj",
+		"username"	=> "asterisk",
+		"password"	=> "irkEsdecs8",
 		"dbname"	=> "asterisk",
 		"tablename"	=> "cdr"
 		
@@ -46,6 +46,9 @@ $_SESSION["servers"] = array(
 		"tablename"	=> "cdr"
 	)
 );
+
+// chart colour palette to use
+define('CHART_PALETTE','pastel');
 
 // application URL
 if (isset($_SERVER["SERVER_NAME"])) {

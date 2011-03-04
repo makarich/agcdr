@@ -8,6 +8,7 @@
 
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta name="version" name="{$smarty.const.VERSION}" />
+	<link rel="SHORTCUT ICON" href="/favicon.ico" />
 	
 	<!-- General CSS and javascript -->
 	<link rel="stylesheet" type="text/css" media="all" href="/css/stylesheet-min.css" />
@@ -48,5 +49,7 @@
 </div>
 
 <h1>{$smarty.const.LONG_TITLE}</h1>
+
+<div id="clock">{$smarty.now|date_format:"%A %e %B %Y, %H:%M"}</div>
 
 {include file='shared/navigation.tpl'}
