@@ -42,6 +42,9 @@ H1 {
 H2 {
 	margin: 0.5em 0em;
 	color: #8db3e2;
+	font-size: 18pt;
+	letter-spacing: -1px;
+	margin: 5px 0px 8px 0px;
 }
 
 H3 {
@@ -58,10 +61,30 @@ H3 {
 	background: #EEE;	
 }
 
+.greyborder {
+	border: 1px solid #C0C0C0;	
+}
+
+.gap {
+	height: 0.5em;
+}
+
 PRE.code {
 	background: #EEE;
 	padding: 2px 4px;
 	border: 1px dashed #808080;
+}
+
+/* big-text statistics */
+
+TD.statistics {
+	font-size: 15pt;
+	letter-spacing: -1px;
+	padding-left: 0.5em;
+}
+
+TD.statistics P {
+	margin: 0px 0px 0.5em 0px;
 }
 
 /* form tables */
@@ -112,9 +135,16 @@ TABLE.form {
 	float: right;
 	color: #808080;
 	font-weight: bold;
-	padding-top: 5px;
+	padding-top: 6px;
 	padding-right: 5px;
 	white-space: nowrap;
+}
+
+/* previous and next buttons on right */
+
+#prevnext {
+	float: right;
+	padding-top: 3px;	
 }
 
 /* basic report table (for when DataTables is overkill) */
@@ -150,8 +180,8 @@ A:active, A:hover {
 /* main navigation */
 
 #navigation {
-	margin: 0.5em 0em;
-	padding: 0px 0px 0.5em 0px;
+	margin: 6px 0em;
+	padding: 0px 0px 6px 0px;
 	border-bottom: 2px solid #17365d;
 	white-space: nowrap;
 }
@@ -195,12 +225,13 @@ A:active, A:hover {
 		margin: 0px 6px 6px 0px;
 		padding: 3px;
 		float: left;
-		width: 300px;
-		height: 300px;
+		width: 315px;
+		height: 305px;
 		border: 1px solid #17365d;
 		background: white;
 		box-shadow: 3px 3px 3px #C0C0C0;
 		overflow: auto;
+		opacity: .98;
 	}
 
 	#overviewgrid LI DIV.title {
@@ -218,12 +249,21 @@ A:active, A:hover {
 
 /* jQuery UI overrides */
 
-.ui-state-error, .ui-state-highlight {
+.ui-widget {
+	font-size: 9pt !important;
+}
+
+.ui-state-error,
+.ui-state-highlight {
 	padding: 5px;
 }
 
 .ui-dialog {
 	opacity: .98;
+}
+
+.ui-tabs-panel {
+	padding: 10px 5px 5px 5px !important;
 }
 
 /* development information label */

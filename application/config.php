@@ -3,8 +3,8 @@
 /**
  * Main application configuration script
  * 
- * @package	House
- * @author	AGCDR
+ * @package	AGCDR
+ * @author	SBF
  * @copyright	2010-2011
  */
 
@@ -49,6 +49,9 @@ $_SESSION["servers"] = array(
 
 // chart colour palette to use
 define('CHART_PALETTE','pastel');
+
+// chart cache expiry (seconds, 86400 = 1 day, 604800 = 1 week)
+define('CHART_CACHE_EXPIRE',604800);
 
 // application URL
 if (isset($_SERVER["SERVER_NAME"])) {

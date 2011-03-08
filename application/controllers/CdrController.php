@@ -55,6 +55,51 @@ class CdrController extends BaseController {
 		
 	}
 
+	/**
+	 * Generate table of CDRs.
+	 * 
+	 * @return void
+	 * @access public
+	 */
+	public function table() {
+		
+		// determine dates
+		if (isset($this->get["year"])) {
+			
+			// calculate overview for year
+			$from = "'{$this->get['year']}-01-01 00:00:00'";
+			$to = "DATE_ADD('{$this->get['year']}-01-01 00:00:00', INTERVAL 1 YEAR)";
+			
+		} else if (isset($this->get["month"])) {
+			
+			// calculate overview for month
+			$from = "'{$this->get['month']}-01 00:00:00'";
+			$to = "DATE_ADD('{$this->get['month']}-01 00:00:00', INTERVAL 1 MONTH)";
+			
+		} else {
+			
+			// no date data passed, just do today
+			$today = date("Y-m-d");
+			$from = "'{$today} 00:00:00'";
+			$to = "DATE_ADD('{$tody} 00:00:00', INTERVAL 1 DAY)";
+			
+		}
+
+		// retrieve records
+		$cdrs = $this->db->GetAssoc("
+			SELECT ".DB_TABLE.".uniqueid, ".DB_TABLE.".*
+			FROM ".DB_TABLE."
+			WHERE calldate >= {$from} AND calldate < {$to}
+			ORDER BY calldate ASC;
+		");
+		
+		// assign to template and render page
+		$this->template->cdrs = $cdrs;
+		$this->template->menuoptions = $this->template->datatablesRecordCountMenu(count($cdrs));
+		$this->template->show("table");
+		
+	}
+	
 }
 
 ?>

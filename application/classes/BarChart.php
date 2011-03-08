@@ -7,7 +7,7 @@
  * 
  * @package	GoogleChart
  * @author	Stuart Benjamin Ford <stuartford@me.com>
- * @copyright	21/02/2011
+ * @copyright	08/03/2011
  */
 
 /**
@@ -41,6 +41,8 @@ class BarChart extends GoogleChart {
 	
 	/**
 	 * Y-axis labels.
+	 * 
+	 * Generated automatically from the values if not specified directly.
 	 * 
 	 * @var array
 	 * @access public
@@ -97,9 +99,19 @@ class BarChart extends GoogleChart {
 		
 		// if there are no Y labels then make them from the values
 		if (!isset($this->y_labels)) {
-			$this->y_labels = array_unique($this->values);
-			if (!in_array($minimum,$this->y_labels)) $this->y_labels[] = $minimum;
+			
+			$this->y_labels = array($minimum,max($this->values));
+			
+			$step = ($this->y_labels[1] - $this->y_labels[0])/8;
+			for ($i=($this->y_labels[0]+$step); $i<$this->y_labels[1]; $i=$i+$step) {
+				$this->y_labels[] = round($i);
+			}
+			
+			//$this->y_labels = array_unique($this->values);
+			//if (!in_array($minimum,$this->y_labels)) $this->y_labels[] = $minimum;
+			
 			sort($this->y_labels);
+			
 		}
 		
 		// create options array

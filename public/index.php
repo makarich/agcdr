@@ -3,6 +3,9 @@
 /**
  * Main application access and setup script.
  * 
+ * All user-configurable configuration can be found in application/config.php.
+ * You should not under normal circumstances need to alter this file.
+ * 
  * @package	AGCDR
  * @author	SBF
  * @copyright	2011
@@ -74,6 +77,16 @@ if (DEVMODE == true) {
 
 // register class autoloader function
 spl_autoload_register("ClassAutoloader");
+
+// purge expired chart cache images
+$cachedir = dir(CHART_CACHE);
+while (($img = $cachedir->read()) !== false) {
+	if ($img != "." && $img != ".." && substr($img,-4,4) == ".png") {
+		if (filemtime(CHART_CACHE."/{$img}") < (time()-CHART_CACHE_EXPIRE)) {
+			unlink(CHART_CACHE."/{$img}");	
+		}
+	}
+}
 
 // create router and run requested controller
 $router = new Router();

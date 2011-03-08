@@ -25,7 +25,8 @@ class IndexController extends BaseController {
 		"summary_week",
 		"top_src",
 		"top_dst",
-		"top_clid"
+		"top_clid",
+		"longest_calls",
 	);
 	
 	/**
@@ -72,7 +73,7 @@ class IndexController extends BaseController {
 				$recent = $this->db->GetAssoc("
 					SELECT uniqueid,calldate,src,dst,SEC_TO_TIME(duration) AS formatted_duration
 					FROM ".DB_TABLE."
-					ORDER BY calldate DESC LIMIT 13;
+					ORDER BY calldate DESC LIMIT 12;
 				");
 				$this->template->cdrs = $recent;
 				
@@ -147,7 +148,7 @@ class IndexController extends BaseController {
 					FROM ".DB_TABLE."
 					WHERE src IS NOT NULL AND src != ''
 					GROUP BY src
-					ORDER BY count DESC LIMIT 13;
+					ORDER BY count DESC LIMIT 12;
 				");
 				$this->template->numbers = $popular;
 				
@@ -162,7 +163,7 @@ class IndexController extends BaseController {
 					FROM ".DB_TABLE."
 					WHERE dst IS NOT NULL AND dst != ''
 					GROUP BY dst
-					ORDER BY count DESC LIMIT 13;
+					ORDER BY count DESC LIMIT 12;
 				");
 				$this->template->numbers = $popular;
 				
@@ -177,9 +178,22 @@ class IndexController extends BaseController {
 					FROM ".DB_TABLE."
 					WHERE clid IS NOT NULL AND clid != ''
 					GROUP BY clid
-					ORDER BY count DESC LIMIT 13;
+					ORDER BY count DESC LIMIT 12;
 				");
 				$this->template->numbers = $popular;
+				
+				break;
+				
+			case "longest_calls":
+				
+				// longest calls
+				
+				$recent = $this->db->GetAssoc("
+					SELECT uniqueid,calldate,src,dst,SEC_TO_TIME(duration) AS formatted_duration
+					FROM ".DB_TABLE."
+					ORDER BY duration DESC LIMIT 12;
+				");
+				$this->template->cdrs = $recent;
 				
 				break;
 			
