@@ -258,6 +258,16 @@ A:active, A:hover {
 	padding: 5px;
 }
 
+.ui-tabs-panel A,
+.ui-tabs-panel A:visited {
+	color: #17365d !important;
+}
+
+.ui-tabs-panel A:hover,
+.ui-tabs-panel A:active {
+	color: #556E8D !important;	
+}
+
 .ui-dialog {
 	opacity: .98;
 }

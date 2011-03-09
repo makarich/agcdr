@@ -87,7 +87,9 @@ class CdrController extends BaseController {
 
 		// retrieve records
 		$cdrs = $this->db->GetAssoc("
-			SELECT ".DB_TABLE.".uniqueid, ".DB_TABLE.".*
+			SELECT	".DB_TABLE.".uniqueid, ".DB_TABLE.".*,
+				SEC_TO_TIME(".DB_TABLE.".duration) AS formatted_duration,
+				SEC_TO_TIME(".DB_TABLE.".billsec) AS formatted_billsec
 			FROM ".DB_TABLE."
 			WHERE calldate >= {$from} AND calldate < {$to}
 			ORDER BY calldate ASC;

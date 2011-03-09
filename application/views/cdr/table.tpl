@@ -10,7 +10,17 @@
 	
 		<thead>
 			<tr>
-				<th>Date/time<th>
+				<th>Unique ID</th>
+				<th>Date</th>
+				<th>Time</th>
+				<th>Caller ID</th>
+				<th>Source</th>
+				<th>Destination</th>
+				<th>Context</th>
+				<th>Last app.</th>
+				<th>Duration</th>
+				<th>Billable</th>
+				<th>Disposition</th>
 			</tr>
 		</thead>
 		
@@ -18,8 +28,18 @@
 		
 		{foreach from=$cdrs key=uniqueid item=cdr}
 		
-			<tr onmouseover="$(this).toggleClass('grey');" onmouseout="$(this).toggleClass('grey');" onclick="window.location='/cdr/view/?uid={$uniqueid}';">
+			<tr>
+				<td><a href="/cdr/view/?uid={$uniqueid}">{$uniqueid}</a></td>
+				<td>{$cdr.calldate|strtotime|date_format:"%d/%m/%Y"}</td>
 				<td>{$cdr.calldate|strtotime|date_format:"%H:%M:%S"}</td>
+				<td>{$cdr.clid}</td>
+				<td>{$cdr.src}</td>
+				<td>{$cdr.dst}</td>
+				<td>{$cdr.dcontext}</td>
+				<td>{$cdr.lastapp}</td>
+				<td>{$cdr.formatted_duration}</td>
+				<td>{$cdr.formatted_billsec}</td>
+				<td>{$cdr.disposition}</td>
 			</tr>
 		
 		{/foreach}
@@ -43,11 +63,17 @@
 			"sLengthMenu": 'Display <select>{/literal}{$menuoptions}{literal}</select> CDRs'
 		},
                 "aoColumns": [
-			{"bSortable": true},
-			{"bSortable": true},
+			{"bSortable": false},
 			{"bSortable": true, "sType": "uk_date"},
+			{"bSortable": false},
 			{"bSortable": true},
-			{"bSortable": false}
+			{"bSortable": true},
+			{"bSortable": true},
+			{"bSortable": true},
+			{"bSortable": true},
+			{"bSortable": true},
+			{"bSortable": true},
+			{"bSortable": true}
 		]
 	});
 	

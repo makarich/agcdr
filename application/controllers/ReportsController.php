@@ -77,14 +77,16 @@ class ReportsController extends BaseController {
 		// create calls chart
 		$chart_calls = new BarChart("Calls per day");
 		$chart_calls->dimensions = "700x350";
-		$chart_calls->barwidth = 17;
+		$chart_calls->margins = array(35,35,35,35);
+		$chart_calls->barwidth = 16;
 		$chart_calls->palette = CHART_PALETTE;
 		$chart_calls->x_labels = range(1,date("t",strtotime("{$month}-01")));
 		
 		// create minutes chart
 		$chart_mins = new BarChart("Minutes per day");
 		$chart_mins->dimensions = "700x350";
-		$chart_mins->barwidth = 17;
+		$chart_mins->margins = array(35,35,35,35);
+		$chart_mins->barwidth = 16;
 		$chart_mins->palette = CHART_PALETTE;
 		$chart_mins->x_labels = range(1,date("t",strtotime("{$month}-01")));
 
@@ -149,6 +151,55 @@ class ReportsController extends BaseController {
 
 		// set month and year information in template
 		$this->template->year = $year;
+		
+		// array of month names for chart X axis
+		$monthnames = array("Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec");
+		
+		// create calls chart
+		$chart_calls = new BarChart("Calls per month");
+		$chart_calls->dimensions = "700x350";
+		$chart_calls->margins = array(35,35,35,35);
+		$chart_calls->barwidth = 45;
+		$chart_calls->palette = CHART_PALETTE;
+		$chart_calls->x_labels = $monthnames;
+		
+		// create minutes chart
+		$chart_mins = new BarChart("Minutes per month");
+		$chart_mins->dimensions = "700x350";
+		$chart_mins->margins = array(35,35,35,35);
+		$chart_mins->barwidth = 45;
+		$chart_mins->palette = CHART_PALETTE;
+		$chart_mins->x_labels = $monthnames;
+
+		// calculate daily statistics
+		foreach (range(1,12) as $month) {
+			
+			$month = sprintf("%02d",$month);
+			
+			$stat = $this->db->GetRow("
+				SELECT	COUNT(*) AS calls,
+					SUM(duration) AS seconds
+				FROM ".DB_TABLE."
+				WHERE 	calldate >= '{$year}-{$month}-01 00:00:00'
+					AND CALLDATE < DATE_ADD('{$year}-{$month}-01 00:00:00', INTERVAL 1 MONTH);
+			");
+
+			$chart_calls->values[] = $stat["calls"];
+			$chart_mins->values[] = round($stat["seconds"]/60);
+
+		}
+
+		// assign chart URLs to template
+		$this->template->chart_calls = $chart_calls->saveFile(CHART_CACHE);
+		$this->template->chart_mins = $chart_mins->saveFile(CHART_CACHE);
+		
+		// assign statistics to template
+		$this->template->total_calls = array_sum($chart_calls->values);
+		$this->template->average_calls_month = round(array_sum($chart_calls->values)/12);
+		$this->template->average_calls_week = round(array_sum($chart_calls->values)/52);
+		$this->template->total_mins = array_sum($chart_mins->values);
+		$this->template->average_mins_month = round(array_sum($chart_mins->values)/12);
+		$this->template->average_mins_week = round(array_sum($chart_mins->values)/22);
 		
 		// render page
 		$this->template->show("year");

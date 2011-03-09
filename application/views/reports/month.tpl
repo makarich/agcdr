@@ -36,7 +36,7 @@
 			<tr>
 			
 				<td align="left" valign="top">
-					<img src="/images/charts/{$chart_calls}" class="greyborder" alt="Call per day chart" width="700" height="350"/>
+					<img src="/images/charts/{$chart_calls}" class="greyborder" alt="Calls per day chart" width="700" height="350"/>
 				</td>
 				
 				<td align="left" valign="top" width="100%" class="statistics">
@@ -68,12 +68,6 @@
 			</tr>
 		
 		</table>
-	
-	</div>
-	
-	<div id="tabs-cdrs">
-	
-	
 	
 	</div>
 

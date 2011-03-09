@@ -28,13 +28,45 @@
 	
 	<div id="tabs-calls">
 	
-	
+		<table border="0" cellpadding="0" cellspacing="0" width="100%">
+		
+			<tr>
+			
+				<td align="left" valign="top">
+					<img src="/images/charts/{$chart_calls}" class="greyborder" alt="Calls per month" width="700" height="350"/>
+				</td>
+				
+				<td align="left" valign="top" width="100%" class="statistics">
+					<p>Total calls: <b>{$total_calls}</b></p>
+					<p>Average calls per week: <b>{$average_calls_week}</b></p>
+					<p>Average calls per month: <b>{$average_calls_month}</b></p>
+				</td>
+			
+			</tr>
+		
+		</table>
 	
 	</div>
 	
 	<div id="tabs-mins">
 	
-	
+		<table border="0" cellpadding="0" cellspacing="0">
+		
+			<tr>
+			
+				<td align="left" valign="top">
+					<img src="/images/charts/{$chart_mins}" class="greyborder" alt="Minutes per month" width="700" height="350"/>
+				</td>
+				
+				<td align="left" valign="top" width="100%" class="statistics">
+					<p>Total minutes: <b>{$total_mins}</b></p>
+					<p>Average minutes per week: <b>{$average_mins_week}</b></p>
+					<p>Average minutes per month: <b>{$average_mins_month}</b></p>
+				</td>
+			
+			</tr>
+		
+		</table>
 	
 	</div>
 
