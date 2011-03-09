@@ -119,6 +119,7 @@ class LineChart extends GoogleChart {
 			
 			$this->y_labels = array_unique($this->y_labels);
 			if (!in_array($minimum,$this->y_labels)) $this->y_labels[] = $minimum;
+
 			sort($this->y_labels);
 			
 		}

@@ -106,10 +106,8 @@ class BarChart extends GoogleChart {
 			for ($i=($this->y_labels[0]+$step); $i<$this->y_labels[1]; $i=$i+$step) {
 				$this->y_labels[] = round($i);
 			}
-			
-			//$this->y_labels = array_unique($this->values);
-			//if (!in_array($minimum,$this->y_labels)) $this->y_labels[] = $minimum;
-			
+
+			$this->y_labels = array_unique($this->y_labels);
 			sort($this->y_labels);
 			
 		}
