@@ -29,21 +29,22 @@ if (isset($argv[0])) {
 
 // determine version number and create file path
 require_once("{$mypath}/../application/config.php");
-$filepath = "{$outpath}/".strtolower(APP_TITLE)."-".VERSION.".tar.gz";
+$filepath = "{$outpath}/".strtolower(APP_TITLE)."-".VERSION;
+if (BETA == true) $filepath .= "-beta";
+$filepath .= ".tar.gz";
 
 // exclusions
 $exclusions = array(
-	"*svn*",					// SVN crap
-	"debug",
+	"*.svn*",					// SVN crap
 	".buildpath",".project",".settings",		// Eclipse crap
-	".DS_Store",					// Mac OS crap
+	"*.DS_Store*",					// Mac OS crap
 	"*.*~",						// text editor crap
 	"docs/phpdoc"					// phpDoc directory
 );
 
 // create command list
 $commands = array(
-	"rm -f {$mypath}/../public/images/charts/*.png",
+	"rm -f {$srcdir}/public/images/charts/*.png",
 	"tar -czf {$filepath} -C {$srcdir} application public docs data --exclude=".implode(" --exclude=",$exclusions)
 );
 

@@ -1,5 +1,0 @@
-Notes when upgrading third party libraries
-------------------------------------------
-
-1) There is a custom Smarty plugin that must be transferred:
-   <smarty>/libs/plugins/function.icon.php
