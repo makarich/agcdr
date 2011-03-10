@@ -136,8 +136,32 @@ TABLE.form {
 	color: #808080;
 	font-weight: bold;
 	padding-top: 6px;
-	padding-right: 5px;
+	margin-left: 10px;
 	white-space: nowrap;
+}
+
+/* quick search */
+
+#quicksearch {
+	float: right;
+	background: #EEE;
+	padding: 2px 4px;
+	margin-left: 10px;
+	border: 1px solid #C0C0C0;	
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+}
+
+#quicksearch INPUT {
+	font-size: 9pt;
+	width: 125px;
+	height: 19px;
+	background: url('/images/icons/search.png') top left no-repeat white;
+	background-position: 2px 2px;
+	padding-left: 20px;
+	padding-right: 5px;
+	border: 1px solid #8db3e2;
 }
 
 /* previous and next buttons on right */
@@ -206,6 +230,7 @@ A:active, A:hover {
 		text-decoration: none !important;
 		color: #17365d;
 		padding: 3px 6px;
+		text-shadow: 1px 1px 1px #FFFFFF;
 	}
 	
 	#navigation LI A:hover,
@@ -235,7 +260,7 @@ A:active, A:hover {
 	}
 
 	#overviewgrid LI DIV.title {
-		background: url('/libraries/jquery-ui-1.8.10.custom/development-bundle/themes/cupertino/images/ui-bg_highlight-soft_100_deedf7_1x100.png') repeat-x scroll 50% 50% #DEEDF7;
+		background: #d9eaff;
 		padding: 2px 4px;
 	}
 	
@@ -250,6 +275,7 @@ A:active, A:hover {
 /* jQuery UI overrides */
 
 .ui-widget {
+	font-family: Helvetica, Arial, sans-serif;
 	font-size: 9pt !important;
 }
 

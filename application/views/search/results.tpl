@@ -1,14 +1,18 @@
-{* Designed to be loaded into a tab or a dialogue window *}
+{include file='shared/htmlheader.tpl'}
 
-{* when making changes to this template please also make equivalent changes in search/results.tpl *}
+{* when making changes to this template please also make equivalent changes in cdr/table.tpl *}
 
-{if $cdrs|@count eq 0}
+<h2>Search Results</h2>
 
-	<p class="ui-state-highlight ui-corner-all highlight">There are no CDRs in the database for this period.</p>
+{if $results|@count eq 0}
+
+	<p class="ui-state-highlight ui-corner-all highlight">No CDRs matched your query.</p>
+
+	{include file='search/form.tpl'}
 
 {else}
 
-	<table class="display" id="cdrlist">
+	<table class="display" id="resultstable">
 	
 		<thead>
 			<tr>
@@ -28,7 +32,7 @@
 		
 		<tbody>
 		
-		{foreach from=$cdrs key=uniqueid item=cdr}
+		{foreach from=$results key=uniqueid item=cdr}
 		
 			<tr>
 				<td><a href="/cdr/view/?uid={$uniqueid}">{$uniqueid}</a></td>
@@ -54,8 +58,8 @@
 	
 	<script type="text/javascript">
 	
-	// apply DataTables plugin to CDR list
-	$('#cdrlist').dataTable({
+	// apply DataTables plugin to results table
+	$('#resultstable').dataTable({
 		"bJQueryUI": true,
 		"sPaginationType": "full_numbers",
 		"bProcessing": true,
@@ -84,3 +88,6 @@
 	{/literal}
 
 {/if}
+
+
+{include file='shared/htmlfooter.tpl'}

@@ -17,7 +17,7 @@
 	<script type="text/javascript" src="/js/modernizr-1.6-min.js"></script>
 	
 	<!-- jQuery -->
-	<link rel="stylesheet" type="text/css" href="/libraries/jquery-ui-1.8.10.custom/css/cupertino/jquery-ui-1.8.10.custom.css"/>
+	<link rel="stylesheet" type="text/css" href="/libraries/jquery-ui-1.8.10.custom/css/{$smarty.const.JQUI_THEME}/jquery-ui-1.8.10.custom.css"/>
 	<script type="text/javascript" src="/libraries/jquery-ui-1.8.10.custom/js/jquery-1.4.4.min.js"></script>
 	<script type="text/javascript" src="/libraries/jquery-ui-1.8.10.custom/js/jquery-ui-1.8.10.custom.min.js"></script>
 	<script type="text/javascript" src="/libraries/DataTables-1.7.5/media/js/jquery.dataTables.min.js"></script>
@@ -32,24 +32,12 @@
 
 <div id="frame">
 
-<div id="serverselect">
-
-	<form method="POST" action="/" name="serverswitch">
-
-	Select database server:
-
-	<select name="switchto" id="switchto" onchange="document.serverswitch.submit();" {if $smarty.session.servers|@count <= 1}disabled{/if}>
-	{foreach from=$smarty.session.servers key=hostname item=server}
-		<option value="{$hostname}" {if $hostname eq $smarty.session.server}selected{/if}>{$server.description}</option>
-	{/foreach}
-	</select>
+	{include file='shared/quicksearch.tpl'}
 	
-	</form>
-
-</div>
-
-<h1>{$smarty.const.LONG_TITLE}</h1>
-
-<div id="clock">{$smarty.now|date_format:"%A %e %B %Y, %H:%M"}</div>
-
-{include file='shared/navigation.tpl'}
+	{include file='shared/serverselect.tpl'}
+	
+	<h1>{$smarty.const.LONG_TITLE}</h1>
+	
+	<div id="clock">{$smarty.now|date_format:"%A %e %B %Y, %H:%M"}</div>
+	
+	{include file='shared/navigation.tpl'}

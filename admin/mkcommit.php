@@ -4,11 +4,8 @@
 /**
  * Prepare and commit.
  * 
- * Compiles minified JS and CSS files and generates phpdoc documentation before
- * commiting to SVN. Basically a lazy shortcut for running the other admin
- * scripts and a manual commit.
- * 
- * Under construction, not complete.
+ * Generates phpdoc documentation before commiting to SVN.
+ * Basically a lazy shortcut for running the other admin scripts and a manual commit.
  * 
  * @package	AGCDR
  * @author	Stuart Benjamin Ford <stuartford@me.com>

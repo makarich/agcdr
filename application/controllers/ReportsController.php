@@ -205,37 +205,7 @@ class ReportsController extends BaseController {
 		$this->template->show("year");
 		
 	}
-	
-	/**
-	 * Quick search.
-	 * 
-	 * @return void
-	 * @access public
-	 */
-	public function quick_search() {
-		
-		
-		
-		// render page
-		$this->template->show("quick_search");
-		
-	}
-	
-	/**
-	 * Advanced search.
-	 * 
-	 * @return void
-	 * @access public
-	 */
-	public function advanced_search() {
-		
-		
-		
-		// render page
-		$this->template->show("advanced_search");
-		
-	}
-	
+
 	/**
 	 * Load overview box content.
 	 * 

@@ -38,8 +38,9 @@ $exclusions = array(
 	"*.svn*",					// SVN crap
 	".buildpath",".project",".settings",		// Eclipse crap
 	"*.DS_Store*",					// Mac OS crap
-	"*.*~",						// text editor crap
-	"docs/phpdoc"					// phpDoc directory
+	"*.*~",						// general text editor crap
+	"docs/phpdoc",					// phpDoc directory
+	"cssmin*.php","jsmin*.php","minify-*.php"	// minification tools
 );
 
 // create command list

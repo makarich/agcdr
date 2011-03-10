@@ -40,6 +40,15 @@ require_once(APP_PATH."/config.php");
 require_once(APP_PATH."/libraries/adodb5/adodb.inc.php");
 require_once(APP_PATH."/libraries/Smarty-3.0.7/libs/Smarty.class.php");
 
+// set application URL
+if (isset($_SERVER["SERVER_NAME"])) {
+	if (BETA) {
+		define('APP_URL',"http://{$_SERVER['SERVER_NAME']}:{$_SERVER['SERVER_PORT']}/");
+	} else {
+		define('APP_URL',"http://{$_SERVER['SERVER_NAME']}/");
+	}
+}
+
 // check that at least one server is defined in the configuration
 // this is a basic installation step, so be blunt if it's missing
 if (!isset($_SESSION["servers"]) || count($_SESSION["servers"]) == 0) {
@@ -62,7 +71,7 @@ define('DB_PASS',$_SESSION["servers"][$server]["password"]);
 define('DB_NAME',$_SESSION["servers"][$server]["dbname"]);
 define('DB_USER',$_SESSION["servers"][$server]["username"]);
 define('DB_HOST',$_SESSION["servers"][$server]["hostname"]);
-define('DB_TYPE',$_SESSION["servers"][$server]["dbtype"]);
+define('DB_TYPE',$_SESSION["servers"][$server]["type"]);
 define('DB_TABLE',$_SESSION["servers"][$server]["tablename"]);
 
 // if not the live version, create a label for the version we're running
