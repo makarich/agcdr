@@ -114,7 +114,7 @@ class cdr extends Model {
 	public $disposition;
 	
 	/**
-	 * amaflags.
+	 * Automated Message Accounting flags.
 	 * 
 	 * @var integer
 	 * @access public
@@ -144,7 +144,6 @@ class cdr extends Model {
 	 * @access public
 	 */
 	public $uniqueid;
-	
 	
 	/*
 

@@ -3,7 +3,6 @@
 <form method="POST" action="/search/results/" onsubmit="return quickSearch();">
 
 <div id="quicksearch">
-	Quick search:
 	<input type="text" name="quicksearch" id="quicksearchstr" size="25" value="{$quicksearch}" placeholder="Quick search" />
 </div>
 

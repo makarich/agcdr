@@ -1,6 +1,6 @@
 
 // AGCDR: jquery functions library (must be loaded at foot of each page)
-// Copyright 2010 Heddon Consulting Ltd., all rights reserved
+// Copyright 2011 Heddon Consulting Ltd., all rights reserved
 
 $(document).ready(function() {
 

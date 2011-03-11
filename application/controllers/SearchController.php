@@ -74,6 +74,8 @@ class SearchController extends BaseController {
 			
 		} else {
 			
+			// it's a proper search
+			
 			
 			
 		}
