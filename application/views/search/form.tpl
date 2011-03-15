@@ -6,24 +6,26 @@
 
 	<tbody>
 
-	<tr id="daterow">
-		<td class="label">Date range</td>
-		<td class="value">
-			<input type="text" class="datepicker" name="date_from" size="10" value="{$smarty.now|date_format:"%m/%d/%Y"}" readonly />
-			to
-			<input type="text" class="datepicker" name="date_to" size="10" value="{$smarty.now|date_format:"%m/%d/%Y"}" readonly />
-		</td>
-	</tr>
+		<tr id="daterow">
+			<td class="label">Date range</td>
+			<td class="value">
+				<input type="text" class="datepicker" name="date_from" size="12" value="{$smarty.now|date_format:"%m/%d/%Y"}" readonly />
+				to
+				<input type="text" class="datepicker" name="date_to" size="12" value="{$smarty.now|date_format:"%m/%d/%Y"}" readonly />
+			</td>
+		</tr>
 	
 	</tbody>
 	
 	<tfoot>
+	
 		<tr>
 			<td class="buttonbar" colspan="2">
 				<button type="button" onclick="addCriteriaRow();">{icon name="add"}&nbsp;&nbsp;Add criteria</button>
 				<button type="submit">{icon name="search"}&nbsp;&nbsp;Search</button>
 			</td>
 		</tr>
+		
 	</tfoot>
 
 </table>
@@ -60,10 +62,10 @@ function addCriteriaRow() {
 	totalRows = totalRows + 1;
 
 	// create row object
-	newRow = $('<tr></tr>');
+	newRow = $('<tr id="criteria_row_'+totalRows+'"></tr>');
 
 	// add label cell
-	$(newRow).append($('<td class="label">Criteria '+totalRows+'</td>'));
+	$(newRow).append($('<td class="label" nowrap>Criteria '+totalRows+'</td>'));
 
 	// create new cell
 	newCell = $('<td class="value"></td>');
@@ -84,8 +86,14 @@ function addCriteriaRow() {
 	$(newCell).append(opMenu);
 
 	// add text field
-	textField = $('<input type="text" name="criteria_'+totalRows+'" size="20" />');
+	textField = $('<input type="text" id="criteria_'+totalRows+'" name="criteria_'+totalRows+'" size="20" />');
 	$(newCell).append(textField);
+
+	// add row delete button
+	if (totalRows > 1) {
+		cancelButton = $('<a href="javascript:void(0);" onclick="deleteCriteriaRow('+totalRows+');"><img src="/images/icons/delete.png" width="16" height="16" border="0" alt="Delete criteria" valign="top" /></a>');
+		$(newCell).append(cancelButton);
+	}
 	
 	// add cell to row and row to table
 	$(newRow).append(newCell);
@@ -93,10 +101,28 @@ function addCriteriaRow() {
 
 }
 
+// delete a criteria row
+function deleteCriteriaRow(rowID) {
+	if (document.getElementById('criteria_row_'+rowID)) {
+		$('#criteria_row_'+rowID).remove();
+	}
+}
+
 // validate form
 function validateAdvancedSearch() {
 
-	return false;
+	// check that criteria boxes each have at least 3 characters
+	for (i=1; i<=totalRows; i++) {
+		if (document.getElementById('criteria_'+i)) {
+			criteria = document.getElementById('criteria_'+i).value;
+			if (criteria.length < 3) {
+				alert("Criteria "+totalRows+" must be at least three characters in length.");
+				return false;
+			}
+		}
+	}
+	
+	return true;
 
 }
 

@@ -76,7 +76,66 @@ class SearchController extends BaseController {
 			
 			// it's a proper search
 			
+			// retrieve search criteria
+			$criteria = array();
+			foreach ($_POST as $key => $value) {
+				if (substr($key,0,9) == "criteria_" && strlen($value) >= 3) {
+					$row = substr($key,-1,1);
+					array_push($criteria,array(
+						"field"		=> $_POST["field_{$row}"],
+						"operator"	=> $_POST["operator_{$row}"],
+						"keywords"	=> $value
+					));
+				}
+			}
 			
+			// process as long as there's one set of criteria
+			if (count($criteria) > 0) {
+				
+				// build query
+				$where = array(
+					"calldate >= ''",
+					"calldate <= ''"
+				);
+				
+				foreach ($criteria as $crit) {
+					
+					switch ($crit['operator']) {
+						case "contains":
+							$keywords = "LIKE '%{$crit['keywords']}%'";
+							break;
+						case "equals":
+							$keywords = "= '{$crit['keywords']}'";
+							break;
+						case "ltet":
+							$keywords = "<= '{$crit['keywords']}'";
+							break;
+						case "gtet":
+							$keywords = ">= '{$crit['keywords']}'";
+							break;
+					}
+					
+					$where[] = "{$crit['field']} {$keywords}";
+					
+				}
+				
+				$sql = "SELECT	".DB_TABLE.".uniqueid, ".DB_TABLE.".*,
+						SEC_TO_TIME(".DB_TABLE.".duration) AS formatted_duration,
+						SEC_TO_TIME(".DB_TABLE.".billsec) AS formatted_billsec
+					FROM ".DB_TABLE."
+					WHERE ".implode(" AND ",$where)."
+					ORDER BY calldate DESC;
+				";
+
+				print $sql;
+				
+				// run query
+				$results = $this->db->GetAssoc($sql);
+				
+				// set criteria back in template
+				$this->template->criteria = $criteria;
+				
+			}
 			
 		}
 		
@@ -89,7 +148,6 @@ class SearchController extends BaseController {
 		
 	}
 
-	
 }
 
 ?>
