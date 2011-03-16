@@ -14,7 +14,7 @@ define('LIVE_URL','http://agcdr.heddonconsulting.com/');
 // main database server configuration (first server is the default)
 $_SESSION["servers"] = array(
 	"zaleriza.snwo.org" => array(
-		"description"	=> "Heddon PBX",
+		"description"	=> "Home PBX",
 		"type"		=> "mysql",
 		"hostname"	=> "zaleriza.snwo.org",
 		"username"	=> "asterisk",
