@@ -1,10 +1,10 @@
 <?php
 
 /**
- * Search engine functions.
+ * Search engine controller.
  * 
  * @package	AGCDR
- * @author	Various, SBF
+ * @author	Stuart Benjamin Ford <stuartford@me.com>
  * @copyright	2011
  */
 
@@ -30,6 +30,10 @@ class SearchController extends BaseController {
 	 */
 	public function index() {
 
+		// set default dates to today
+		$this->template->date_from = strftime("%m/%d/%Y");
+		$this->template->date_to = strftime("%m/%d/%Y");
+		
 		// render page
 		$this->template->show("index");
 		
@@ -88,14 +92,14 @@ class SearchController extends BaseController {
 					));
 				}
 			}
-			
+
 			// process as long as there's one set of criteria
 			if (count($criteria) > 0) {
 				
 				// build query
 				$where = array(
-					"calldate >= ''",
-					"calldate <= ''"
+					strftime("calldate >= '%Y/%m/%d 00:00:00'",strtotime($_POST["date_from"])),
+					strftime("calldate <= '%Y/%m/%d 23:59:59'",strtotime($_POST["date_to"]))
 				);
 				
 				foreach ($criteria as $crit) {
@@ -127,13 +131,13 @@ class SearchController extends BaseController {
 					ORDER BY calldate DESC;
 				";
 
-				print $sql;
-				
 				// run query
 				$results = $this->db->GetAssoc($sql);
 				
 				// set criteria back in template
 				$this->template->criteria = $criteria;
+				$this->template->date_from = $_POST["date_from"];
+				$this->template->date_to = $_POST["date_to"];
 				
 			}
 			

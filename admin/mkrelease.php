@@ -6,7 +6,7 @@
  * 
  * @package	AGCDR
  * @author	Stuart Benjamin Ford <stuartford@me.com>
- * @copyright	09/03/2011
+ * @copyright	16/03/2011
  */
 
 // my path
@@ -40,13 +40,15 @@ $exclusions = array(
 	"*.DS_Store*",					// Mac OS crap
 	"*.*~",						// general text editor crap
 	"docs/phpdoc",					// phpDoc directory
+	"docs/website",					// website directory
 	"cssmin*.php","jsmin*.php","minify-*.php"	// minification tools
 );
 
 // create command list
 $commands = array(
 	"rm -f {$srcdir}/public/images/charts/*.png",
-	"tar -czf {$filepath} -C {$srcdir} application public docs data --exclude=".implode(" --exclude=",$exclusions)
+	"tar -czf {$filepath} -C {$srcdir} application public docs data --exclude=".implode(" --exclude=",$exclusions),
+	"cp {$srcdir}/public/css/stylesheet-min.css {$srcdir}/docs/website/"
 );
 
 // run commands

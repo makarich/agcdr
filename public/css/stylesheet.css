@@ -145,7 +145,7 @@ TABLE.form {
 	white-space: nowrap;
 }
 
-/* quick search */
+/* elements relating to quick and advanced searches */
 
 #quicksearch {
 	float: right;
@@ -167,6 +167,11 @@ TABLE.form {
 	padding-left: 20px;
 	padding-right: 5px;
 	border: 0px;
+}
+
+#advancedsearch {
+	float: right;
+	margin-left: 10px;
 }
 
 /* previous and next buttons on right */

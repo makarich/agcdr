@@ -8,8 +8,6 @@
 
 	<p class="ui-state-highlight ui-corner-all highlight">No CDRs matched your query.</p>
 
-	{include file='search/form.tpl'}
-
 {else}
 
 	<table class="display" id="resultstable">
@@ -89,5 +87,10 @@
 
 {/if}
 
+{include file='search/form.tpl'}
+
+<p>You may alter your search parameters using the form opposite and re-submit your search.</p>
+
+<div style="clear: both;"></div>
 
 {include file='shared/htmlfooter.tpl'}

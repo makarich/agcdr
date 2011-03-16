@@ -2,16 +2,16 @@
 
 <form method="POST" action="/search/results/" onsubmit="return validateAdvancedSearch();">
 
-<table class="form" width="100%" id="advancedsearch">
+<table class="form" id="advancedsearch">
 
 	<tbody>
 
 		<tr id="daterow">
 			<td class="label">Date range</td>
-			<td class="value">
-				<input type="text" class="datepicker" name="date_from" size="12" value="{$smarty.now|date_format:"%m/%d/%Y"}" readonly />
+			<td class="value" nowrap>
+				<input type="text" class="datepicker" name="date_from" size="12" value="{$date_from}" readonly />
 				to
-				<input type="text" class="datepicker" name="date_to" size="12" value="{$smarty.now|date_format:"%m/%d/%Y"}" readonly />
+				<input type="text" class="datepicker" name="date_to" size="12" value="{$date_to}" readonly />
 			</td>
 		</tr>
 	
@@ -20,7 +20,7 @@
 	<tfoot>
 	
 		<tr>
-			<td class="buttonbar" colspan="2">
+			<td class="buttonbar" colspan="2" nowrap>
 				<button type="button" onclick="addCriteriaRow();">{icon name="add"}&nbsp;&nbsp;Add criteria</button>
 				<button type="submit">{icon name="search"}&nbsp;&nbsp;Search</button>
 			</td>
@@ -68,17 +68,17 @@ function addCriteriaRow() {
 	$(newRow).append($('<td class="label" nowrap>Criteria '+totalRows+'</td>'));
 
 	// create new cell
-	newCell = $('<td class="value"></td>');
+	newCell = $('<td class="value" nowrap></td>');
 
 	// build field menu
-	fieldMenu = $('<select name="field_'+totalRows+'"></select>');
+	fieldMenu = $('<select id="field_'+totalRows+'" name="field_'+totalRows+'"></select>');
 	for (var field in cdrFields) {
 		$(fieldMenu).append($('<option value="'+field+'">'+cdrFields[field]+'</option>'));
 	}
 	$(newCell).append(fieldMenu);
 
 	// build operator menu
-	opMenu = $('<select name="operator_'+totalRows+'"></select>');
+	opMenu = $('<select id="operator_'+totalRows+'" name="operator_'+totalRows+'"></select>');
 	$(opMenu).append($('<option value="contains">contains</option>'));
 	$(opMenu).append($('<option value="equals">exactly equals</option>'));
 	$(opMenu).append($('<option value="ltet">is less than or equal to</option>'));
@@ -126,10 +126,30 @@ function validateAdvancedSearch() {
 
 }
 
-// add initial criteria row
+{/literal}
+
+// start total rows count
 var totalRows = 0;
-addCriteriaRow();
+
+{if $criteria}
+
+	// add initial criteria rows and pre-populate
+
+	for (i=0; i<{$criteria|@count}; i++) {
+		addCriteriaRow();
+	}
+
+	{foreach from=$criteria key=id item=crit}
+		document.getElementById('field_{$id+1}').value = '{$crit.field}';
+		document.getElementById('operator_{$id+1}').value = '{$crit.operator}';
+		document.getElementById('criteria_{$id+1}').value = '{$crit.keywords}';
+	{/foreach}
+	
+{else}
+
+	// add initial criteria row
+	addCriteriaRow();
+	
+{/if}
 
 </script>
-
-{/literal}
