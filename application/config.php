@@ -41,7 +41,7 @@ $_SESSION["servers"] = array(
  */
 
 // release version
-define('VERSION','1.0.0.1');
+define('VERSION','1.0.1.0');
 
 // beta version flag
 define('BETA',true);

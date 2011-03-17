@@ -44,9 +44,9 @@ class Template {
 		// set up Smarty template object
 		$smarty = new Smarty();
 		$smarty->template_dir = APP_PATH."/views";
-		$smarty->compile_dir = DATA_PATH."/templates_c";
-		$smarty->cache_dir = DATA_PATH."/cache";
-		$smarty->config_dir = DATA_PATH."/configs";
+		$smarty->compile_dir = DATA_PATH."/sm_compile";
+		$smarty->cache_dir = DATA_PATH."/sm_cache";
+		$smarty->config_dir = DATA_PATH."/sm_config";
 		$this->smarty = $smarty;
 		
 		// set controller name

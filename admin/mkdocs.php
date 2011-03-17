@@ -6,17 +6,20 @@
  * 
  * @package	AGCDR
  * @author	Stuart Benjamin Ford <stuartford@me.com>
- * @copyright	03/03/2011
+ * @copyright	17/03/2011
  */
 
 // my path
 $mypath = realpath(dirname(array_shift($argv)));
 
+// read config file
+require_once("{$mypath}/../application/config.php");
+
 // process each target directory
 foreach (array("controllers","models","classes") as $dir) {
 
 	// base command
-	$cmd = "phpdoc -d {$mypath}/../application/{$dir} -t {$mypath}/../docs/phpdoc/{$dir}/ -ti 'AGCDR ".ucfirst($dir)."' -dn 'AGCDR'";
+	$cmd = "phpdoc -d {$mypath}/../application/{$dir} -t {$mypath}/../docs/phpdoc/{$dir}/ -ti '".APP_TITLE." ".ucfirst($dir)."' -dn '".APP_TITLE."'";
 	
 	// include private functions?
 	if (in_array("pp",$argv)) $cmd .= " -pp";
