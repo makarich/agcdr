@@ -46,6 +46,7 @@ $exclusions = array(
 
 // create command list
 $commands = array(
+	"rm -f {$srcdir}/data/sm_compile/*",
 	"rm -f {$srcdir}/public/images/charts/*.png",
 	"tar -czf {$filepath} -C {$srcdir} application public docs data --exclude=".implode(" --exclude=",$exclusions),
 	"cp {$srcdir}/public/css/stylesheet-min.css {$srcdir}/docs/website/"
