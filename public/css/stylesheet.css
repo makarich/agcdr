@@ -172,6 +172,7 @@ TABLE.form {
 #advancedsearch {
 	float: right;
 	margin-left: 10px;
+	margin-top: 10px;
 }
 
 /* previous and next buttons on right */

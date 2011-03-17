@@ -11,9 +11,6 @@
  * @copyright	2011
  */
 
-// development mode
-define('DEVMODE',true);
-
 // set error reporting
 if (DEVMODE == true) {
 	error_reporting(E_ALL);

@@ -9,28 +9,18 @@
  */
 
 // full URL of your virtual host
-define('LIVE_URL','http://agcdr.heddonconsulting.com/');
+define('LIVE_URL','http://fully.qualified.hostname/');
 
 // main database server configuration (first server is the default)
 $_SESSION["servers"] = array(
-	"zaleriza.snwo.org" => array(
-		"description"	=> "Home PBX",
+	"asterisk.server.hostname" => array(
+		"description"	=> "Server description",
 		"type"		=> "mysql",
-		"hostname"	=> "zaleriza.snwo.org",
-		"username"	=> "asterisk",
-		"password"	=> "irkEsdecs8",
-		"dbname"	=> "asterisk",
-		"tablename"	=> "cdr"
-		
-	),
-	"voip.glide.uk.com" => array(
-		"description"	=> "Glide PBX",
-		"type"		=> "mysql",
-		"hostname"	=> "voip.glide.uk.com",
-		"username"	=> "root",
-		"password"	=> "passw0rd",
-		"dbname"	=> "asteriskcdrdb",
-		"tablename"	=> "cdr"
+		"hostname"	=> "db.server.hostname",
+		"username"	=> "db_username",
+		"password"	=> "db_password",
+		"dbname"	=> "db_name",
+		"tablename"	=> "db_table_name"
 	)
 );
 
