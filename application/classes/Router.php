@@ -3,9 +3,9 @@
 /**
  * MVC router class.
  * 
- * @package		AGCDR
- * @author		Various, SBF
- * @copyright		2010-2011
+ * @package	AGCDR
+ * @author	Various, SBF
+ * @copyright	2010-2011
  */
 
 /**
@@ -56,12 +56,13 @@ class Router {
 	}
 
 	/**
-	* Set controller directory path.
-	*
-	* @param string $path
-	* @return void
-	* @access public
-	*/
+	 * Set controller directory path.
+	 *
+	 * @param string $path
+	 * 
+	 * @return void
+	 * @access public
+	 */
 	public function setPath($path) {
 
 		// check that path is a directory
@@ -74,11 +75,11 @@ class Router {
 	}
 
 	/**
-	* Load the controller and execute requested action.
-	*
-	* @access public
-	* @return void
-	*/
+	 * Load the controller and execute requested action.
+	 *
+	 * @access public
+	 * @return void
+	 */
 	public function loader() {
 		
 		// check the route
@@ -115,11 +116,11 @@ class Router {
 	}
 	
 	/**
-	* Get the controller and action from the URL.
-	*
-	* @access private
-	* @return void
-	*/
+	 * Get the controller and action from the URL.
+	 *
+	 * @access private
+	 * @return void
+	 */
 	private function getController() {
 	
 		// determine the route from the URL

@@ -11,6 +11,9 @@
  * @copyright	2011
  */
 
+// development mode flag
+define('DEVMODE',false);
+
 // set error reporting
 if (DEVMODE == true) {
 	error_reporting(E_ALL);

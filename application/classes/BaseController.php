@@ -58,14 +58,21 @@ abstract class BaseController {
 		// access to utilities library
 		$this->utils = new Utilities();
 		
-		// extract parameters from GET request
+		// extract parameters from GET request, add them to an array within
+		// object and also to the QUERY_STRING server variable in case some
+		// third party libraries uses this variable (nusoap a notable example)
 		if (isset($_SERVER["REQUEST_URI"])) {
+			
 			$uri_parts = explode("/",$_SERVER["REQUEST_URI"]);
 			$params = explode("&",ltrim(array_pop($uri_parts),"?"));
+			
 			foreach ($params as $param) {
 				$parts = explode("=",$param);
+				if (!isset($parts[1])) $parts[1] = "";
 				$this->get[$parts[0]] = $parts[1];
+				$_SERVER["QUERY_STRING"] .= "&{$parts[0]}=".urlencode($parts[1]);
 			}
+			
 		}
 		
 	}

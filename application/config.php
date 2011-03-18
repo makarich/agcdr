@@ -9,27 +9,17 @@
  */
 
 // full URL of your virtual host
-define('LIVE_URL','http://agcdr.heddonconsulting.com/');
+define('LIVE_URL','http://agcdr.myhost.com/');
 
 // main database server configuration (first server is the default)
 $_SESSION["servers"] = array(
-	"zaleriza.snwo.org" => array(
-		"description"	=> "Home PBX",
+	"full.hostname.com" => array(
+		"description"	=> "Example configuration",
 		"type"		=> "mysql",
-		"hostname"	=> "zaleriza.snwo.org",
+		"hostname"	=> "full.hostname.com",
 		"username"	=> "asterisk",
-		"password"	=> "irkEsdecs8",
+		"password"	=> "password",
 		"dbname"	=> "asterisk",
-		"tablename"	=> "cdr"
-		
-	),
-	"voip.glide.uk.com" => array(
-		"description"	=> "Glide PBX",
-		"type"		=> "mysql",
-		"hostname"	=> "voip.glide.uk.com",
-		"username"	=> "root",
-		"password"	=> "passw0rd",
-		"dbname"	=> "asteriskcdrdb",
 		"tablename"	=> "cdr"
 	)
 );
@@ -43,9 +33,8 @@ $_SESSION["servers"] = array(
 // release version
 define('VERSION','1.0.1.0');
 
-// beta version and development mode flags
+// beta version flag
 define('BETA',true);
-define('DEVMODE',true);
 
 // application titles (short and long)
 define('APP_TITLE','AGCDR');
