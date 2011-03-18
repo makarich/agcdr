@@ -1,0 +1,22 @@
+@CHARSET "UTF-8";
+
+/* Print stylesheet - edit this and minify using minify-css.php */
+
+/* objects and classes to hide */
+
+#devinfo,
+#serverselect {
+	display: none;	
+}
+
+/* simplify borders and backgrounds */
+
+BODY {
+	background: white;
+	margin: 0px;
+}
+
+#frame {
+	border: 0;
+	background: none;
+}

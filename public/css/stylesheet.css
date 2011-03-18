@@ -1,0 +1,335 @@
+@CHARSET "UTF-8";
+
+/* Main stylesheet - edit this and minify using minify-css.php */
+
+/* main page objects */
+
+BODY {
+	margin: 10px;
+	background: #EEEEEE;
+	font-family: Helvetica, Arial, sans-serif;
+	font-size: 10pt;
+}
+
+#frame {
+	padding: 10px;
+	border: 2px solid #999999;
+	background: white;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+}
+
+#copyright {
+	text-align: center;
+	font-size: 8pt;
+	color: #808080;
+	margin: 5px;	
+}
+
+/* heading styles */
+
+H1 {
+	margin: 0px;
+	border-bottom: 2px solid #17365d;
+	color: #17365d;
+	font-weight: normal;
+	font-size: 24pt;
+	letter-spacing: -1px;
+	text-shadow: 1px 1px 1px #8db3e2;
+}
+
+H2 {
+	margin: 0.5em 0em;
+	color: #8db3e2;
+	font-size: 18pt;
+	letter-spacing: -1px;
+	margin: 5px 0px 8px 0px;
+}
+
+H3 {
+	color: #17365d;
+}
+
+/* other text styles */
+
+.small {
+	font-size: 7pt !important;
+}
+
+.grey {
+	background: #EEE;	
+}
+
+.greyborder {
+	border: 1px solid #C0C0C0;	
+}
+
+.gap {
+	height: 0.5em;
+}
+
+PRE.code {
+	background: #EEE;
+	padding: 2px 4px;
+	border: 1px dashed #808080;
+}
+
+/* big-text statistics */
+
+TD.statistics {
+	font-size: 15pt;
+	letter-spacing: -1px;
+	padding-left: 0.5em;
+}
+
+TD.statistics P {
+	margin: 0px 0px 0.5em 0px;
+}
+
+/* form tables */
+
+TABLE.form {
+	border-collapse: collapse;
+}
+
+	TABLE.form TD {
+		padding: 4px 6px 4px 6px;
+	}
+	
+	TABLE.form TD.label {
+		background: #EEF3FA;
+		text-align: right;
+		white-space: nowrap;
+	}
+	
+	TABLE.form TD.value {
+		text-align: left;
+	}
+	
+	TABLE.form TD.buttonbar {
+		background: #EEF3FA;
+		text-align: right;
+		padding: 4px;
+	}
+	
+	TABLE.form INPUT.wide {
+		width: 100%;	
+	}
+	
+	TABLE.form INPUT,
+	TABLE.form SELECT {
+		margin-right: 5px;
+	}
+
+/* server selection menu */
+
+#serverselect {
+	float: right;
+	background: #EEE;
+	padding: 2px 4px;
+	border: 1px solid #C0C0C0;	
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+}
+
+/* clock on the right */
+
+#clock {
+	float: right;
+	color: #808080;
+	font-weight: bold;
+	padding-top: 6px;
+	margin-left: 10px;
+	white-space: nowrap;
+}
+
+/* elements relating to quick and advanced searches */
+
+#quicksearch {
+	float: right;
+	background: #EEE;
+	padding: 2px 4px;
+	margin-left: 10px;
+	border: 1px solid #C0C0C0;	
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+}
+
+#quicksearch INPUT {
+	font-size: 9pt;
+	width: 125px;
+	height: 19px;
+	background: url('/images/icons/search.png') top left no-repeat #eee;
+	background-position: 2px 2px;
+	padding-left: 20px;
+	padding-right: 5px;
+	border: 0px;
+}
+
+#advancedsearch {
+	float: right;
+	margin-left: 10px;
+	margin-top: 10px;
+}
+
+/* previous and next buttons on right */
+
+#prevnext {
+	float: right;
+	padding-top: 3px;	
+}
+
+/* basic report table (for when DataTables is overkill) */
+
+TABLE.basicreport {
+	border-collapse: collapse;
+}
+
+	TABLE.basicreport THEAD {
+		font-weight: bold;
+		border-bottom: 1px solid #808080;
+	}
+	
+	TABLE.basicreport TFOOT {
+		font-weight: bold;
+		border-top: 1px solid #808080;
+	}
+	
+	TABLE.basicreport TBODY TD {
+		padding: 2px 4px 2px 4px;
+	}
+	
+/* normal hyperlinks */
+
+A, A:visited {
+	color: #17365d;
+}
+
+A:active, A:hover {
+	color: #556E8D;	
+}
+
+/* main navigation */
+
+#navigation {
+	margin: 6px 0em;
+	padding: 0px 0px 6px 0px;
+	border-bottom: 2px solid #17365d;
+	white-space: nowrap;
+}
+
+	#navigation LI {
+		list-style: none;
+		margin: 0px;
+		display: inline;
+	}
+	
+	#navigation LI.selected {
+		font-weight: bold;
+	}
+	
+	#navigation LI A:before {
+		content: "► ";
+		color: #808080;
+	}
+	
+	#navigation LI A,
+	#navigation LI A:visited {
+		text-decoration: none !important;
+		color: #17365d;
+		padding: 3px 6px;
+		text-shadow: 1px 1px 1px #FFFFFF;
+	}
+	
+	#navigation LI A:hover,
+	#navigation LI A:active {
+		background: #EEE;
+	}
+
+/* overview grid */
+
+#overviewgrid {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+}
+
+	#overviewgrid LI {
+		margin: 0px 6px 6px 0px;
+		padding: 3px;
+		float: left;
+		width: 315px;
+		height: 305px;
+		border: 1px solid #17365d;
+		background: white;
+		box-shadow: 3px 3px 3px #C0C0C0;
+		overflow: auto;
+		opacity: .98;
+	}
+
+	#overviewgrid LI DIV.title {
+		background: #d9eaff;
+		padding: 2px 4px;
+	}
+	
+	#overviewgrid LI DIV.content {
+		padding: 5px 2px 0px 2px;
+	}
+	
+	#overviewgrid LI DIV.content P {
+		margin: 0px 0px 0.5em 0px;
+	}
+
+/* jQuery UI overrides */
+
+.ui-widget {
+	font-family: Helvetica, Arial, sans-serif;
+	font-size: 9pt !important;
+}
+
+.ui-state-error,
+.ui-state-highlight {
+	padding: 5px;
+}
+
+.ui-tabs-panel A,
+.ui-tabs-panel A:visited {
+	color: #17365d !important;
+}
+
+.ui-tabs-panel A:hover,
+.ui-tabs-panel A:active {
+	color: #556E8D !important;	
+}
+
+.ui-dialog {
+	opacity: .98;
+}
+
+.ui-tabs-panel {
+	padding: 10px 5px 5px 5px !important;
+}
+
+INPUT.hasDatepicker {
+	background: url('/images/icons/calendar.png') right no-repeat white;
+}
+
+/* development information label */
+
+#devinfo {
+	background: #BF0000;
+	color: white;
+	padding: 4px 5px 4px 5px;
+	font-size: 10pt;
+	letter-spacing: 0px;
+	position: absolute;
+	left: 0;
+	top: 0;
+	z-index: 999;
+	opacity: 0.75;
+	border-bottom-right-radius: 5px;
+	-moz-border-radius-bottomright: 5px;
+}
