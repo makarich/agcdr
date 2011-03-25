@@ -40,7 +40,6 @@ $exclusions = array(
 	"*.DS_Store*",					// Mac OS crap
 	"*.*~",						// general text editor crap
 	"docs/phpdoc",					// phpDoc directory
-	"docs/website",					// website directory
 	"cssmin*.php","jsmin*.php","minify-*.php"	// minification tools
 );
 

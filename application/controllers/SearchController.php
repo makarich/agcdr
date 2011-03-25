@@ -50,15 +50,18 @@ class SearchController extends BaseController {
 		// is this a quick search?
 		if (isset($_POST["quicksearch"])) {
 
+			// clean input
+			$search = $this->clean_query($_POST["quicksearch"]);
+			
 			// check that keyword is at least 3 characters in length
 			// this is checked by JavaScript, but need to check just in case
-			if (strlen($_POST["quicksearch"]) < 3) return false;
+			if (strlen($search) < 3) return false;
 
 			// build query
 			
 			foreach (array_keys(get_object_vars(new cdr())) as $field) {
 				if ($field != "id") {
-					$where[] = "{$field} LIKE '%{$_POST["quicksearch"]}%'";
+					$where[] = "{$field} LIKE '%{$search}%'";
 				}
 			}
 			
@@ -74,7 +77,7 @@ class SearchController extends BaseController {
 			$results = $this->db->GetAssoc($sql);
 
 			// set quick search string back in template
-			$this->template->quicksearch = $_POST["quicksearch"];
+			$this->template->quicksearch = $search;
 			
 		} else {
 			
@@ -88,7 +91,7 @@ class SearchController extends BaseController {
 					array_push($criteria,array(
 						"field"		=> $_POST["field_{$row}"],
 						"operator"	=> $_POST["operator_{$row}"],
-						"keywords"	=> $value
+						"keywords"	=> $this->clean_query($value)
 					));
 				}
 			}
@@ -152,6 +155,20 @@ class SearchController extends BaseController {
 		
 	}
 
+	/**
+	 * Clean query to prevent SQL injection attacks.
+	 * 
+	 * @param unknown_type $query
+	 */
+	private function clean_query($query) {
+
+		// prevents duplicate backslashes
+		if (get_magic_quotes_gpc()) $query = stripslashes($query);
+		
+		return mysql_real_escape_string($query);	
+		
+	}
+	
 }
 
 ?>

@@ -3,9 +3,9 @@
 /**
  * MVC router class.
  * 
- * @package	AGCDR
+ * @package	Syml
  * @author	Various, SBF
- * @copyright	2010-2011
+ * @copyright	2010-2011 Glide Utilities Ltd.
  */
 
 /**
@@ -48,11 +48,13 @@ class Router {
 	/**
 	 * Construct.
 	 * 
+	 * @param string $controllerpath	- (optional) controller directory path
+	 * 
 	 * @return void
 	 * @access public
 	 */
-	public function __construct() {
-				
+	public function __construct($controllerpath=false) {
+		if ($controllerpath) $this->setPath($controllerpath());
 	}
 
 	/**
@@ -66,9 +68,7 @@ class Router {
 	public function setPath($path) {
 
 		// check that path is a directory
-		if (is_dir($path) == false) {
-			throw new Exception("Invalid controller path: {$path}");
-		}
+		if (is_dir($path) == false) throw new Exception("Invalid controller path: {$path}");
 		
 		$this->path = $path;
 	
@@ -124,8 +124,12 @@ class Router {
 	private function getController() {
 	
 		// determine the route from the URL
-		$route = (empty($_GET['route'])) ? '' : $_GET['route'];
+		$route = (empty($_GET["route"])) ? '' : $_GET["route"];
+		$route = urldecode($route);
+		
+		// sanitise route to prevent directory traversal
 		$route = ltrim($route,"/");
+		$route = preg_replace("[^0-9a-zA-Z_/]","",$route);
 		
 		if (empty($route)) {
 			

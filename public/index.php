@@ -12,7 +12,7 @@
  */
 
 // development mode flag
-define('DEVMODE',false);
+define('DEVMODE',trues);
 
 // set error reporting
 if (DEVMODE == true) {
