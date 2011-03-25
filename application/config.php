@@ -13,25 +13,15 @@ define('LIVE_URL','http://agcdr.heddonconsulting.com/');
 
 // main database server configuration (first server is the default)
 $_SESSION["servers"] = array(
-	"zaleriza.snwo.org" => array(
-		"description"	=> "Home PBX",
-		"type"		=> "mysql",
-		"hostname"	=> "zaleriza.snwo.org",
-		"username"	=> "asterisk",
-		"password"	=> "irkEsdecs8",
-		"dbname"	=> "asterisk",
-		"tablename"	=> "cdr"
-		
-	),
-	"voip.glide.uk.com" => array(
-		"description"	=> "Glide PBX",
-		"type"		=> "mysql",
-		"hostname"	=> "voip.glide.uk.com",
-		"username"	=> "root",
-		"password"	=> "passw0rd",
-		"dbname"	=> "asteriskcdrdb",
-		"tablename"	=> "cdr"
-	)
+        "full.hostname.com" => array(
+                "description"   => "Example configuration",
+                "type"          => "mysql",
+                "hostname"      => "full.hostname.com",
+                "username"      => "asterisk",
+                "password"      => "password",
+                "dbname"        => "asterisk",
+                "tablename"     => "cdr"
+        )
 );
 
 /**
