@@ -87,9 +87,10 @@
 
 {/if}
 
-{include file='search/form.tpl'}
-
-<p>You may alter your search parameters using the form opposite and re-submit your search.</p>
+{if !$single_day_search}
+	{include file='search/form.tpl'}
+	<p>You may alter your search parameters using the form opposite and re-submit your search.</p>
+{/if}
 
 <div style="clear: both;"></div>
 

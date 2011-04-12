@@ -81,6 +81,8 @@ function addCriteriaRow() {
 	opMenu = $('<select id="operator_'+totalRows+'" name="operator_'+totalRows+'"></select>');
 	$(opMenu).append($('<option value="contains">contains</option>'));
 	$(opMenu).append($('<option value="equals">exactly equals</option>'));
+	$(opMenu).append($('<option value="starts">starts with</option>'));
+	$(opMenu).append($('<option value="ends">ends with</option>'));
 	$(opMenu).append($('<option value="ltet">is less than or equal to</option>'));
 	$(opMenu).append($('<option value="gtet">is greater than or equal to</option>'));
 	$(newCell).append(opMenu);

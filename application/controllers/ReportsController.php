@@ -48,6 +48,7 @@ class ReportsController extends BaseController {
 		
 		// list of overview boxes to render (in order).
 		$boxes = array(
+			"general_stats",
 			"top_src",
 			"top_dst",
 			"top_clid",
@@ -70,12 +71,13 @@ class ReportsController extends BaseController {
 		$this->template->year = substr($month,0,4);
 		$this->template->prev_month = $prev_month;
 		$this->template->next_month = $next_month;
-		$this->template->monthlabel = strftime("%B %Y",strtotime("{$month}-01"));
+		$monthlabel = strftime("%B %Y",strtotime("{$month}-01"));
+		$this->template->monthlabel = $monthlabel;
 		$this->template->prev_monthlabel = strftime("%B %Y",strtotime("{$prev_month}-01"));
 		$this->template->next_monthlabel = strftime("%B %Y",strtotime("{$next_month}-01"));
 		
 		// create calls chart
-		$chart_calls = new BarChart("Calls per day");
+		$chart_calls = new BarChart("Calls per day ({$monthlabel})");
 		$chart_calls->dimensions = "700x350";
 		$chart_calls->margins = array(35,35,35,35);
 		$chart_calls->barwidth = 16;
@@ -83,7 +85,7 @@ class ReportsController extends BaseController {
 		$chart_calls->x_labels = range(1,date("t",strtotime("{$month}-01")));
 		
 		// create minutes chart
-		$chart_mins = new BarChart("Minutes per day");
+		$chart_mins = new BarChart("Minutes per day ({$monthlabel})");
 		$chart_mins->dimensions = "700x350";
 		$chart_mins->margins = array(35,35,35,35);
 		$chart_mins->barwidth = 16;
@@ -140,6 +142,7 @@ class ReportsController extends BaseController {
 		
 		// list of overview boxes to render (in order).
 		$boxes = array(
+			"general_stats",
 			"top_src",
 			"top_dst",
 			"top_clid",
@@ -156,7 +159,7 @@ class ReportsController extends BaseController {
 		$monthnames = array("Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec");
 		
 		// create calls chart
-		$chart_calls = new BarChart("Calls per month");
+		$chart_calls = new BarChart("Calls per month ({$year})");
 		$chart_calls->dimensions = "700x350";
 		$chart_calls->margins = array(35,35,35,35);
 		$chart_calls->barwidth = 45;
@@ -164,7 +167,7 @@ class ReportsController extends BaseController {
 		$chart_calls->x_labels = $monthnames;
 		
 		// create minutes chart
-		$chart_mins = new BarChart("Minutes per month");
+		$chart_mins = new BarChart("Minutes per month ({$year})");
 		$chart_mins->dimensions = "700x350";
 		$chart_mins->margins = array(35,35,35,35);
 		$chart_mins->barwidth = 45;
@@ -243,6 +246,14 @@ class ReportsController extends BaseController {
 		// prepare box data
 		switch ($this->get["box"]) {
 
+			case "general_stats":
+				
+				// general statistics
+				
+				
+				
+				break;
+			
 			case "top_src":
 				
 				// most popular sources

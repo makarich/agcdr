@@ -83,6 +83,9 @@ class SearchController extends BaseController {
 			
 			// it's a proper search
 			
+			// is it a single-day date-only search?
+			if ($_POST["field_1"] == "calldate") $single_day_search = true;
+			
 			// retrieve search criteria
 			$criteria = array();
 			foreach ($_POST as $key => $value) {
@@ -98,12 +101,13 @@ class SearchController extends BaseController {
 
 			// process as long as there's one set of criteria
 			if (count($criteria) > 0) {
-				
+
 				// build query
-				$where = array(
-					strftime("calldate >= '%Y/%m/%d 00:00:00'",strtotime($_POST["date_from"])),
-					strftime("calldate <= '%Y/%m/%d 23:59:59'",strtotime($_POST["date_to"]))
-				);
+				$where = array();
+				if (!isset($single_day_search)) {
+					$where[] = strftime("calldate >= '%Y/%m/%d 00:00:00'",strtotime($_POST["date_from"]));
+					$where[] = strftime("calldate <= '%Y/%m/%d 23:59:59'",strtotime($_POST["date_to"]));
+				}
 				
 				foreach ($criteria as $crit) {
 					
@@ -113,6 +117,12 @@ class SearchController extends BaseController {
 							break;
 						case "equals":
 							$keywords = "= '{$crit['keywords']}'";
+							break;
+						case "starts":
+							$keywords = "LIKE '{$crit['keywords']}%'";
+							break;
+						case "ends":
+							$keywords = "LIKE '%{$crit['keywords']}%";
 							break;
 						case "ltet":
 							$keywords = "<= '{$crit['keywords']}'";
@@ -141,6 +151,7 @@ class SearchController extends BaseController {
 				$this->template->criteria = $criteria;
 				$this->template->date_from = $_POST["date_from"];
 				$this->template->date_to = $_POST["date_to"];
+				if (isset($single_day_search)) $this->template->single_day_search = true;
 				
 			}
 			
