@@ -4,12 +4,9 @@
 /**
  * Prepare and commit.
  * 
- * Generates phpdoc documentation before commiting to SVN.
- * Basically a lazy shortcut for running the other admin scripts and a manual commit.
- * 
  * @package	AGCDR
  * @author	Stuart Benjamin Ford <stuartford@me.com>
- * @copyright	03/03/2011
+ * @copyright	12/04/2011
  */
 
 // my path
@@ -26,10 +23,12 @@ if (isset($argv[0])) {
 
 // create command list
 $commands = array(
-//	"{$mypath}/mkdocs.php",
+	"cp {$mypath}/../application/config.php /tmp/agcdr.conf",
+	"cp {$mypath}/example-config.php {$mypath}/../application/config.php",
 	"rm -f {$mypath}/../public/images/charts/*.png",
 	"svn status {$mypath}/..",
-	"svn commit -m \"{$commit}\" {$mypath}/.."
+	"svn commit -m \"{$commit}\" {$mypath}/..",
+	"mv /tmp/agcdr.conf {$mypath}/../application/config.php"
 );
 
 // run commands

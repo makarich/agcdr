@@ -33,8 +33,8 @@ abstract class Model {
 		} elseif (is_numeric($data)) {
 		
 			// load record if ID passed
-			$this->id = $id;
-			$this->load($id);
+			$this->id = $data;
+			$this->load($data);
 		
 		}
 		
