@@ -1,6 +1,6 @@
 {include file='shared/htmlheader.tpl'}
 
-<div id="prevnext">
+<div id="rightbuttons">
 	<button type="button" onclick="window.location='/{$controller}/{$action}/?month={$prev_month}';">{icon name="control_rewind_blue"}&nbsp;&nbsp;{$prev_monthlabel}</button>
 	<button type="button" onclick="window.location='/{$controller}/year/?year={$year}';">{$year}</button>
 	<button type="button" onclick="window.location='/{$controller}/{$action}/?month={$next_month}';">{$next_monthlabel}&nbsp;&nbsp;{icon name="control_fastforward_blue"}</button>
@@ -32,20 +32,11 @@
 	<div id="tabs-calls">
 	
 		<table border="0" cellpadding="0" cellspacing="0" width="100%">
-		
 			<tr>
-			
 				<td align="left" valign="top">
 					<img src="/images/charts/{$chart_calls}" class="greyborder" alt="Calls per day chart" width="700" height="350"/>
 				</td>
-				
-				<td align="left" valign="top" width="100%" class="statistics">
-					<p>Total calls: <b>{$total_calls}</b></p>
-					<p>Average calls per day: <b>{$average_calls}</b></p>
-				</td>
-			
 			</tr>
-		
 		</table>
 	
 	</div>
@@ -53,20 +44,11 @@
 	<div id="tabs-mins">
 	
 		<table border="0" cellpadding="0" cellspacing="0">
-		
 			<tr>
-			
 				<td align="left" valign="top">
 					<img src="/images/charts/{$chart_mins}" class="greyborder" alt="Minutes per day chart" width="700" height="350"/>
 				</td>
-				
-				<td align="left" valign="top" width="100%" class="statistics">
-					<p>Total minutes: <b>{$total_mins}</b></p>
-					<p>Average minutes per day: <b>{$average_mins}</b></p>
-				</td>
-			
 			</tr>
-		
 		</table>
 	
 	</div>

@@ -1,7 +1,7 @@
 {include file='shared/htmlheader.tpl'}
 
-<div id="prevnext">
-	<button type="button" onclick="history.back(-1);">{icon name="back"} Return</button>
+<div id="rightbuttons">
+	<button type="button" onclick="history.back(-1);">{icon name="back"}&nbsp;&nbsp;Return</button>
 </div>
 
 {if $cdr->uniqueid}

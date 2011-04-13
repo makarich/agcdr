@@ -113,13 +113,7 @@ class ReportsController extends BaseController {
 		// assign chart URLs to template
 		$this->template->chart_calls = $chart_calls->saveFile(CHART_CACHE);
 		$this->template->chart_mins = $chart_mins->saveFile(CHART_CACHE);
-		
-		// assign statistics to template
-		$this->template->total_calls = array_sum($chart_calls->values);
-		$this->template->average_calls = round(array_sum($chart_calls->values)/count($chart_calls->values));
-		$this->template->total_mins = array_sum($chart_mins->values);
-		$this->template->average_mins = round(array_sum($chart_mins->values)/count($chart_mins->values));
-		
+
 		// render page
 		$this->template->show("month");
 		
@@ -196,14 +190,6 @@ class ReportsController extends BaseController {
 		$this->template->chart_calls = $chart_calls->saveFile(CHART_CACHE);
 		$this->template->chart_mins = $chart_mins->saveFile(CHART_CACHE);
 		
-		// assign statistics to template
-		$this->template->total_calls = array_sum($chart_calls->values);
-		$this->template->average_calls_month = round(array_sum($chart_calls->values)/12);
-		$this->template->average_calls_week = round(array_sum($chart_calls->values)/52);
-		$this->template->total_mins = array_sum($chart_mins->values);
-		$this->template->average_mins_month = round(array_sum($chart_mins->values)/12);
-		$this->template->average_mins_week = round(array_sum($chart_mins->values)/22);
-		
 		// render page
 		$this->template->show("year");
 		
@@ -239,7 +225,7 @@ class ReportsController extends BaseController {
 			// no date data passed, just do today
 			$today = date("Y-m-d");
 			$from = "'{$today} 00:00:00'";
-			$to = "DATE_ADD('{$tody} 00:00:00', INTERVAL 1 DAY)";
+			$to = "DATE_ADD('{$today} 00:00:00', INTERVAL 1 DAY)";
 			
 		}
 		
@@ -249,8 +235,50 @@ class ReportsController extends BaseController {
 			case "general_stats":
 				
 				// general statistics
+
+				// calculate number of days in period concerned
+				$days = $this->db->GetOne("SELECT TO_DAYS({$to}) - TO_DAYS({$from})");
 				
+				// if we are part of the way through the month or year concerned then we
+				// need to reduce the number of days otherwise the averages won't be accurate
+				if (isset($this->get["year"]) && $this->get["year"] == date("Y")) {
+					$days = $this->db->GetOne("SELECT TO_DAYS(NOW()) - TO_DAYS('{$this->get["year"]}-01-01')");
+				} else if (isset($this->get["month"]) && $this->get["month"] == date("Y-m")) {
+					$days = $days - ($days - intval(date("d")));
+				}
+	
+				// perform database calculations
+				$calc = $this->db->GetRow("
+					SELECT	COUNT(*) AS total_calls,
+						SUM(duration) AS total_seconds,
+						SEC_TO_TIME(SUM(duration)) AS total_time
+					FROM ".DB_TABLE."
+					WHERE calldate >= {$from} AND calldate < {$to};
+				");
 				
+				// calculate total minutes
+				$total_minutes = round($calc["total_seconds"]/60,0);
+				
+				// format data array
+				$statistics = array(
+					"Days in report period"		=> $days,
+					"Total calls"			=> $calc["total_calls"],
+					"Total minutes"			=> $total_minutes,
+					"Total time"			=> $calc["total_time"],
+					"Average calls per day"		=> number_format($calc["total_calls"]/$days,1),
+					"Average minutes per day"	=> number_format($total_minutes/$days,1),
+					"Average calls per week"	=> number_format(($calc["total_calls"]/$days)*7,1),
+					"Average minutes per week"	=> number_format(($total_minutes/$days)*7,1)
+				);
+				
+				// extras for year reports
+				if (isset($this->get["year"])) {
+					$statistics["Average calls per month"] = number_format(($calc["total_calls"]/$days)*(365/12),1);
+					$statistics["Average minutes per month"] = number_format(($total_minutes/$days)*(365/12),1);
+				}
+				
+				// apply to template
+				$this->template->statistics = $statistics;
 				
 				break;
 			

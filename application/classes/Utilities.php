@@ -1,13 +1,13 @@
 <?php
 
 /**
- * Utilities.php	General utility function class.
+ * General utility function class.
  * 
- * Some functions require AdoDB for database access.
+ * Some functions require DB class for database access.
  * 
- * @package		SBF-Classlib
- * @author		Stuart Benjamin Ford <stuartford@me.com>
- * @copyright		08/01/2011
+ * @package	SBF-Classlib
+ * @author	Stuart Benjamin Ford <stuartford@me.com>
+ * @copyright	13/04/2011
  */
 
 /**
@@ -16,7 +16,7 @@
 if (!class_exists("DB")) require_once("DB.php");
 
 /**
- * General utility function class.
+ * Utilities.
  */
 class Utilities {
 
@@ -1852,6 +1852,148 @@ class Utilities {
 
 	}
 
+	/**
+	 * Translate English text into Facebook drivel.
+	 * 
+	 * @param string $english		- English text, with proper spelling and punctuation, to translate.
+	 * 
+	 * @return string			- Translate text, or false if no text passed.
+	 * @access public
+	 */
+	public function translate_to_facebook($english) {
+
+		// setup
+		$fb = stripslashes($english);
+		
+		// trap empty queries
+		if (strlen($fb) == 0) return false;
+		
+		// remove all commas and apostrophes
+		$fb = preg_replace("/\,/"," ",$fb);
+		$fb = preg_replace("/\'/","",$fb);
+		
+		// replace all full stops with a couple of exclamation marks
+		$fb = preg_replace("/\./","!! ",$fb);
+		
+		// simple word translations
+		$fb = preg_replace("/ your /i"," ur ",$fb);
+		$fb = preg_replace("/ you /i"," u ",$fb);
+		$fb = preg_replace("/ to /i"," 2 ",$fb);
+		$fb = preg_replace("/ this /i"," dis ",$fb);
+		$fb = preg_replace("/ their /i"," there ",$fb);
+		$fb = preg_replace("/ the /i"," teh ",$fb);
+		$fb = preg_replace("/ theyre /i"," their ",$fb);
+		$fb = preg_replace("/ are /i"," r ",$fb);
+		$fb = preg_replace("/facebook/i","face book",$fb);
+		$fb = preg_replace("/ some /i"," sum ",$fb);
+		$fb = preg_replace("/ because /i"," cuz ",$fb);
+		$fb = preg_replace("/ youre /i"," your ",$fb);
+		
+		// remove "g" from all words ending in "ing"
+		$fb = preg_replace("/ing /i","in ",$fb);
+	
+		// replace all number words with numbers
+		$fb = preg_replace("/ one /i"," 1 ",$fb);
+		$fb = preg_replace("/ two /i"," 2 ",$fb);
+		$fb = preg_replace("/ three /i"," 3 ",$fb);
+		$fb = preg_replace("/ four /i"," 4 ",$fb);
+		$fb = preg_replace("/ five /i"," 5 ",$fb);
+		$fb = preg_replace("/ six /i"," 6 ",$fb);
+		$fb = preg_replace("/ seven /i"," 7 ",$fb);
+		$fb = preg_replace("/ eight /i"," 8 ",$fb);
+		$fb = preg_replace("/ nine /i"," 9 ",$fb);
+		$fb = preg_replace("/ ten /i"," 10 ",$fb);
+		
+		// similarly, replace all number-th words with numeric abbreviations
+		$fb = preg_replace("/ first /i"," 1st ",$fb);
+		$fb = preg_replace("/ second /i"," 2nd ",$fb);
+		$fb = preg_replace("/ third /i"," 3rd ",$fb);
+		$fb = preg_replace("/ fourth /i"," 4th ",$fb);
+		$fb = preg_replace("/ fifth /i"," 5th ",$fb);
+		$fb = preg_replace("/ sixth /i"," 6th ",$fb);
+		$fb = preg_replace("/ seventh /i"," 7th ",$fb);
+		$fb = preg_replace("/ eighth /i"," 8th ",$fb);
+		$fb = preg_replace("/ nineth /i"," 9th ",$fb);
+		$fb = preg_replace("/ tenth /i"," 10th ",$fb);
+	
+		// remove trailing space(s) and double spaces
+		$fb = preg_replace("/  /"," ",$fb);
+		$fb = rtrim($fb);
+		
+		// add random number of exclamation marks
+		for ($i=1; $i<=rand(1,8); $i++) $fb = $fb."!";
+		
+		// and then a few 1s
+		for ($i=1; $i<=rand(1,3); $i++) $fb = $fb."1";
+		
+		// and the compulsory LOL and kisses
+		$fb = $fb." LOL xx";
+	
+		// lastly, convert to either all uppercase or all lowercase
+		if (rand(1,4) <= 2) {
+			$fb = strtoupper($fb);
+		} else {
+			$fb = strtolower($fb);
+		}
+		
+		// replace ampersands
+		$fb = preg_replace("/ and /"," &amp; ",$fb);
+		
+		// return translated
+		return $fb;
+	
+	}
+
+	/**
+	 * Export an array of data as a CSV file.
+	 * 
+	 * @param data $data		- array of data, each element to be an associative array representing a row
+	 * @param string filename	- (optional) file name, if omitted, one will be generated randomly
+	 * @param boolean $header	- include header row (default true)
+	 * 
+	 * @return void
+	 * @access public
+	 */
+	public function export_CSV($data,$filename=false,$header=true) {
+		
+		// create temporary filename
+		$tmpname = "data-".time().".".rand(100000,999999).".csv";
+		
+		// create temporary CSV file
+		$csv = fopen("/tmp/{$tmpname}","w");
+		
+		// add header row
+		if ($header) {
+			$egrow = array_shift($data);
+			array_unshift($data,$egrow);
+			fwrite($csv,implode(",",array_keys($egrow))."\n");
+		}
+		
+		// add rows and close file
+		foreach ($data as $id => $row) fwrite($csv,"\"".implode("\",\"",$row)."\"\n");
+		fclose($csv);
+		
+		// set filename if one wasn't passed
+		if (!$filename) $filename = $tmpname;
+		
+		// send headers
+		ob_start();
+		header('Pragma: private');
+		header('Content-Transfer-Encoding: binary');
+		header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+		header('Content-type: text/csv');
+		header('Content-Disposition: attachment; filename='.$filename);
+		header("Content-length: ".filesize("/tmp/{$tmpname}"));
+		ob_end_flush();
+		
+		// send CSV data
+		print file_get_contents("/tmp/{$tmpname}");
+		
+		// remove temporary file
+		unlink("/tmp/{$tmpname}");
+		
+	}
+	
 }
 
 ?>

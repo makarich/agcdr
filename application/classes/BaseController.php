@@ -1,10 +1,11 @@
 <?php
 
 /**
- * BaseController.php	Base controller class
+ * Base controller class
  * 
- * @author		Various, SBF
- * @copyright		2010
+ * @package	AGCDR
+ * @author	Various, SBF
+ * @copyright	2010-2011
  */
 
 abstract class BaseController {

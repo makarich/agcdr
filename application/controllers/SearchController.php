@@ -47,6 +47,9 @@ class SearchController extends BaseController {
 	 */
 	public function results() {
 
+		// CSV mode?
+		$csvmode = (isset($_POST["csv"])) ? true : false;
+		
 		// is this a quick search?
 		if (isset($_POST["quicksearch"])) {
 
@@ -77,7 +80,7 @@ class SearchController extends BaseController {
 			$results = $this->db->GetAssoc($sql);
 
 			// set quick search string back in template
-			$this->template->quicksearch = $search;
+			if (!$csvmode) $this->template->quicksearch = $search;
 			
 		} else {
 			
@@ -148,21 +151,40 @@ class SearchController extends BaseController {
 				$results = $this->db->GetAssoc($sql);
 				
 				// set criteria back in template
-				$this->template->criteria = $criteria;
-				$this->template->date_from = $_POST["date_from"];
-				$this->template->date_to = $_POST["date_to"];
-				if (isset($single_day_search)) $this->template->single_day_search = true;
+				if (!$csvmode) {
+					$this->template->criteria = $criteria;
+					$this->template->date_from = $_POST["date_from"];
+					$this->template->date_to = $_POST["date_to"];
+					if (isset($single_day_search)) $this->template->single_day_search = true;
+				}
 				
 			}
 			
 		}
 		
-		// set results in template
-		$this->template->results = $results;
-		$this->template->menuoptions = $this->template->datatablesRecordCountMenu(count($results));
+		if ($csvmode) {
+			
+			// export data as CSV file
+			$this->utils->export_CSV($results,"agcdr-search-results.csv");
+			exit;
+			
+		} else {
 		
-		// render page
-		$this->template->show("results");
+			// render results normally
+			
+			// set results in template
+			$this->template->results = $results;
+			$this->template->menuoptions = $this->template->datatablesRecordCountMenu(count($results));
+			
+			// prepare JSON for CSV download button
+			$ovars = $_POST;
+			$ovars["csv"] = "on";
+			$this->template->csvjson = json_encode($ovars);
+			
+			// render page
+			$this->template->show("results");
+			
+		}
 		
 	}
 

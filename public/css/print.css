@@ -2,11 +2,16 @@
 
 /* Print stylesheet - edit this and minify using minify-css.php */
 
-/* objects and classes to hide */
+/* objects and classes to hide because they are not relevant on a printed page */
 
+#serverselect,
+#quicksearch,
+#rightbuttons,
+#navigation,
 #devinfo,
-#serverselect {
-	display: none;	
+#advancedsearch,
+INPUT {
+	display: none;
 }
 
 /* simplify borders and backgrounds */
@@ -19,4 +24,8 @@ BODY {
 #frame {
 	border: 0;
 	background: none;
+}
+
+H1 {
+	text-shadow: none;
 }

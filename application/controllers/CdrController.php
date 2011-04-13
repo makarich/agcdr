@@ -63,25 +63,31 @@ class CdrController extends BaseController {
 	 */
 	public function table() {
 		
+		// CSV mode?
+		$csvmode = (isset($this->get["csv"]) && $this->get["csv"] == "on") ? true : false;
+		
 		// determine dates
 		if (isset($this->get["year"])) {
 			
 			// calculate overview for year
 			$from = "'{$this->get['year']}-01-01 00:00:00'";
 			$to = "DATE_ADD('{$this->get['year']}-01-01 00:00:00', INTERVAL 1 YEAR)";
+			if ($csvmode) $csvlabel = $this->get['year'];
 			
 		} else if (isset($this->get["month"])) {
 			
 			// calculate overview for month
 			$from = "'{$this->get['month']}-01 00:00:00'";
 			$to = "DATE_ADD('{$this->get['month']}-01 00:00:00', INTERVAL 1 MONTH)";
+			if ($csvmode) $csvlabel = $this->get['month'];
 			
 		} else {
 			
 			// no date data passed, just do today
 			$today = date("Y-m-d");
 			$from = "'{$today} 00:00:00'";
-			$to = "DATE_ADD('{$tody} 00:00:00', INTERVAL 1 DAY)";
+			$to = "DATE_ADD('{$today} 00:00:00', INTERVAL 1 DAY)";
+			if ($csvmode) $csvlabel = $today;
 			
 		}
 
@@ -94,11 +100,27 @@ class CdrController extends BaseController {
 			WHERE calldate >= {$from} AND calldate < {$to}
 			ORDER BY calldate ASC;
 		");
-		
-		// assign to template and render page
-		$this->template->cdrs = $cdrs;
-		$this->template->menuoptions = $this->template->datatablesRecordCountMenu(count($cdrs));
-		$this->template->show("table");
+
+		if ($csvmode) {
+
+			// export data as CSV file
+			$this->utils->export_CSV($cdrs,"agcdr-cdrs-{$csvlabel}.csv");
+			exit;
+			
+		} else {
+
+			// build CSV request variables
+			if (isset($this->get["year"])) $csvrequest = "year={$this->get["year"]}";
+			if (isset($this->get["month"])) $csvrequest = "month={$this->get["month"]}";
+			$csvrequest .= "&csv=on";
+			$this->template->csvrequest = $csvrequest;
+			
+			// assign to template and render page
+			$this->template->cdrs = $cdrs;
+			$this->template->menuoptions = $this->template->datatablesRecordCountMenu(count($cdrs));
+			$this->template->show("table");
+			
+		}
 		
 	}
 	

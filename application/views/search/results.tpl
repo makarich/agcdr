@@ -2,6 +2,12 @@
 
 {* when making changes to this template please also make equivalent changes in cdr/table.tpl *}
 
+{if $results|@count ne 0}
+	<div id="rightbuttons">
+		<button type="button" onclick="downloadCSV();">{icon name="csv"}&nbsp;&nbsp;Export CSV file</button>
+	</div>
+{/if}
+
 <h2>Search Results</h2>
 
 {if $results|@count eq 0}
@@ -80,6 +86,11 @@
 			{"bSortable": true}
 		]
 	});
+
+	// handle CSV download request
+	function downloadCSV() {
+		postwith("/search/results/",{/literal}{$csvjson}{literal});
+	}
 	
 	</script>
 	

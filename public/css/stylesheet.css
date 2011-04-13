@@ -175,9 +175,9 @@ TABLE.form {
 	margin-top: 10px;
 }
 
-/* previous and next buttons on right */
+/* buttons on the right under the navigation bar */
 
-#prevnext {
+#rightbuttons {
 	float: right;
 	padding-top: 3px;	
 }
@@ -286,7 +286,7 @@ A:active, A:hover {
 /* jQuery UI overrides */
 
 .ui-widget {
-	font-family: Helvetica, Arial, sans-serif;
+	font-family: Helvetica, Arial, sans-serif !important;
 	font-size: 9pt !important;
 }
 

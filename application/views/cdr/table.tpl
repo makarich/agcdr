@@ -76,8 +76,19 @@
 			{"bSortable": true},
 			{"bSortable": true},
 			{"bSortable": true}
-		]
+		],
+		"fnDrawCallback": function () {
+			$("#cdrlist_info").append("&nbsp;&nbsp;<button align='middle' id='csvbutton' class='button' onclick='downloadCSV();'><img src='/images/icons/csv.png' width='16' height='16' alt='CSV' border='0' align='top'>&nbsp;&nbsp;Export CSV file</button>");
+		}
 	});
+
+	// apply button style to CSV button
+	$('#csvbutton').button();
+
+	// handle CSV download request
+	function downloadCSV() {
+		window.location = "{/literal}/{$controller}/{$action}/?{$csvrequest}{literal}";
+	}
 	
 	</script>
 	
