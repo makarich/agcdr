@@ -2,7 +2,7 @@
 
 <div id="rightbuttons">
 	<button type="button" onclick="window.location='/{$controller}/{$action}/?month={$prev_month}';">{icon name="control_rewind_blue"}&nbsp;&nbsp;{$prev_monthlabel}</button>
-	<button type="button" onclick="window.location='/{$controller}/year/?year={$year}';">{$year}</button>
+	<button type="button" onclick="window.location='/{$controller}/year/?year={$year}';">{icon name="calendar"}&nbsp;&nbsp;{$year}</button>
 	<button type="button" onclick="window.location='/{$controller}/{$action}/?month={$next_month}';">{$next_monthlabel}&nbsp;&nbsp;{icon name="control_fastforward_blue"}</button>
 </div>
 
@@ -14,6 +14,7 @@
 		<li><a href="#tabs-overview">Overview</a></li>
 		<li><a href="#tabs-calls">Calls per day</a></li>
 		<li><a href="#tabs-mins">Minutes per day</a></li>
+		<li><a href="#tabs-todb">Time of day breakdown</a></li>
 		<li><a href="/cdr/table/?month={$month}">Caller detail records</a></li>
 	</ul>
 	
@@ -47,6 +48,18 @@
 			<tr>
 				<td align="left" valign="top">
 					<img src="/images/charts/{$chart_mins}" class="greyborder" alt="Minutes per day chart" width="700" height="350"/>
+				</td>
+			</tr>
+		</table>
+	
+	</div>
+	
+	<div id="tabs-todb">
+	
+		<table border="0" cellpadding="0" cellspacing="0">
+			<tr>
+				<td align="left" valign="top">
+					<img src="/images/charts/{$chart_todb}" class="greyborder" alt="Time of day breakdown" width="700" height="350"/>
 				</td>
 			</tr>
 		</table>

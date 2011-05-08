@@ -12,6 +12,7 @@
 		<li><a href="#tabs-overview">Overview</a></li>
 		<li><a href="#tabs-calls">Calls per month</a></li>
 		<li><a href="#tabs-mins">Minutes per month</a></li>
+		<li><a href="#tabs-todb">Time of day breakdown</a></li>
 	</ul>
 	
 	<div id="tabs-overview">
@@ -44,6 +45,18 @@
 			<tr>
 				<td align="left" valign="top">
 					<img src="/images/charts/{$chart_mins}" class="greyborder" alt="Minutes per month" width="700" height="350"/>
+				</td>
+			</tr>
+		</table>
+	
+	</div>
+	
+	<div id="tabs-todb">
+	
+		<table border="0" cellpadding="0" cellspacing="0">
+			<tr>
+				<td align="left" valign="top">
+					<img src="/images/charts/{$chart_todb}" class="greyborder" alt="Time of day breakdown" width="700" height="350"/>
 				</td>
 			</tr>
 		</table>

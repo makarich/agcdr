@@ -91,7 +91,7 @@ class ReportsController extends BaseController {
 		$chart_mins->barwidth = 16;
 		$chart_mins->palette = CHART_PALETTE;
 		$chart_mins->x_labels = range(1,date("t",strtotime("{$month}-01")));
-
+		
 		// calculate daily statistics
 		foreach (range(1,date("t",strtotime("{$month}-01"))) as $day) {
 			
@@ -102,7 +102,7 @@ class ReportsController extends BaseController {
 					SUM(duration) AS seconds
 				FROM ".DB_TABLE."
 				WHERE 	calldate >= '{$month}-{$day} 00:00:00'
-					AND CALLDATE <= '{$month}-{$day} 23:59:59';
+					AND calldate <= '{$month}-{$day} 23:59:59';
 			");
 
 			$chart_calls->values[] = $stat["calls"];
@@ -110,9 +110,33 @@ class ReportsController extends BaseController {
 
 		}
 
+		// create time of day breakdown chart
+		$chart_todb = new BarChart("Time of day breakdown (number of calls) ({$monthlabel})");
+		$chart_todb->dimensions = "700x350";
+		$chart_todb->margins = array(35,35,35,35);
+		$chart_todb->barwidth = 16;
+		$chart_todb->palette = CHART_PALETTE;
+		$chart_todb->x_labels = range(0,23);
+		
+		// calculate time of day breakdown
+		$hours = array();
+		foreach (range(0,23) as $hour) {
+			
+			$stat = $this->db->GetOne(sprintf("
+				SELECT COUNT(*) AS calls
+				FROM ".DB_TABLE."
+				WHERE	calldate LIKE '{$month}%%'
+					AND calldate LIKE '%% %02d:%%'
+			",$hour));
+			
+			$chart_todb->values[] = $stat;
+			
+		}
+
 		// assign chart URLs to template
 		$this->template->chart_calls = $chart_calls->saveFile(CHART_CACHE);
 		$this->template->chart_mins = $chart_mins->saveFile(CHART_CACHE);
+		$this->template->chart_todb = $chart_todb->saveFile(CHART_CACHE);
 
 		// render page
 		$this->template->show("month");
@@ -178,7 +202,7 @@ class ReportsController extends BaseController {
 					SUM(duration) AS seconds
 				FROM ".DB_TABLE."
 				WHERE 	calldate >= '{$year}-{$month}-01 00:00:00'
-					AND CALLDATE < DATE_ADD('{$year}-{$month}-01 00:00:00', INTERVAL 1 MONTH);
+					AND calldate < DATE_ADD('{$year}-{$month}-01 00:00:00', INTERVAL 1 MONTH);
 			");
 
 			$chart_calls->values[] = $stat["calls"];
@@ -186,9 +210,33 @@ class ReportsController extends BaseController {
 
 		}
 
+		// create time of day breakdown chart
+		$chart_todb = new BarChart("Time of day breakdown (number of calls) ({$year})");
+		$chart_todb->dimensions = "700x350";
+		$chart_todb->margins = array(35,35,35,35);
+		$chart_todb->barwidth = 16;
+		$chart_todb->palette = CHART_PALETTE;
+		$chart_todb->x_labels = range(0,23);
+		
+		// calculate time of day breakdown
+		$hours = array();
+		foreach (range(0,23) as $hour) {
+			
+			$stat = $this->db->GetOne(sprintf("
+				SELECT COUNT(*) AS calls
+				FROM ".DB_TABLE."
+				WHERE	calldate LIKE '{$year}%%'
+					AND calldate LIKE '%% %02d:%%'
+			",$hour));
+			
+			$chart_todb->values[] = $stat;
+			
+		}
+		
 		// assign chart URLs to template
 		$this->template->chart_calls = $chart_calls->saveFile(CHART_CACHE);
 		$this->template->chart_mins = $chart_mins->saveFile(CHART_CACHE);
+		$this->template->chart_todb = $chart_todb->saveFile(CHART_CACHE);
 		
 		// render page
 		$this->template->show("year");
