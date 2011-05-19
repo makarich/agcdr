@@ -53,8 +53,6 @@
 		
 	</table>
 	
-	{literal}
-	
 	<script type="text/javascript">
 
 	function advancedSearch(fieldName,fieldValue) {
@@ -68,8 +66,6 @@
 	}
 
 	</script>
-	
-	{/literal}
 	
 {else}
 

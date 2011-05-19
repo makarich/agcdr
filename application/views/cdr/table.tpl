@@ -50,8 +50,6 @@
 	
 	</table>
 	
-	{literal}
-	
 	<script type="text/javascript">
 	
 	// apply DataTables plugin to CDR list
@@ -91,7 +89,5 @@
 	}
 	
 	</script>
-	
-	{/literal}
 
 {/if}

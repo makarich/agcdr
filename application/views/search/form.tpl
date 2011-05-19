@@ -32,8 +32,6 @@
 
 </form>
 
-{literal}
-
 <script type="text/javascript">
 
 // table field array (excluding date/time)
@@ -127,8 +125,6 @@ function validateAdvancedSearch() {
 	return true;
 
 }
-
-{/literal}
 
 // start total rows count
 var totalRows = 0;

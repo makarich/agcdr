@@ -8,8 +8,6 @@
 
 </form>
 
-{literal}
-
 <script type="text/javascript">
 
 // check that quick search keywords are sane before submitting
@@ -27,5 +25,3 @@ function quickSearch() {
 }
 
 </script>
-
-{/literal}

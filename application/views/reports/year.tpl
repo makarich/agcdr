@@ -6,6 +6,7 @@
 </div>
 
 <h2>{$year}</h2>
+
 <div id="tabs">
 
 	<ul>
@@ -65,31 +66,27 @@
 
 </div>
 
-{literal}
-
 <script type="text/javascript">
 	
-	$(function() {
+$(function() {
 
-		// create tabbed section
-		$("#tabs").tabs();
+	// create tabbed section
+	$("#tabs").tabs();
+	
+	// create sortable grid
+	$("#overviewgrid").sortable();
+	$("#overviewgrid").disableSelection();
+
+	// set box list
+	var allBoxes = new Array({/literal}{$boxlist}{literal});
+
+	// load content into all boxes
+	for (i=0; i<allBoxes.length; i++) {
+		$("#box_"+allBoxes[i]).load('/reports/box/?box='+allBoxes[i]+"&year={/literal}{$year}{literal}");
+	}
 		
-		// create sortable grid
-		$("#overviewgrid").sortable();
-		$("#overviewgrid").disableSelection();
-
-		// set box list
-		var allBoxes = new Array({/literal}{$boxlist}{literal});
-
-		// load content into all boxes
-		for (i=0; i<allBoxes.length; i++) {
-			$("#box_"+allBoxes[i]).load('/reports/box/?box='+allBoxes[i]+"&year={/literal}{$year}{literal}");
-		}
-			
-	});
+});
 
 </script>
 	
-{/literal}
-
 {include file='shared/htmlfooter.tpl'}

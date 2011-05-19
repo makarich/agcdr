@@ -58,8 +58,6 @@
 	
 	</table>
 	
-	{literal}
-	
 	<script type="text/javascript">
 	
 	// apply DataTables plugin to results table
@@ -94,8 +92,6 @@
 	
 	</script>
 	
-	{/literal}
-
 {/if}
 
 {if !$single_day_search}
