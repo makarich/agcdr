@@ -80,11 +80,11 @@ $(function() {
 	$("#overviewgrid").disableSelection();
 
 	// set box list
-	var allBoxes = new Array({/literal}{$boxlist}{literal});
+	var allBoxes = new Array({$boxlist});
 
 	// load content into all boxes
 	for (i=0; i<allBoxes.length; i++) {
-		$("#box_"+allBoxes[i]).load('/reports/box/?box='+allBoxes[i]+"&month={/literal}{$month}{literal}");
+		$("#box_"+allBoxes[i]).load('/reports/box/?box='+allBoxes[i]+"&month={$month}");
 	}
 		
 });

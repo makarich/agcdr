@@ -60,7 +60,7 @@
 		"iDisplayLength": 25,
 		"oLanguage": {
 			"sInfo": "Showing _START_ to _END_ of _TOTAL_ CDRs.",
-			"sLengthMenu": 'Display <select>{/literal}{$menuoptions}{literal}</select> CDRs'
+			"sLengthMenu": 'Display <select>{$menuoptions}</select> CDRs'
 		},
                 "aoColumns": [
 			{"bSortable": false},
@@ -85,7 +85,7 @@
 
 	// handle CSV download request
 	function downloadCSV() {
-		window.location = "{/literal}/{$controller}/{$action}/?{$csvrequest}{literal}";
+		window.location = "/{$controller}/{$action}/?{$csvrequest}";
 	}
 	
 	</script>
