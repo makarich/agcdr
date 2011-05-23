@@ -62,7 +62,7 @@
 			"sInfo": "Showing _START_ to _END_ of _TOTAL_ CDRs.",
 			"sLengthMenu": 'Display <select>{$menuoptions}</select> CDRs'
 		},
-                "aoColumns": [
+		{literal}"aoColumns": [
 			{"bSortable": false},
 			{"bSortable": true, "sType": "uk_date"},
 			{"bSortable": false},
@@ -74,7 +74,7 @@
 			{"bSortable": true},
 			{"bSortable": true},
 			{"bSortable": true}
-		],
+		],{/literal}
 		"fnDrawCallback": function () {
 			$("#cdrlist_info").append("&nbsp;&nbsp;<button align='middle' id='csvbutton' class='button' onclick='downloadCSV();'><img src='/images/icons/csv.png' width='16' height='16' alt='CSV' border='0' align='top'>&nbsp;&nbsp;Export CSV file</button>");
 		}

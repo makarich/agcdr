@@ -58,9 +58,9 @@
 	function advancedSearch(fieldName,fieldValue) {
 		
 		if (fieldName == 'date') {
-			postwith("/search/results/",{field_1:'calldate',operator_1:'starts',criteria_1:fieldValue});
+			postwith("/search/results/",{literal}{field_1:'calldate',operator_1:'starts',criteria_1:fieldValue}{/literal});
 		} else {
-			postwith("/search/results/",{date_from:'1970-01-01',date_to:'{$smarty.now|date_format:"%Y-%m-%d"}',field_1:fieldName,operator_1:'equals',criteria_1:fieldValue});
+			postwith("/search/results/",{literal}{date_from:'1970-01-01',date_to:'{/literal}{$smarty.now|date_format:"%Y-%m-%d"}{literal}',field_1:fieldName,operator_1:'equals',criteria_1:fieldValue}{/literal});
 		}
 		
 	}

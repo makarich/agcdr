@@ -70,7 +70,7 @@
 			"sInfo": "Showing _START_ to _END_ of _TOTAL_ CDRs.",
 			"sLengthMenu": 'Display <select>{$menuoptions}</select> CDRs'
 		},
-                "aoColumns": [
+		{literal}"aoColumns": [
 			{"bSortable": false},
 			{"bSortable": true, "sType": "uk_date"},
 			{"bSortable": false},
@@ -82,7 +82,7 @@
 			{"bSortable": true},
 			{"bSortable": true},
 			{"bSortable": true}
-		]
+		]{/literal}
 	});
 
 	// handle CSV download request
