@@ -40,7 +40,8 @@ $exclusions = array(
 	"*.DS_Store*",					// Mac OS crap
 	"*.*~",						// general text editor crap
 	"docs/phpdoc",					// phpDoc directory
-	"cssmin*.php","jsmin*.php","minify-*.php"	// minification tools
+	"cssmin*.php","jsmin*.php","minify-*.php",	// minification tools
+	"*/sm_compile/*.tpl.php"			// compiled Smarty templates
 );
 
 // create command list

@@ -1,6 +1,6 @@
 {* Designed to be loaded into a tab or a dialogue window *}
 
-{* when making changes to this template please also make equivalent changes in search/results.tpl *}
+{* When making changes to this template please also make equivalent changes in search/results.tpl *}
 
 {if $cdrs|@count eq 0}
 
@@ -47,6 +47,15 @@
 		{/foreach}
 		
 		</tbody>
+		
+		<tfoot>
+			<tr>
+				<th colspan="8"></th>
+				<th style="text-align: left;">{$totals.duration_formatted}</th>
+				<th style="text-align: left;">{$totals.billsec_formatted}</th>
+				<th></th>
+			</tr>
+		</tfoot>
 	
 	</table>
 	

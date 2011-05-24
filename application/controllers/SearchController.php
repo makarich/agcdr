@@ -172,8 +172,12 @@ class SearchController extends BaseController {
 		
 			// render results normally
 			
-			// set results in template
+			// calculate totals
+			$totals = LocalLib::calculate_duration_totals($results);
+			
+			// set results and other data in template
 			$this->template->results = $results;
+			$this->template->totals = $totals;
 			$this->template->menuoptions = $this->template->datatablesRecordCountMenu(count($results));
 			
 			// prepare JSON for CSV download button

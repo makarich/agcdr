@@ -115,8 +115,12 @@ class CdrController extends BaseController {
 			$csvrequest .= "&csv=on";
 			$this->template->csvrequest = $csvrequest;
 			
+			// calculate totals
+			$totals = LocalLib::calculate_duration_totals($cdrs);
+			
 			// assign to template and render page
 			$this->template->cdrs = $cdrs;
+			$this->template->totals = $totals;
 			$this->template->menuoptions = $this->template->datatablesRecordCountMenu(count($cdrs));
 			$this->template->show("table");
 			

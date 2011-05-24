@@ -7,7 +7,7 @@
  * 
  * @package	SBF-Classlib
  * @author	Stuart Benjamin Ford <stuartford@me.com>
- * @copyright	13/04/2011
+ * @copyright	10/05/2011
  */
 
 /**
@@ -472,7 +472,7 @@ class Utilities {
 	public function dump_superglobals($file=false) {
 
 		// generate dump
-		$dump  = "POST: ".print_r($_POST,true)."\n";
+		$dump	= "POST: ".print_r($_POST,true)."\n";
 		$dump .= "GET: ".print_r($_GET,true)."\n";
 		$dump .= "SERVER: ".print_r($_SERVER,true)."\n";
 		$dump .= "SESSION: ".print_r($_SESSION,true)."\n";
@@ -522,9 +522,9 @@ class Utilities {
 				// opening tag, increase indent
 				$pretty[] = str_repeat(' ', $indent) . $el;
 				$indent += $level;
-		  	} else {
+				} else {
 				if (preg_match('/^<\/.+>$/', $el)) {			
-					$indent -= $level;  // closing tag, decrease indent
+					$indent -= $level;	// closing tag, decrease indent
 				}
 				if ($indent < 0) {
 					$indent += $level;
@@ -533,7 +533,7 @@ class Utilities {
 			}
 		}
 		
-		$xml = implode("\n", $pretty);   
+		$xml = implode("\n", $pretty);	 
 		
 		if ($html_output) {
 			return htmlentities($xml);
@@ -576,7 +576,7 @@ class Utilities {
 				$this->array2xml($value,$rootnodename,$node);
 			} else 	{
 				// add single node.
-                                $value = htmlentities($value);
+				$value = htmlentities($value);
 				$xml->addChild($key,$value);
 			}
 			
@@ -720,13 +720,8 @@ class Utilities {
 	 * @access public
 	 */
 	public function asc2hex($str) {
-
-		for ($i=0; $i<strlen($str); $i++) {
-			$data .= sprintf("%02x",ord(substr($str,$i,1)));
-		}
-		
+		for ($i=0; $i<strlen($str); $i++) $data .= sprintf("%02x",ord(substr($str,$i,1)));
 		return $data;
-		
 	}
 	
 	/**
@@ -738,13 +733,8 @@ class Utilities {
 	 * @access public
 	 */
 	public function hex2asc($hex) {
-	
-		for ($i=0; $i<strlen($hex); $i+=2) {
-			$data .= chr(hexdec(substr($hex,$i,2)));
-		}
-		
+		for ($i=0; $i<strlen($hex); $i+=2) $data .= chr(hexdec(substr($hex,$i,2)));
 		return $data;
-		
 	}
 
 	/**
@@ -770,7 +760,7 @@ class Utilities {
 		
 		// calculate match percentage using PHP's built-in function
 		$sim = similar_text(strtolower($keywords),strtolower($text),$pc);
-	        $simpc = sprintf("%0d",$pc);
+		$simpc = sprintf("%0d",$pc);
 		
 		// return percentage
 		return $simpc;
@@ -903,10 +893,8 @@ class Utilities {
 	 * @access public
 	 */
 	public function is_mac_address($mac) {
-		
 		if (preg_match('/[A-Z]{4}[0-9]{7,9}\/[A-Z]{2}[0-9]{2}[A-Z]$/',$mac)) return true;
 		return false;
-		
 	}
 	
 	/**
@@ -918,10 +906,9 @@ class Utilities {
 	 * @access public
 	 */
 	public function is_uk_mobile($mobile) {
-		
+		$mobile = preg_replace("/ /","",$mobile);
 		if (preg_match('/^((\+447)|07|00447)[0-9]{9}$/',$mobile)) return true;
 		return false;
-		
 	}
 	
 	/**
@@ -1119,6 +1106,79 @@ class Utilities {
 	}
 	
 	/**
+	 * Translate a formatted date (dd/mm/yyyy) to an ISO date (yyyy-mm-dd).
+	 * 
+	 * This function will NOT validate your input.
+	 * 
+	 * @param string $formatted_date	- dd/mm/yyyy format date
+	 * 
+	 * @return string			- yyyy-mm-dd format date
+	 * @access public
+	 */
+	public function iso_date($formatted_date) {
+		$dp = explode("/",$formatted_date);
+		return "{$dp[2]}-{$dp[1]}-{$dp[0]}";
+	}
+	
+	/**
+	 * Translate an ISO date (yyyy-mm-dd) to a human date (dd/mm/yyyy).
+	 * 
+	 * This function will NOT validate your input.
+	 * 
+	 * @param string $iso_date	- yyyy-mm-dd format date
+	 * @param boolean $american	- (optional) set to true to return the date in silly American mm/dd/yyyy format (default false)
+	 * 
+	 * @return string		- dd/mm/yyyy format date, or mm/dd/yyyy if $american set to true
+	 * @access public
+	 */
+	public function human_date($iso_date,$american=false) {
+		
+		$dp = explode("-",$iso_date);
+		
+		if ($american) {
+			return "{$dp[1]}/{$dp[2]}/{$dp[0]}";
+		} else {
+			return "{$dp[2]}/{$dp[1]}/{$dp[0]}";
+		}
+		
+	}
+	
+	/**
+	 * Perform date calculations.
+	 * 
+	 * Essentially a shortcut to the cumbersome multiple lines of code that
+	 * are required to do what should be simple date calculations.
+	 * 
+	 * @see http://www.php.net/manual/en/class.dateinterval.php
+	 * 
+	 * @param string $date		- date (ISO format)
+	 * @param string $operator	- operator, either "add" or "sub"
+	 * @param string $interval	- interval (see URL above)
+	 * @param boolean $format	- (optional) set to true to return the calculated date in dd/mm/yyyy format
+	 * 
+	 * @return string		- calculated date (ISO format), or false if input was invalid
+	 * @access public
+	 */
+	public function date_calculation($date,$operator,$interval,$format=false) {
+		
+		// check input
+		if (!self::is_iso_date($date)) return false;
+		if (!in_array($operator,array("add","sub"))) return false;
+		
+		// perform calculation
+		$dt = new DateTime($date);
+		$dt->$operator(new DateInterval($interval));
+		
+		// return date
+		if ($format) {
+			return $dt->format("d/m/Y");
+		} else {
+			return $dt->format("Y-m-d");
+		}
+		
+	}
+	
+	/**
 	 * Converts a number of minutes to the corresponding number of hours and minutes.
 	 * 
 	 * @param integer $mins			- number of minutes
@@ -1150,6 +1210,51 @@ class Utilities {
 		
 		return array(intval($H),intval($M));
 	
+	}
+	
+	/**
+	 * Convert seconds to a string with hours, minutes and seconds.
+	 * 
+	 * Credit due to Jon Haworth.
+	 * @see http://www.laughing-buddha.net/php/lib/sec2hms/
+	 * 
+	 * @param integer $sec			- seconds
+	 * @param boolean $padhours		- (optional) pad hours with leading zero (default true)
+	 * 
+	 * @return string			- H:M:S string
+	 * @access public
+	 */
+	public function seconds2hms($sec,$padhours=true) {
+	
+		// start with a blank string
+		$hms = "";
+		
+		// do the hours first: there are 3600 seconds in an hour, so if we divide
+		// the total number of seconds by 3600 and throw away the remainder, we're
+		// left with the number of hours in those seconds
+		$hours = intval(intval($sec) / 3600); 
+	
+		// add hours to $hms (with a leading 0 if asked for)
+		$hms .= ($padhours) ? str_pad($hours, 2, "0", STR_PAD_LEFT). ":" : $hours.":";
+		
+		// dividing the total seconds by 60 will give us the number of minutes
+		// in total, but we're interested in *minutes past the hour* and to get
+		// this, we have to divide by 60 again and then use the remainder
+		$minutes = intval(($sec / 60) % 60); 
+	
+		// add minutes to $hms (with a leading 0 if needed)
+		$hms .= str_pad($minutes, 2, "0", STR_PAD_LEFT). ":";
+	
+		// seconds past the minute are found by dividing the total number of seconds
+		// by 60 and using the remainder
+		$seconds = intval($sec % 60); 
+	
+		// add seconds to $hms (with a leading 0 if needed)
+		$hms .= str_pad($seconds, 2, "0", STR_PAD_LEFT);
+	
+		// done!
+		return $hms;
+
 	}
 	
 	/**
@@ -1312,14 +1417,14 @@ class Utilities {
 	 */
 	public function count_pdf_pages($fullpdfpath) {
 		
-	        if (file_exists($fullpdfpath)) {
-	        	
+		if (file_exists($fullpdfpath)) {
+						
 			// open the file for reading
 			if ($handle = fopen($fullpdfpath, "rb")) {
-		  	
+				
 				$count = 0;
 				$i = 0;
-		    
+				
 				while (!feof($handle)) {
 					
 					if ($i > 0) {
@@ -1334,21 +1439,19 @@ class Utilities {
 						
 						$contents = fread($handle, 1000);
 				 		
-						if (preg_match("/\/N\s+([0-9]+)/", $contents, $found)) {
-							return $found[1];
-						}
+						if (preg_match("/\/N\s+([0-9]+)/", $contents, $found)) return $found[1];
 						
 					}
 					
 					$i++;
 					
 				}
-		    
+				
 				fclose($handle);
-		    
+				
 				// get all the trees with 'pages' and 'count'. the biggest number
 				// is the total number of pages, if we couldn't find the /N switch above.
-		             
+								 
 				if (preg_match_all("/Count\s+([0-9]+)/", $contents, $capture, PREG_SET_ORDER)) {
 					
 					foreach ($capture as $c) {
@@ -1357,12 +1460,12 @@ class Utilities {
 						}
 					}
 					
-					return $count;   
-					         
+					return $count;	 
+									 
 				}
-		    
+				
 			}
-		  
+			
 		}
 		
 		// unable to determine the number of pages, or there simply isn't any
@@ -1526,9 +1629,7 @@ class Utilities {
 	public function validate_creditcard($ccnumber,$cardtype="",$allowtest=false) {
 		
 		// check for test card number
-		if ($allowtest == false && $ccnumber == "4111111111111111") {
-			return false;
-		}
+		if ($allowtest == false && $ccnumber == "4111111111111111") return false;
  
 		// Strip non-numeric characters
 		$ccnumber = preg_replace("/[^0-9]/","",$ccnumber);
@@ -1841,9 +1942,7 @@ class Utilities {
 				if (is_object($value) || is_array($value)) {
 					$value = $this->object2array($value, $arrSkipIndices); // recursive call
 				}
-				if (in_array($index, $arrSkipIndices)) {
-					continue;
-				}
+				if (in_array($index, $arrSkipIndices)) continue;
 				$arrData[$index] = $value;
 			}
 		}
@@ -1917,7 +2016,7 @@ class Utilities {
 		$fb = preg_replace("/ tenth /i"," 10th ",$fb);
 	
 		// remove trailing space(s) and double spaces
-		$fb = preg_replace("/  /"," ",$fb);
+		$fb = preg_replace("/	/"," ",$fb);
 		$fb = rtrim($fb);
 		
 		// add random number of exclamation marks
@@ -1947,14 +2046,15 @@ class Utilities {
 	/**
 	 * Export an array of data as a CSV file.
 	 * 
-	 * @param data $data		- array of data, each element to be an associative array representing a row
+	 * @param array $data		- array of data, each element to be an associative array representing a row
 	 * @param string filename	- (optional) file name, if omitted, one will be generated randomly
-	 * @param boolean $header	- include header row (default true)
+	 * @param boolean $header	- (optional) include header row (default true)
+	 * @param boolean $http_headers	- (optional) send HTTP headers (default true)
 	 * 
 	 * @return void
 	 * @access public
 	 */
-	public function export_CSV($data,$filename=false,$header=true) {
+	public function alt_export($data,$filename=false,$header=true,$http_headers=true) {
 		
 		// create temporary filename
 		$tmpname = "data-".time().".".rand(100000,999999).".csv";
@@ -1976,24 +2076,206 @@ class Utilities {
 		// set filename if one wasn't passed
 		if (!$filename) $filename = $tmpname;
 		
-		// send headers
-		ob_start();
-		header('Pragma: private');
-		header('Content-Transfer-Encoding: binary');
-		header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
-		header('Content-type: text/csv');
-		header('Content-Disposition: attachment; filename='.$filename);
-		header("Content-length: ".filesize("/tmp/{$tmpname}"));
-		ob_end_flush();
+		// send HTTP headers
+		if ($http_headers) {
+			ob_start();
+			header('Pragma: private');
+			header('Content-Transfer-Encoding: binary');
+			header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+			header('Content-type: text/csv');
+			header('Content-Disposition: attachment; filename='.$filename);
+			header("Content-length: ".filesize("/tmp/{$tmpname}"));
+			ob_end_flush();
+		}
 		
 		// send CSV data
 		print file_get_contents("/tmp/{$tmpname}");
 		
 		// remove temporary file
 		unlink("/tmp/{$tmpname}");
+		// remove temporary file
+		unlink("/tmp/{$tmpname}");
 		
 	}
 	
-}
+	/**
+	 * Checks if a string is a valid UK postcode.
+	 * 
+	 * This function checks the value of the parameter for a valid postcode format. The 
+	 * space between the inward part and the outward part is optional, although is 
+	 * inserted if not there as it is part of the official postcode.
+	 * 
+	 * The functions returns a value of false if the postcode is in an invalid format, 
+	 * and a value of true if it is in a valid format. If the postcode is valid, the 
+	 * parameter is loaded up with the postcode in capitals, and a space between the 
+	 * outward and the inward code to conform to the correct format.
+	 * 
+	 * Credit due to John Gardner.
+	 * @see http://www.braemoor.co.uk/software/postcodes.shtml
+	 * 
+	 * @param string $toCheck	- postcode to check
+	 * 
+	 * @return boolean		- true if postcode is valid, otherwise false
+	 * @access public
+	 */
+	public function is_uk_postcode (&$toCheck) {
+	
+		// Permitted letters depend upon their position in the postcode.
+		$alpha1 = "[abcdefghijklmnoprstuwyz]";	// Character 1
+		$alpha2 = "[abcdefghklmnopqrstuvwxy]";	// Character 2
+		$alpha3 = "[abcdefghjkpmnrstuvwxy]";	// Character 3
+		$alpha4 = "[abehmnprvwxy]";		// Character 4
+		$alpha5 = "[abdefghjlnpqrstuwxyz]";	// Character 5
+		
+		// Expression for postcodes: AN NAA, ANN NAA, AAN NAA, and AANN NAA with a space
+		$pcexp[0] = '^('.$alpha1.'{1}'.$alpha2.'{0,1}[0-9]{1,2})([[:space:]]{0,})([0-9]{1}'.$alpha5.'{2})$';
+	
+		// Expression for postcodes: ANA NAA
+		$pcexp[1] = '^('.$alpha1.'{1}[0-9]{1}'.$alpha3.'{1})([[:space:]]{0,})([0-9]{1}'.$alpha5.'{2})$';
+	
+		// Expression for postcodes: AANA NAA
+		$pcexp[2] = '^('.$alpha1.'{1}'.$alpha2.'{1}[0-9]{1}'.$alpha4.')([[:space:]]{0,})([0-9]{1}'.$alpha5.'{2})$';
+		
+		// Exception for the special postcode GIR 0AA
+		$pcexp[3] = '^(gir)(0aa)$';
+		
+		// Standard BFPO numbers
+		$pcexp[4] = '^(bfpo)([0-9]{1,4})$';
+		
+		// c/o BFPO numbers
+		$pcexp[5] = '^(bfpo)(c\/o[0-9]{1,3})$';
+		
+		// Overseas Territories
+		$pcexp[6] = '^([a-z]{4})(1zz)$/i';
+	
+		// Load up the string to check, converting into lowercase
+		$postcode = strtolower($toCheck);
+	
+		// Assume we are not going to find a valid postcode
+		$valid = false;
+		
+		// Check the string against the six types of postcodes
+		foreach ($pcexp as $regexp) {
+		
+			if (ereg($regexp,$postcode, $matches)) {
+				
+				// Load new postcode back into the form element	
+				$postcode = strtoupper ($matches[1] . ' ' . $matches [3]);
+				
+				// Take account of the special BFPO c/o format
+				$postcode = ereg_replace ('C\/O', 'c/o ', $postcode);
+				
+				// Remember that we have found that the code is valid and break from loop
+				$valid = true;
+				break;
+			}
+		}
+			
+		// Return with the reformatted valid postcode in uppercase if the postcode was valid
+		if ($valid){
+			$toCheck = $postcode; 
+			return true;
+		} else {
+			return false;
+		}
+		
+	}
+	
+	/**
+	 * Checks if a string is a valid UK telephone number.
+	 * 
+	 * This routine checks the value of the string variable specified by the parameter
+	 * for a valid UK telphone number. It returns true for a valid number and false for 
+	 * an invalid number.
+	 * 
+	 * The definition of a valid telephone number has been taken from:
+	 * 	http://www.ofcom.org.uk/telecoms/ioi/numbers/numplan310507.pdf
+	 * 	http://www.ofcom.org.uk/telecoms/ioi/numbers/num_drama
+	 * 
+	 * All inappropriate telephone numbers are disallowed (e.g. premium lines, sex 
+	 * lines, radio-paging services etc.)
+	 * 
+	 * Credit due to John Gardner.
+	 * @see http://www.braemoor.co.uk/software/telnumbers.shtml
+	 * 
+	 * @param string $strTelephoneNumber	- telephone number to check
+	 * @param integer $intError		- variable into which error numbers will be inserted upon error
+	 * @param string $strError		- variable into which error messages will be inserted upon error
+	 * 
+	 * @return boolean		- true if postcode is valid, otherwise false
+	 * @access public
+	 */
+	public function is_uk_telephone (&$strTelephoneNumber,&$intError,&$strError) {
+		
+		// Copy the parameter and strip out the spaces
+		$strTelephoneNumberCopy = str_replace (' ', '', $strTelephoneNumber);
+	
+		// Convert into a string and check that we were provided with something
+		if (empty($strTelephoneNumberCopy)) {
+			$intError = 1;
+			$strError = 'Telephone number not provided';
+			return false;
+		}
+		
+		// Don't allow country codes to be included (assumes a leading "+") 
+		if (ereg('^(\+)[\s]*(.*)$',$strTelephoneNumberCopy)) {
+			$intError = 2;
+			$strError = 'UK telephone number without the country code, please';
+			return false;
+		}
+		
+		// Remove hyphens - they are not part of a telephine number
+		$strTelephoneNumberCopy = str_replace ('-', '', $strTelephoneNumberCopy);
+		
+		// Now check that all the characters are digits
+		if (!ereg('^[0-9]{10,11}$',$strTelephoneNumberCopy)) {
+			$intError = 3;
+			$strError = 'UK telephone numbers should contain 10 or 11 digits';
+			return false;
+		}
+		
+		// Now check that the first digit is 0
+		if (!ereg('^0[0-9]{9,10}$',$strTelephoneNumberCopy)) {
+			$intError = 4;
+			$strError = 'The telephone number should start with a 0';
+			return false;
+		}		
+		
+		// Check the string against the numbers allocated for dramas
+		$tnexp[0] = '^(0113|0114|0115|0116|0117|0118|0121|0131|0141|0151|0161)(4960)[0-9]{3}$';
+		$tnexp[1] = '^02079460[0-9]{3}$';
+		$tnexp[2] = '^01914980[0-9]{3}$';
+		$tnexp[3] = '^02890180[0-9]{3}$';
+		$tnexp[4] = '^02920180[0-9]{3}$';
+		$tnexp[5] = '^01632960[0-9]{3}$';
+		$tnexp[6] = '^07700900[0-9]{3}$';
+		$tnexp[7] = '^08081570[0-9]{3}$';
+		$tnexp[8] = '^09098790[0-9]{3}$';
+		$tnexp[9] = '^03069990[0-9]{3}$';
+		
+		foreach ($tnexp as $regexp) {	
+			if (ereg($regexp,$strTelephoneNumberCopy, $matches)) {
+				$intError = 5;
+				$strError = 'The telephone number is either invalid or inappropriate';
+				return false;
+			}
+		}
+		
+		// Finally, check that the telephone number is appropriate.
+		if (!ereg('^(01|02|03|05|070|071|072|073|074|075|07624|077|078|079)[0-9]+$',$strTelephoneNumberCopy)) {
+			$intError = 5;
+			$strError = 'The telephone number is either invalid or inappropriate';
+			return false;
+		}
+		
+		// Seems to be valid - return the stripped telephone number
+		$strTelephoneNumberCopy = $strTelephoneNumberCopy;
+		$intError = 0;
+		$strError = '';
+		return true;
+		
+	}
 
+}
+	
 ?>

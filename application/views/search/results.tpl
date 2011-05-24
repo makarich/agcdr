@@ -55,6 +55,15 @@
 		{/foreach}
 		
 		</tbody>
+		
+		<tfoot>
+			<tr>
+				<th colspan="8"></th>
+				<th style="text-align: left;">{$totals.duration_formatted}</th>
+				<th style="text-align: left;">{$totals.billsec_formatted}</th>
+				<th></th>
+			</tr>
+		</tfoot>
 	
 	</table>
 	
