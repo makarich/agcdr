@@ -30,7 +30,10 @@
 		
 	{else}
 	
-		<p>No statistics were returned by this overview.</p>
+		<div class="formwizard_message_info">
+			<div class="em_severity">No data</div>
+			<div class="em_message">No statistics were returned by this overview.</div>
+		</div>
 	
 	{/if}
 

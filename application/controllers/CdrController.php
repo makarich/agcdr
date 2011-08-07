@@ -66,40 +66,61 @@ class CdrController extends BaseController {
 		// CSV mode?
 		$csvmode = (isset($this->get["csv"]) && $this->get["csv"] == "on") ? true : false;
 		
-		// determine dates
-		if (isset($this->get["year"])) {
+		if (isset($this->get["number"])) {
 			
-			// calculate overview for year
-			$from = "'{$this->get['year']}-01-01 00:00:00'";
-			$to = "DATE_ADD('{$this->get['year']}-01-01 00:00:00', INTERVAL 1 YEAR)";
-			if ($csvmode) $csvlabel = $this->get['year'];
+			// restrict by one specific number
+			$number = $this->get["number"];
 			
-		} else if (isset($this->get["month"])) {
-			
-			// calculate overview for month
-			$from = "'{$this->get['month']}-01 00:00:00'";
-			$to = "DATE_ADD('{$this->get['month']}-01 00:00:00', INTERVAL 1 MONTH)";
-			if ($csvmode) $csvlabel = $this->get['month'];
+			// retrieve records
+			$cdrs = $this->db->GetAssoc("
+				SELECT	".DB_TABLE.".uniqueid, ".DB_TABLE.".*,
+					SEC_TO_TIME(".DB_TABLE.".duration) AS formatted_duration,
+					SEC_TO_TIME(".DB_TABLE.".billsec) AS formatted_billsec
+				FROM ".DB_TABLE."
+				WHERE clid = '{$number}' OR src = '{$number}' OR dst = '{$number}'
+				ORDER BY calldate ASC;
+			");
 			
 		} else {
+		
+			// restrict by date range
 			
-			// no date data passed, just do today
-			$today = date("Y-m-d");
-			$from = "'{$today} 00:00:00'";
-			$to = "DATE_ADD('{$today} 00:00:00', INTERVAL 1 DAY)";
-			if ($csvmode) $csvlabel = $today;
-			
+			// determine dates
+			if (isset($this->get["year"])) {
+				
+				// calculate overview for year
+				$from = "'{$this->get['year']}-01-01 00:00:00'";
+				$to = "DATE_ADD('{$this->get['year']}-01-01 00:00:00', INTERVAL 1 YEAR)";
+				if ($csvmode) $csvlabel = $this->get['year'];
+				
+			} else if (isset($this->get["month"])) {
+				
+				// calculate overview for month
+				$from = "'{$this->get['month']}-01 00:00:00'";
+				$to = "DATE_ADD('{$this->get['month']}-01 00:00:00', INTERVAL 1 MONTH)";
+				if ($csvmode) $csvlabel = $this->get['month'];
+				
+			} else {
+				
+				// no date data passed, just do today
+				$today = date("Y-m-d");
+				$from = "'{$today} 00:00:00'";
+				$to = "DATE_ADD('{$today} 00:00:00', INTERVAL 1 DAY)";
+				if ($csvmode) $csvlabel = $today;
+				
+			}
+	
+			// retrieve records
+			$cdrs = $this->db->GetAssoc("
+				SELECT	".DB_TABLE.".uniqueid, ".DB_TABLE.".*,
+					SEC_TO_TIME(".DB_TABLE.".duration) AS formatted_duration,
+					SEC_TO_TIME(".DB_TABLE.".billsec) AS formatted_billsec
+				FROM ".DB_TABLE."
+				WHERE calldate >= {$from} AND calldate < {$to}
+				ORDER BY calldate ASC;
+			");
+		
 		}
-
-		// retrieve records
-		$cdrs = $this->db->GetAssoc("
-			SELECT	".DB_TABLE.".uniqueid, ".DB_TABLE.".*,
-				SEC_TO_TIME(".DB_TABLE.".duration) AS formatted_duration,
-				SEC_TO_TIME(".DB_TABLE.".billsec) AS formatted_billsec
-			FROM ".DB_TABLE."
-			WHERE calldate >= {$from} AND calldate < {$to}
-			ORDER BY calldate ASC;
-		");
 
 		if ($csvmode) {
 

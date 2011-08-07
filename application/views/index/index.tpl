@@ -2,7 +2,7 @@
 
 <ul id="overviewgrid">
 	{foreach from=$boxes item=box}
-		<li id="box_{$box}">Loading box {$box} ...</li>
+		<li id="box_{$box}">{boxloader box=$box}</li>
 	{/foreach}
 </ul>
 

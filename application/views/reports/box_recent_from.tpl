@@ -1,6 +1,6 @@
 {* Overview box, loaded via AJAX *}
 
-<div class="title">Most recent calls</div>
+<div class="title">Recent calls <b>from</b> {$number}</div>
 
 <div class="content">
 
@@ -9,9 +9,9 @@
 		<table class="basicreport" width="100%">
 		
 			<thead><tr>
-				<th>Day/Time</th>
-				<th>Source</th>
+				<th>Date/Time</th>
 				<th>Destination</th>
+				<th>Last app.</th>
 				<th>Duration</th>
 			</tr></thead>
 			
@@ -20,9 +20,9 @@
 			{foreach from=$cdrs key=uniqueid item=cdr}
 			
 				<tr onmouseover="$(this).toggleClass('grey');" onmouseout="$(this).toggleClass('grey');" onclick="window.location='/cdr/view/?uid={$uniqueid}';">
-					<td nowrap>{$cdr.calldate|strtotime|date_format:"%d %H:%M"}</td>
-					<td>{$cdr.src}</td>
-					<td>{$cdr.dst}</td>
+					<td nowrap>{$cdr.calldate|strtotime|date_format:"%d/%m %H:%M"}</td>
+					<td>{$cdr.numfield}</td>
+					<td>{$cdr.lastapp}</td>
 					<td>{$cdr.formatted_duration}</td>
 				</tr>
 			
@@ -34,7 +34,10 @@
 		
 	{else}
 	
-		<p>There are no CDRs present in the database.</p>
+		<div class="formwizard_message_info">
+			<div class="em_severity">No calls</div>
+			<div class="em_message">There are no calls from {$number} in the CDR database.</div>
+		</div>
 	
 	{/if}
 

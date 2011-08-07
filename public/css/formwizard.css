@@ -1,0 +1,152 @@
+@CHARSET "UTF-8";
+
+/*
+
+Stylesheet for use with FormWizard class and template.
+See app/classes/FormWizard.php and app/templates/includes/shared/formwizard.tpl
+
+When changing the stylesheet, make changes to *this* file and then run the minify-css.php script, located in the same directory.
+
+*/
+
+TABLE.formwizard {
+	margin-top: 15px;
+	width: 100%;
+	border: 1px solid #ccc;
+	border-radius: 5px;
+	-moz-border-radius: 5px;
+}
+
+	TABLE.formwizard THEAD TH {
+		text-align: left;
+		font-weight: bold;
+		background: #ddd;
+		padding: 8px;
+	}
+
+	TABLE.formwizard TBODY TD {
+		padding: 4px
+	}
+
+	TABLE.formwizard TBODY TD.wizardlabel {
+		background: #e5e5e5;
+		text-align: right;
+		vertical-align: top;
+		padding-top: 5px;
+		padding-right: 5px;
+		white-space: nowrap;
+	}
+
+	TABLE.formwizard TBODY TD.wizardelement {
+		background: #f8f8f8;
+		text-align: left;
+		width: 100%;
+	}
+	
+	TABLE.formwizard TBODY TD.wizardrequired {
+		background: #f8f8f8;
+		text-align: center;
+	}
+
+	TABLE.formwizard TFOOT TH {
+		text-align: right;
+		background: #ddd;
+		padding: 4px !important;
+	}
+	
+		TABLE.formwizard TFOOT TH SPAN {
+			font-weight: normal;
+		}
+		
+		TABLE.formwizard TFOOT TH BUTTON {
+			padding: 0px 10px 0px 10px !important;
+		}
+
+	TABLE.formwizard TR TD .wide {
+		width: 100%
+	}
+
+	TABLE.formwizard TR TD LABEL {
+		padding-left: 2px
+	}
+
+	TABLE.formwizard INPUT.hasDatepicker {
+		background: url('/images/icons/calendar.png') right no-repeat white
+	}
+
+/* tool tips */
+
+DIV.formwizard_tooltip {
+	position: absolute;
+	display: none;
+	border: 1px solid #ccccbe;
+	background: #FFFFEE;
+	padding: 2px 3px;
+	font-size: 8pt;
+	color: black;
+	box-shadow: 2px 2px 4px #AAAAAA;
+	-moz-box-shadow: 2px 2px 4px #AAAAAA;
+	-webkit-box-shadow: 2px 2px 4px #AAAAAA;
+}
+
+/* hack autocomplete text size */
+
+.ui-autocomplete {
+	font-size: 8pt !important
+}
+
+/* error messages */
+
+DIV.formwizard_message_info,
+DIV.formwizard_message_error,
+DIV.formwizard_message_warning,
+DIV.formwizard_message_notice {
+	border-radius: 5px;
+	-moz-border-radius: 5px;
+	padding: 5px 5px 5px 25px;
+}
+
+DIV.formwizard_message_info {
+	background: url('/images/icons/info.png') top left no-repeat #ECF1FE;
+	background-position: 4px 4px;
+	border: 1px solid #0A0ACD;
+}
+
+DIV.formwizard_message_error {
+	background: url('/images/icons/exclamation.png') top left no-repeat #FEF1EC;
+	background-position: 4px 4px;
+	border: 1px solid #CD0A0A;
+}
+
+DIV.formwizard_message_warning {
+	background: url('/images/icons/warning.png') top left no-repeat #fefeec;
+	background-position: 4px 4px;
+	border: 1px solid #cdcd0a;
+}
+
+DIV.formwizard_message_notice {
+	background: url('/images/icons/accept.png') top left no-repeat #f1feec;
+	background-position: 4px 4px;
+	border: 1px solid #0acd0a;
+}
+
+DIV.em_severity {
+	font-weight: bold;
+	margin-bottom: 2px;
+}
+
+DIV.formwizard_message_info DIV.em_severity {
+	color: #0A0ACD
+}
+
+DIV.formwizard_message_error DIV.em_severity {
+	color: #CD0A0A
+}
+
+DIV.formwizard_message_warning DIV.em_severity {
+	color: #cdcd0a
+}
+
+DIV.formwizard_message_notice DIV.em_severity {
+	color: #0acd0a
+}

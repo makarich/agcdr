@@ -1,3 +1,5 @@
+{* Year report template *}
+
 {include file='shared/htmlheader.tpl'}
 
 <div id="rightbuttons">
@@ -20,7 +22,7 @@
 	
 		<ul id="overviewgrid">
 			{foreach from=$boxes item=box}
-				<li id="box_{$box}">Loading box {$box} ...</li>
+				<li id="box_{$box}">{boxloader box=$box}</li>
 			{/foreach}
 		</ul>
 	

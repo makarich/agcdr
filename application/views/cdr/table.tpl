@@ -34,9 +34,9 @@
 				<td><a href="/cdr/view/?uid={$uniqueid}">{$uniqueid}</a></td>
 				<td>{$cdr.calldate|strtotime|date_format:"%d/%m/%Y"}</td>
 				<td>{$cdr.calldate|strtotime|date_format:"%H:%M:%S"}</td>
-				<td>{$cdr.clid}</td>
-				<td>{$cdr.src}</td>
-				<td>{$cdr.dst}</td>
+				<td><a href="/reports/number/?number={$cdr.clid}">{$cdr.clid}</a></td>
+				<td><a href="/reports/number/?number={$cdr.src}">{$cdr.src}</a></td>
+				<td><a href="/reports/number/?number={$cdr.dst}">{$cdr.dst}</a></td>
 				<td>{$cdr.dcontext}</td>
 				<td>{$cdr.lastapp}</td>
 				<td>{$cdr.formatted_duration}</td>

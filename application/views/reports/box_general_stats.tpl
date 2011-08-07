@@ -1,6 +1,6 @@
 {* Overview box, loaded via AJAX *}
 
-<div class="title">General statistics</div>
+<div class="title">General statistics{if $number} for {$number}{/if}</div>
 
 <div class="content">
 

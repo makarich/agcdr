@@ -9,16 +9,16 @@
  */
 
 // full URL of your virtual host
-define('LIVE_URL','http://your.virtual.host.com/');
+define('LIVE_URL','http://pbx.snwo.org/');
 
 // main database server configuration (first server is the default)
 $_SESSION["servers"] = array(
-	"full.hostname.com" => array(
-		"description"	=> "Example configuration",
+	"zaleriza.snwo.org" => array(
+		"description"	=> "Heddon/SNWO PBX",
 		"type"		=> "mysql",
-		"hostname"	=> "full.hostname/com",
-		"username"	=> "dbuser",
-		"password"	=> "dbpass",
+		"hostname"	=> "pbx.snwo.org",
+		"username"	=> "asterisk",
+		"password"	=> "eftUdNaxRab0",
 		"dbname"	=> "asterisk",
 		"tablename"	=> "cdr"
 		
@@ -32,11 +32,10 @@ $_SESSION["servers"] = array(
  */
 
 // release version
-define('VERSION','1.0.1.1');
+define('VERSION','1.0.1.2');
 
-// beta version and development mode flags
+// beta version flag
 define('BETA',true);
-define('DEVMODE',true);
 
 // application titles (short and long)
 define('APP_TITLE','AGCDR');

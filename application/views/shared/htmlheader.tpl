@@ -13,6 +13,7 @@
 	<!-- General CSS and javascript -->
 	<link rel="stylesheet" type="text/css" media="all" href="/css/stylesheet-min.css" />
 	<link rel="stylesheet" type="text/css" media="print" href="/css/print-min.css" />
+	<link rel="stylesheet" type="text/css" media="all" href="/css/formwizard-min.css" />
 	<script type="text/javascript" src="/js/javascript-min.js"></script>
 	<script type="text/javascript" src="/js/modernizr-1.6-min.js"></script>
 	

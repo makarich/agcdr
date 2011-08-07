@@ -32,11 +32,10 @@ $_SESSION["servers"] = array(
  */
 
 // release version
-define('VERSION','1.0.1.1');
+define('VERSION','1.0.1.2');
 
-// beta version and development mode flags
+// beta version flag
 define('BETA',true);
-define('DEVMODE',true);
 
 // application titles (short and long)
 define('APP_TITLE','AGCDR');

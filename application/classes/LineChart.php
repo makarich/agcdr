@@ -7,7 +7,7 @@
  * 
  * @package	GoogleChart
  * @author	Stuart Benjamin Ford <stuartford@me.com>
- * @copyright	25/02/2011
+ * @copyright	04/08/2011
  */
 
 /**
@@ -22,6 +22,26 @@ class LineChart extends GoogleChart {
 	 * @access protected
 	 */
 	protected $type = "lc";
+	
+	/**
+	 * X-axis informatiom label (description of X-axis).
+	 * 
+	 * Must be used in conjunction with $y_axis;
+	 * 
+	 * @var string
+	 * @access public
+	 */
+	public $x_axis;
+	
+	/**
+	 * Y-axis informatiom label (description of Y-axis).
+	 * 
+	 * Must be used in conjunction with $x_axis;
+	 * 
+	 * @var string
+	 * @access public
+	 */
+	public $y_axis;
 	
 	/**
 	 * X-axis labels.
@@ -105,7 +125,7 @@ class LineChart extends GoogleChart {
 		$minimum = 0;
 		foreach ($this->values as $series) {
 			foreach ($series as $value) {
-				if ($value > $maximum) $maximum = $value;
+				if ($value > $maximum && $value != "_") $maximum = $value;
 				if ($value < $minimum) $minimum = $value;
 			}
 		}
@@ -124,11 +144,34 @@ class LineChart extends GoogleChart {
 			
 		}
 		
+		// axis information
+		if (isset($this->x_axis) && isset($this->y_axis)) {
+			
+			// using axis information labels
+			
+			$chxl = "0:|".implode("|",$this->x_labels)."|2:|".implode("|",$this->y_labels);
+			if (isset($this->x_axis)) $chxl .= "|1:|{$this->x_axis}";
+			if (isset($this->y_axis)) $chxl .= "|3:|{$this->y_axis}";
+			
+			$chxt = "x,x,y,y";
+			$chxp = "1,50|3,50";
+			$chxl = urlencode($chxl);
+			
+		} else {
+			
+			// no axis information labels
+			$chxl = "0:|".implode("|",$this->x_labels)."|1:|".implode("|",$this->y_labels);
+			$chxt = "x,y";
+			$chxp = "";
+			
+		}
+		
 		// create options array
 		$options = array(
-			"chxl"		=> "0:|".implode("|",$this->x_labels)."|1:|".implode("|",$this->y_labels),
-			"chxt"		=> "x,y",
-			"chds"		=> "{$minimum},{$maximum}"
+			"chxl"	=> $chxl,
+			"chxt"	=> $chxt,
+			"chxp"	=> $chxp,
+			"chds"	=> "{$minimum},{$maximum}"
 		);
 		
 		// add series

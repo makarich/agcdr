@@ -12,7 +12,6 @@
  * class documentation "phpdoc/index.html".
  * 
  * @package	GoogleChart
- * @version	0.990 (beta)
  * @author	Stuart Benjamin Ford <stuartford@me.com>
  * @copyright	03/03/2011
  */
@@ -76,6 +75,14 @@ abstract class GoogleChart {
 	public $legend;
 	
 	/**
+	 * Chart legend position.
+	 * 
+	 * @var string
+	 * @access public
+	 */
+	public $legend_position = "r";
+	
+	/**
 	 * Colour palette to use.
 	 * 
 	 * Either use a named palette or provide a list of comma separated
@@ -104,7 +111,6 @@ abstract class GoogleChart {
 	 */
 	public $colour_palettes = array(
 		"primary" => array(
-			"FEFE83",
 			"FB9902",
 			"FE2712",
 			"8601AF",
@@ -218,7 +224,10 @@ abstract class GoogleChart {
 		}
 		
 		// add legend
-		if (is_array($this->legend)) $url .= "chdl=".urlencode(implode("|",$this->legend))."&";
+		if (is_array($this->legend)) {
+			$url .= "chdl=".urlencode(implode("|",$this->legend))."&";
+			$url .= "chdlp={$this->legend_position}&";
+		}
 		
 		// add chart specific options
 		if ($options) {

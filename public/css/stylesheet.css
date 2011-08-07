@@ -283,6 +283,13 @@ A:active, A:hover {
 		margin: 0px 0px 0.5em 0px;
 	}
 
+/* Miscellaneous */
+
+DIV.boxloader {
+	text-align: center;
+	margin-top: 1em;
+}
+
 /* jQuery UI overrides */
 
 .ui-widget {
