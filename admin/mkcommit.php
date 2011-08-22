@@ -3,7 +3,7 @@
 
 /**
  * Prepare and commit.
- * 
+ *
  * @package	AGCDR
  * @author	Stuart Benjamin Ford <stuartford@me.com>
  * @copyright	12/04/2011
@@ -13,8 +13,8 @@
 $mypath = realpath(dirname(array_shift($argv)));
 
 // set commit text if not passed
-if (isset($argv[0])) {
-	$commit = $argv[0];
+if (isset($argv[1])) {
+	$commit = $argv[1];
 } else {
 	exec("hostname -f",$host);
 	$user = rtrim(`whoami`);
@@ -26,8 +26,9 @@ $commands = array(
 	"cp {$mypath}/../application/config.php /tmp/agcdr.conf",
 	"cp {$mypath}/example-config.php {$mypath}/../application/config.php",
 	"rm -f {$mypath}/../public/images/charts/*.png",
-	"svn status {$mypath}/..",
-	"svn commit -m \"{$commit}\" {$mypath}/..",
+	"git --git-dir={$mypath}/../.git --work-tree={$mypath}/../ status",
+	"git --git-dir={$mypath}/../.git --work-tree={$mypath}/../ commit -a -m \"{$commit}\"",
+	"git --git-dir={$mypath}/../.git --work-tree={$mypath}/../ push",
 	"mv /tmp/agcdr.conf {$mypath}/../application/config.php"
 );
 
