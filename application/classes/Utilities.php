@@ -2,9 +2,9 @@
 
 /**
  * General utility function class.
- * 
+ *
  * Some functions require DB class for database access.
- * 
+ *
  * @package	SBF-Classlib
  * @author	Stuart Benjamin Ford <stuartford@me.com>
  * @copyright	10/05/2011
@@ -22,7 +22,7 @@ class Utilities {
 
 	/**
 	 * UK county information (correct as of 2008).
-	 * 
+	 *
 	 * @var array
 	 * @access public
 	 */
@@ -119,7 +119,7 @@ class Utilities {
 
 	/**
 	 * Path to timezone information CSV file.
-	 * 
+	 *
 	 * @var string
 	 * @access private
 	 */
@@ -127,19 +127,19 @@ class Utilities {
 
 	/**
 	 * Construct.
-	 * 
+	 *
 	 * @access public
 	 */
 	public function __construct() {
-		if (defined('TZI_PATH')) $this->tzi_path = TZI_PATH;	
+		if (defined('TZI_PATH')) $this->tzi_path = TZI_PATH;
 	}
-	
+
 	/**
 	 * Generic setter method.
-	 * 
+	 *
 	 * @param mixed $key		- property name
 	 * @param mixed $var		- property value
-	 * 
+	 *
 	 * @return void
 	 * @access public
 	 */
@@ -149,30 +149,30 @@ class Utilities {
 
 	/**
 	 * Generic getter method.
-	 * 
+	 *
 	 * @param mixed $key		- property name
-	 * 
+	 *
 	 * @return mixed		- property value
 	 * @access public
 	 */
 	public function __get($key) {
-		
+
 		if (property_exists($this,$key)) {
 			return $this->$key;
 		} else {
 			 throw new Exception("Attempt to get a non-existant property: {$key}");
 		}
-		
+
 	}
-	
+
 	/**
 	 * Return country information (correct as of 2008).
-	 * 
+	 *
 	 * @return array		- associative array of country information
 	 * @access public
 	 */
 	public function country_database() {
-		
+
 		return array(
 			"Afghanistan"				=> array("AFG","AF","Afghanistan","AFA","Afghanis","non-EU"),
 			"Albania"				=> array("ALB","AL","Albania","ALL","Leke","non-EU"),
@@ -411,15 +411,15 @@ class Utilities {
 			"Zambia"				=> array("ZMB","ZM","Zambia","ZMK","Kwacha","non-EU"),
 			"Zimbabwe"				=> array("ZWE","ZW","Zimbabwe","ZWD","Zimbabwe Dollars","non-EU"),
 		);
-		
+
 	}
-	
+
 	/**
 	 * Read timezone information from data file and present as associative array.
-	 * 
+	 *
 	 * This function requires the timezones.csv data file, the path to which
 	 * must be set in $this->tzi_path before being called
-	 * 
+	 *
 	 * @return mixed		- associative array of timezone information, or false if the data file path was invalid
 	 * @access public
 	 */
@@ -433,7 +433,7 @@ class Utilities {
 
 		// create timezones array
 		$timezones = array();
-		
+
 		// ordered list of field names
 		$fields = array(
 			"continent","city","offset","shortname","dstshortname","longname","dstlongname","st_offset",
@@ -441,16 +441,16 @@ class Utilities {
 		);
 
 		while (($data = fgetcsv($csv)) !== false) {
-			
+
 			$id = array_shift($data);
 			$tz = array();
-			
+
 			for ($i=0; $i<count($fields); $i++) {
 				$tz[$fields{$i}] = $data[$i];
 			}
-			
+
 			$timezones[$id] = $tz;
-			
+
 		}
 
 		// close data file
@@ -458,14 +458,14 @@ class Utilities {
 
 		// return information array
 		return $timezones;
-		
+
 	}
-	
+
 	/**
 	 * Dump superglobal arrays.
-	 * 
+	 *
 	 * @param string $file		- (optional) dump superglobals to a file instead of stdout (pass path to file)
-	 * 
+	 *
 	 * @return string		- dump data
 	 * @access public
 	 */
@@ -476,54 +476,54 @@ class Utilities {
 		$dump .= "GET: ".print_r($_GET,true)."\n";
 		$dump .= "SERVER: ".print_r($_SERVER,true)."\n";
 		$dump .= "SESSION: ".print_r($_SESSION,true)."\n";
-		
+
 		if ($file) {
-			
+
 			// dump to a file
 			$fh = fopen($file,"w");
 			fwrite($fh,$dump);
 			fclose($fh);
-		
+
 		} else {
-			
+
 			// dump normally
 			return $dump;
-			
+
 		}
-		
+
 	}
-	
+
 	/**
 	 * Format XML document for easier reading.
-	 * 
+	 *
 	 * @param string $xml			- XML code
 	 * @param boolean $html_output		- (optional) set to true to produce HTML output
-	 * 
+	 *
 	 * @return string			- formatted XML document
 	 * @access public
 	 */
 	public function format_XML($xml,$html_output=false) {
-		
+
 		$xml_obj = new SimpleXMLElement($xml);
 		$level = 8;
 		$indent = 0; // current indentation level
 		$pretty = array();
-		
+
 		// get an array containing each XML element
 		$xml = explode("\n", preg_replace('/>\s*</', ">\n<", $xml_obj->asXML()));
-	
+
 		// shift off opening XML tag if present
 		if (count($xml) && preg_match('/^<\?\s*xml/', $xml[0])) {
 			$pretty[] = array_shift($xml);
 		}
-	
+
 		foreach ($xml as $el) {
 			if (preg_match('/^<([\w])+[^>\/]*>$/U', $el)) {
 				// opening tag, increase indent
 				$pretty[] = str_repeat(' ', $indent) . $el;
 				$indent += $level;
 				} else {
-				if (preg_match('/^<\/.+>$/', $el)) {			
+				if (preg_match('/^<\/.+>$/', $el)) {
 					$indent -= $level;	// closing tag, decrease indent
 				}
 				if ($indent < 0) {
@@ -532,9 +532,9 @@ class Utilities {
 				$pretty[] = str_repeat(' ', $indent) . $el;
 			}
 		}
-		
-		$xml = implode("\n", $pretty);	 
-		
+
+		$xml = implode("\n", $pretty);
+
 		if ($html_output) {
 			return htmlentities($xml);
 		} else {
@@ -549,27 +549,27 @@ class Utilities {
 	 * @param array $data			- array to convert
 	 * @param string $rootnodename		- (optional) root node name to be (default "data")
 	 * @param SimpleXMLElement $xml		- used for recursion
-	 * 
+	 *
 	 * @return string			- formatted XML document
 	 * @access public
 	 */
 	public function array2xml($data,$rootnodename="data",$xml=null) {
-		
+
 		// turn off compatibility mode otherwise SimpleXML will not work properly
 		if (ini_get('zend.ze1_compatibility_mode') == 1) ini_set ('zend.ze1_compatibility_mode', 0);
-		
+
 		// begin XML document
 		if ($xml == null) $xml = simplexml_load_string("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<$rootnodename />");
-		
+
 		// loop through the data passed in
 		foreach ($data as $key => $value) {
 
 			// cannot have numeric keys in XML
 			if (is_numeric($key)) $key = "id_". (string) $key;
-			
+
 			// replace anything non-alpha-numeric (except underscores)
 			$key = preg_replace("/[^a-z0-9_]/i","",$key);
-			
+
 			// if there is another array found, recurse
 			if (is_array($value)) {
 				$node = $xml->addChild($key);
@@ -579,29 +579,29 @@ class Utilities {
 				$value = htmlentities($value);
 				$xml->addChild($key,$value);
 			}
-			
+
 		}
-		
+
 		// return formatted XML document
 		return $this->format_XML($xml->asXML());
-		
+
 	}
-	
+
 	/**
 	 * Converts XML document into an array.
-	 * 
+	 *
 	 * @param string $contents		- XML code
 	 * @param boolean $get_attributes	- (optional) set to false to not include attributes
-	 * 
+	 *
 	 * @return array			- data structure
 	 * @access public
 	 */
 	public function xml2array($contents,$get_attributes=true) {
-		
+
 		// check we have what we need
 		if (!$contents) return false;
 		if(!function_exists('xml_parser_create')) return false;
-		
+
 		// get the XML parser of PHP - PHP must have this module for the parser to work
 		$parser = xml_parser_create();
 		xml_parser_set_option($parser,XML_OPTION_CASE_FOLDING,0);
@@ -609,113 +609,113 @@ class Utilities {
 		xml_parse_into_struct($parser,$contents,$xml_values);
 		xml_parser_free($parser);
 		if (!$xml_values) return false;
-	
+
 		// initializations
 		$xml_array = array();
 		$parents = array();
 		$opened_tags = array();
 		$arr = array();
 		$current = &$xml_array;
-	
+
 		// process the tags
 		foreach ($xml_values as $data) {
-			
+
 			// remove existing values, or there will be trouble
 			unset($attributes,$value);
-	
+
 			// this command will extract these variables into the foreach scope
 			// tag(string), type(string), level(int), attributes(array).
 			extract($data);
-	
+
 			$result = '';
-			
+
 			if ($get_attributes) {
-				
+
 				$result = array();
 				if (isset($value)) $result['value'] = $value;
-	
+
 				// set the attributes too
 				if (isset($attributes)) {
 					foreach ($attributes as $attr => $val) {
 						if ($get_attributes) {
 							// set all the attributes in a array called '@attributes'
-							$result['@attributes'][$attr] = $val; 
+							$result['@attributes'][$attr] = $val;
 						}
 					}
 				}
-				
+
 			} elseif (isset($value)) {
-				
+
 				$result = $value;
-				
+
 			}
-	
+
 			// see tag status and do the needed.
 			if ($type == "open") {
-				
+
 				$parent[$level-1] = &$current;
-	
+
 				if (!is_array($current) or (!in_array($tag, array_keys($current)))) {
-					
+
 					// unsert New tag
 					$current[$tag] = $result;
 					$current = &$current[$tag];
-	
+
 				} else {
-					
+
 					// there was another element with the same tag name
 					if (isset($current[$tag][0])) {
 						array_push($current[$tag], $result);
 					} else {
 						$current[$tag] = array($current[$tag],$result);
 					}
-					
+
 					$last = count($current[$tag]) - 1;
 					$current = &$current[$tag][$last];
-					
+
 				}
-	
+
 			} elseif ($type == "complete") {
 
 				// tags that ends in 1 line '<tag />'
-				
+
 				// see if the key is already taken.
 				if (!isset($current[$tag])) {
-					
+
 					// new Key
 					$current[$tag] = $result;
-	
+
 				} else {
-					
+
 					// if taken, put all things inside a list(array)
 					if ((is_array($current[$tag]) and !$get_attributes)
 							or (isset($current[$tag][0]) and is_array($current[$tag][0]) and $get_attributes)) {
 						array_push($current[$tag],$result);
 					} else {
 						// make it an array using using the existing value and the new value
-						$current[$tag] = array($current[$tag],$result); 
+						$current[$tag] = array($current[$tag],$result);
 					}
-					
+
 				}
-	
+
 			} elseif ($type == 'close') {
-				
+
 				// end of tag '</tag>'
 				$current = &$parent[$level-1];
-				
+
 			}
 		}
-	
+
 		// return array
 		return($xml_array);
-		
+
 	}
 
 	/**
 	 * Converts a given ascii string to hexidecimal.
-	 * 
+	 *
 	 * @param string $str			- string to convert
-	 * 
+	 *
 	 * @return string			- hexidecimal data
 	 * @access public
 	 */
@@ -723,12 +723,12 @@ class Utilities {
 		for ($i=0; $i<strlen($str); $i++) $data .= sprintf("%02x",ord(substr($str,$i,1)));
 		return $data;
 	}
-	
+
 	/**
 	 * Converts a given hexidecimal string to ascii.
-	 * 
+	 *
 	 * @param string $hex			- hexidecimal data
-	 * 
+	 *
 	 * @return string			- ascii string
 	 * @access public
 	 */
@@ -739,40 +739,40 @@ class Utilities {
 
 	/**
 	 * Calculates a rough "match percentage" between a list of keywords and a string of text.
-	 * 
+	 *
 	 * @param string/array $keywords	- keywords (if an array is passed it's flattenened out to a space-separated string)
 	 * @param string $text			- comparison text
-	 * 
+	 *
 	 * @return integer			- percentage, or false if there was a problem
 	 * @access public
 	 */
 	public function calculate_match_percentage($keywords,$text) {
-		
+
 		// check input
 		if (!$keywords || !$text) {
 			return false;
 		}
-		
+
 		// flatten string of keywords if necessary
 		if (is_array($keywords)) {
 			$keywords = implode(" ",$keywords);
 		}
-		
+
 		// calculate match percentage using PHP's built-in function
 		$sim = similar_text(strtolower($keywords),strtolower($text),$pc);
 		$simpc = sprintf("%0d",$pc);
-		
+
 		// return percentage
 		return $simpc;
-		
+
 	}
 
 	/**
 	 * Validates a password against a set of standard rules.
-	 * 
+	 *
 	 * @param string $password		- the password to validate
 	 * @param boolean $confirm		- (optional) if a password confirmation was demanded, pass the confirmed password here, if omitted then confirmation comparison will not be performed
-	 * 
+	 *
 	 * @return boolean			- false if the password was valid, otherwise an array of reasons why it was invalid
 	 * @access public
 	 */
@@ -780,72 +780,72 @@ class Utilities {
 
 		// create array for failure reasons
 		$fails = array();
-	
+
 		// check confirmation
 		if ($confirm) {
 			if ($password != $confirm) {
 				array_push($fails,"The two passwords you have entered do not match. You must enter the same password into the confirmation box.");
 			}
 		}
-		
+
 		// check length
 		if (strlen($password) < 6) {
-			array_push($fails,"The password you have entered is too short.");	
+			array_push($fails,"The password you have entered is too short.");
 		}
-		
+
 		// add general advice if there are fails
 		if (count($fails) > 0) {
 			array_push($fails,"Passwords must be at least six characters in length.");
-			array_push($fails,"Passwords are case sensitive. Ensure that you do not have your 'caps lock' switched on before typing your password.");	
+			array_push($fails,"Passwords are case sensitive. Ensure that you do not have your 'caps lock' switched on before typing your password.");
 		}
-		
+
 		// return verdict
 		if (count($fails) > 0) {
 			return $fails;
 		} else {
 			return false;
 		}
-		
+
 	}
 
 	/**
 	 * Checks list of tables for the presence of a given e-mail address.
-	 * 
+	 *
 	 * @param array $tables			- array of table names to check
 	 * @param array $email			- e-mail address to check
 	 * @param array $field			- (optional) field name to check (defaults to "email")
-	 * 
+	 *
 	 * @return boolean			- true if the e-mail address is not present, and therefore unique, or false otherwise
 	 * @access public
 	 */
 	public function check_unique_email($tables,$email,$field="email") {
-		
+
 		// initialise database
 		$db = DB::Instance();
 
 		// check array of user tables to check - each must have an "email" field
 		if (count($tables) == 0) return false;
-		
+
 		// ensure it's an e-mail address that's been passed
 		if (!$this->is_email_address($email)) return false;
-		
+
 		// scan each table
 		foreach ($tables as $table) {
 			if ($db->GetOne("SELECT {$field} FROM {$table} WHERE {$field} = '{$email}';")) {
 				return false;
 			}
 		}
-		
+
 		// seems to be unique across all tables
 		return true;
-		
+
 	}
-	
+
 	/**
 	 * Determines whether a given string is an e-mail address.
-	 * 
+	 *
 	 * @param string $string		- string to check
-	 * 
+	 *
 	 * @return boolean			- true if it's an e-mail address, otherwise false
 	 * @access public
 	 */
@@ -865,7 +865,7 @@ class Utilities {
 		}
 
 		if (!preg_match("/^\[?[0-9\.]+\]?$/",$email_array[1])) {
-			
+
 			// check if domain is IP, if not, it should be valid domain name
 			$domain_array = explode(".", $email_array[1]);
 
@@ -881,14 +881,14 @@ class Utilities {
 		}
 
 		return true;
-		
-	}	
-	
+
+	}
+
 	/**
 	 * Determines whether a given string is a valid MAC address.
-	 * 
+	 *
 	 * @param string $mac			- MAC address to validate
-	 * 
+	 *
 	 * @return boolean			- true if valid, otherwise false
 	 * @access public
 	 */
@@ -896,12 +896,12 @@ class Utilities {
 		if (preg_match('/[A-Z]{4}[0-9]{7,9}\/[A-Z]{2}[0-9]{2}[A-Z]$/',$mac)) return true;
 		return false;
 	}
-	
+
 	/**
 	 * Determines whether a given string is a valid UK mobile number.
 	 *
 	 * @param string $mobile		- mobile number to check
-	 * 
+	 *
 	 * @return boolean			- true if valid, otherwise false
 	 * @access public
 	 */
@@ -910,16 +910,16 @@ class Utilities {
 		if (preg_match('/^((\+447)|07|00447)[0-9]{9}$/',$mobile)) return true;
 		return false;
 	}
-	
+
 	/**
 	 * Generates a menu of countries.
-	 * 
+	 *
 	 * @param string $name			- name and ID of form field
 	 * @param string $codelength		- set to "ISO2" to use two letter country codes in the option values, or "ISO3" to use three letter ISO codes
 	 * @param string $presel		- (optional) country to which menu should be pre-selected, omit to use GBR
 	 * @param string $cssclass		- (optional) CSS class to apply to the form element
 	 * @param string $onchange		- (optional) Javascript code to insert into "onchange" attribute, if required
-	 * 
+	 *
 	 * @return string			- HTML code for menu
 	 * @access public
 	 */
@@ -930,73 +930,73 @@ class Utilities {
 			if ($codelength == "ISO2") $presel = "GB";
 			if ($codelength == "ISO3") $presel = "GBR";
 		}
-		
+
 		// begin HTML
 		$html = "<select name=\"$name\" id=\"$name\" ";
 		if ($cssclass) $html .= "class=\"{$cssclass}\"";
 		if ($onchange) $html .= "onchange=\"{$onchange}\"";
 		$html .= ">\n";
-		
+
 		foreach ($this->country_database() as $countryname => $countryinfo) {
-			
+
 			if ($codelength == "ISO2") {
 				$code = $countryinfo[1];
 			} else {
 				$code = $countryinfo[0];
 			}
-			
+
 			$html .= "<option value=\"$code\"";
 			if ($code == $presel) $html .= " selected";
-			$html .= ">$countryname</option>\n";	
+			$html .= ">$countryname</option>\n";
 		}
-		
+
 		// return HTML
 		return $html."</select>\n";
-		
+
 	}
-	
+
 	/**
 	 * Generates a menu of UK counties.
-	 * 
+	 *
 	 * @param string $name			- name and ID of form element
 	 * @param string $presel		- (optional) county to which menu should be pre-selected
 	 * @param string $cssclass		- (optional) CSS class to apply to the form element
 	 * @param string $onchange		- (optional) Javascript code to insert into "onchange" attribute, if required
-	 * 
+	 *
 	 * @return string			- HTML code for menu
 	 * @access public
 	 */
 	public function county_menu($name,$presel=false,$cssclass=false,$onchange=false) {
-	
+
 		// begin HTML
 		$html = "<select name=\"$name\" id=\"$name\" ";
 		if ($cssclass) $html .= "class=\"{$cssclass}\"";
 		if ($onchange) $html .= "onchange=\"{$onchange}\"";
 		$html .= ">\n";
-		
+
 		// add non-county options
 		$html .= "<option value=\"\">Please select ...</option>\n";
 		$html .= "<option value=\"OUK\">Outside United Kingdom</option>\n";
-		
+
 		// add counties
 		foreach ($this->uk_counties as $countyname) {
-			
+
 			$html .= "<option value=\"$countyname\"";
 			if ($countyname == $presel) $html .= " selected";
 			$html .= ">$countyname</option>\n";
-			
+
 		}
-		
+
 		// return HTML
 		return $html."</select>\n";
-		
+
 	}
 
 	/**
 	 * Retrieves country information from either 2 or 3 letter country code.
-	 * 
+	 *
 	 * @param string $code			- 2 or 3 letter country code
-	 * 
+	 *
 	 * @return array			- array of country information, or false if not found
 	 * @access public
 	 */
@@ -1004,21 +1004,21 @@ class Utilities {
 
 		// check input
 		if (strlen($code) < 2 && strlen($code) > 3) return false;
-		
+
 		// search for country data
 		foreach ($this->country_database() as $name => $data) {
-			if (strlen($code) == 2 && $data[1] == $code) { return $data; }	
-			if (strlen($code) == 3 && $data[0] == $code) { return $data; }	
+			if (strlen($code) == 2 && $data[1] == $code) { return $data; }
+			if (strlen($code) == 3 && $data[0] == $code) { return $data; }
 		}
-		
+
 		// no data found, invalid code
 		return false;
-		
+
 	}
-	
+
 	/**
 	 * Generates a password.
-	 * 
+	 *
 	 * @return string			- generated password
 	 * @access public
 	 */
@@ -1026,7 +1026,7 @@ class Utilities {
 
 		$salt = "abcdefghjkmnpqrstuvwxyz0123456789";
 		srand((double)microtime()*1000000);
-		
+
 		$i = 0;
 		while ($i <= 7) {
 			$num = rand() % 33;
@@ -1034,84 +1034,84 @@ class Utilities {
 			$pass = $pass . $tmp;
 			$i++;
 		}
-		
+
 		return $pass;
-		
+
 	}
-	
+
 	/**
 	 * Adds the correct suffix ("st", "nd", "rd" or "th") to a day of the month.
-	 * 
+	 *
 	 * @param integer $day			- (optional) the day of the month (1 to 31), omit to use today's date
-	 * 
+	 *
 	 * @return string			- formatted day number
 	 * @access public
 	 */
 	public function day_suffix($day=false) {
-		
+
 		if (!$day) $day = date("d");
 
 		if (substr($day,strlen($day)-1) == "1") return $day."st";
 		if (substr($day,strlen($day)-1) == "2") return $day."nd";
 		if (substr($day,strlen($day)-1) == "3") return $day."rd";
-			
+
 		return $day."th";
-		
+
 	}
 
 	/**
 	 * Converts a hexidecimal colour reference to separate RGB values.
-	 * 
+	 *
 	 * @param string $hexcol		- hexidecimal colour reference, with or without preceding #
-	 * 
+	 *
 	 * @return array			- array of elements (in order) red, green, blue
 	 * @access public
 	 */
 	public function hex2rgb($hexcol) {
-		
+
 		$hexcol = preg_replace("/\#/","",$hexcol);
 		$rgb = array();
-	
+
 		$rgb[0] = hexdec(substr($hexcol,0,2));
 		$rgb[1] = hexdec(substr($hexcol,2,2));
 		$rgb[2] = hexdec(substr($hexcol,4,2));
-	
+
 		return $rgb;
-	
+
 	}
-	
+
 	/**
 	 * Determines whether a given string is an ISO date (YYYY-MM-DD).
-	 * 
+	 *
 	 * @param string $string		- string to check
 	 * @param boolean $withtime		- (optional) set to true to check for time in addition (YYYY-MM-DD HH:MM:SS)
-	 * 
+	 *
 	 * @return boolean			- true if it's an ISO date [and time], otherwise false
 	 * @access public
 	 */
 	public function is_iso_date($string,$withtime=false) {
-		
+
 		if ($withtime) {
 			$regexp = "/^[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9] [0-9][0-9]:[0-9][0-9]:[0-9][0-9]/";
 		} else {
 			$regexp = "/^[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]/";
 		}
-		
+
 		if (preg_match($regexp,$string)) {
 			return true;
 		} else {
-			return false;	
-		} 
-		
+			return false;
+		}
+
 	}
-	
+
 	/**
 	 * Translate a formatted date (dd/mm/yyyy) to an ISO date (yyyy-mm-dd).
-	 * 
+	 *
 	 * This function will NOT validate your input.
-	 * 
+	 *
 	 * @param string $formatted_date	- dd/mm/yyyy format date
-	 * 
+	 *
 	 * @return string			- yyyy-mm-dd format date
 	 * @access public
 	 */
@@ -1119,150 +1119,150 @@ class Utilities {
 		$dp = explode("/",$formatted_date);
 		return "{$dp[2]}-{$dp[1]}-{$dp[0]}";
 	}
-	
+
 	/**
 	 * Translate an ISO date (yyyy-mm-dd) to a human date (dd/mm/yyyy).
-	 * 
+	 *
 	 * This function will NOT validate your input.
-	 * 
+	 *
 	 * @param string $iso_date	- yyyy-mm-dd format date
 	 * @param boolean $american	- (optional) set to true to return the date in silly American mm/dd/yyyy format (default false)
-	 * 
+	 *
 	 * @return string		- dd/mm/yyyy format date, or mm/dd/yyyy if $american set to true
 	 * @access public
 	 */
 	public function human_date($iso_date,$american=false) {
-		
+
 		$dp = explode("-",$iso_date);
-		
+
 		if ($american) {
 			return "{$dp[1]}/{$dp[2]}/{$dp[0]}";
 		} else {
 			return "{$dp[2]}/{$dp[1]}/{$dp[0]}";
 		}
-		
+
 	}
-	
+
 	/**
 	 * Perform date calculations.
-	 * 
+	 *
 	 * Essentially a shortcut to the cumbersome multiple lines of code that
 	 * are required to do what should be simple date calculations.
-	 * 
+	 *
 	 * @see http://www.php.net/manual/en/class.dateinterval.php
-	 * 
+	 *
 	 * @param string $date		- date (ISO format)
 	 * @param string $operator	- operator, either "add" or "sub"
 	 * @param string $interval	- interval (see URL above)
 	 * @param boolean $format	- (optional) set to true to return the calculated date in dd/mm/yyyy format
-	 * 
+	 *
 	 * @return string		- calculated date (ISO format), or false if input was invalid
 	 * @access public
 	 */
 	public function date_calculation($date,$operator,$interval,$format=false) {
-		
+
 		// check input
 		if (!self::is_iso_date($date)) return false;
 		if (!in_array($operator,array("add","sub"))) return false;
-		
+
 		// perform calculation
 		$dt = new DateTime($date);
 		$dt->$operator(new DateInterval($interval));
-		
+
 		// return date
 		if ($format) {
 			return $dt->format("d/m/Y");
 		} else {
 			return $dt->format("Y-m-d");
 		}
-		
+
 	}
-	
+
 	/**
 	 * Converts a number of minutes to the corresponding number of hours and minutes.
-	 * 
+	 *
 	 * @param integer $mins			- number of minutes
-	 * 
+	 *
 	 * @return array			- array, first element is the number of hours, second element is the number of minutes
 	 * @access public
 	 */
 	public function mins2hours_and_mins($mins) {
-		
+
 		if ($mins < 0) {
 			$min = abs($mins);
 		} else {
 			$min = $mins;
 		}
-		
+
 		$H = floor($min / 60);
 		$M = ($min - ($H * 60)) / 100;
-		
+
 		$hours = $H + $M;
 		if ($mins < 0) $hours = $hours * (-1);
-		
+
 		$expl = explode(".", $hours);
 		$H = $expl[0];
-		
+
 		if (empty($expl[1])) $expl[1] = 00;
-		
+
 		$M = $expl[1];
 		if (strlen($M) < 2) $M = $M."0";
-		
+
 		return array(intval($H),intval($M));
-	
+
 	}
-	
+
 	/**
 	 * Convert seconds to a string with hours, minutes and seconds.
-	 * 
+	 *
 	 * Credit due to Jon Haworth.
 	 * @see http://www.laughing-buddha.net/php/lib/sec2hms/
-	 * 
+	 *
 	 * @param integer $sec			- seconds
 	 * @param boolean $padhours		- (optional) pad hours with leading zero (default true)
-	 * 
+	 *
 	 * @return string			- H:M:S string
 	 * @access public
 	 */
 	public function seconds2hms($sec,$padhours=true) {
-	
+
 		// start with a blank string
 		$hms = "";
-		
+
 		// do the hours first: there are 3600 seconds in an hour, so if we divide
 		// the total number of seconds by 3600 and throw away the remainder, we're
 		// left with the number of hours in those seconds
-		$hours = intval(intval($sec) / 3600); 
-	
+		$hours = intval(intval($sec) / 3600);
+
 		// add hours to $hms (with a leading 0 if asked for)
 		$hms .= ($padhours) ? str_pad($hours, 2, "0", STR_PAD_LEFT). ":" : $hours.":";
-		
+
 		// dividing the total seconds by 60 will give us the number of minutes
 		// in total, but we're interested in *minutes past the hour* and to get
 		// this, we have to divide by 60 again and then use the remainder
-		$minutes = intval(($sec / 60) % 60); 
-	
+		$minutes = intval(($sec / 60) % 60);
+
 		// add minutes to $hms (with a leading 0 if needed)
 		$hms .= str_pad($minutes, 2, "0", STR_PAD_LEFT). ":";
-	
+
 		// seconds past the minute are found by dividing the total number of seconds
 		// by 60 and using the remainder
-		$seconds = intval($sec % 60); 
-	
+		$seconds = intval($sec % 60);
+
 		// add seconds to $hms (with a leading 0 if needed)
 		$hms .= str_pad($seconds, 2, "0", STR_PAD_LEFT);
-	
+
 		// done!
 		return $hms;
 
 	}
-	
+
 	/**
 	 * Calculates number of months between two ISO format dates.
-	 * 
+	 *
 	 * @param string $date_from		- start date (YYYY-MM-DD)
 	 * @param string $date_to		- end date (YYYY-MM-DD)
-	 * 
+	 *
 	 * @return integer			- number of months
 	 * @access public
 	 */
@@ -1271,64 +1271,64 @@ class Utilities {
 		$tmp_arr = explode("-",$date_from);
 		$from_month = $tmp_arr[1];
 		$from_year = $tmp_arr[0];
-			
+
 		$tmp_arr = explode("-",$date_to);
 		$to_month = $tmp_arr[1];
 		$to_year = $tmp_arr[0];
-			
+
 		// check the from year, if less than the to year then need to take this into account as it will affect number of months
 		if ($from_year < $to_year) {
-				
+
 			// work out how many months till end of from_year and from start of to_year
 			$monthsleft = (12 - $from_month);
-				
+
 			// possibility of more than 1 year difference so take this into account
 			$year_gap = $to_year - $from_year;
-				
+
 			if ($year_gap > 1) {
 				$months = (12*($year_gap-1)) + $monthsleft;
 			} else {
 				$months = $monthsleft;
 			}
-				
+
 			// finally add the value of to_month to the months total
 			$months += $to_month;
-				
+
 		} else {
-				
+
 			// same year so just work out the difference between the two months
 			$months = ($to_month-$from_month) + 1;
-				
+
 		}
-		
+
 		return $months;
-			
+
 	}
 
 	/**
 	 * Creates XML to form an RSS feed. Remember to set the content type before calling.
-	 * 
+	 *
 	 * @param string $title			- title
 	 * @param string $description		- description of feed
 	 * @param string $link			- general link to parent website
 	 * @param string $editor		- managing editor (name and/or e-mail address (in brackets if name also used))
 	 * @param string $feedlink		- URL of feed to be rendered
 	 * @param array $items			- RSS items. Each element is an associative array containing the following fields: timestamp, category, title, description, link, author. Note that the item's content is passed in "description"
-	 * 
+	 *
 	 * @return string			- RSS XML
 	 * @access public
 	 */
 	public function create_rss_feed($title,$description,$link,$editor,$feedlink,$items) {
-			
+
 		// check input
 		if (!$items || count($items) == 0) {
 			return false;
 		}
-	
+
 		// XML header
 		$xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
 		$xml .= "<rss xmlns:atom='http://www.w3.org/2005/Atom' xmlns:openSearch='http://a9.com/-/spec/opensearchrss/1.0/' xmlns:georss='http://www.georss.org/georss' version='2.0'>";
-		
+
 		// define channel
 		$xml .= "<channel>";
 		$xml .= "<lastBuildDate>".strftime("%a, %d %b %Y %H:%M:%S +0000",time())."</lastBuildDate>";
@@ -1341,7 +1341,7 @@ class Utilities {
 		$xml .= "<openSearch:startIndex>1</openSearch:startIndex>";
 		$xml .= "<openSearch:itemsPerPage>".count($items)."</openSearch:itemsPerPage>";
 		$xml .= "<atom:link href=\"{$feedlink}\" rel=\"self\" type=\"application/rss+xml\"/>";
-		
+
 		// add items
 		foreach ($items as $item) {
 			$xml .= "<item>";
@@ -1356,28 +1356,28 @@ class Utilities {
 			$xml .= "<thr:total xmlns:thr='http://purl.org/syndication/thread/1.0'>0</thr:total>";
 			$xml .= "</item>";
 		}
-				
+
 		// complete XML
 		$xml .= "</channel>";
 		$xml .= "</rss>";
 
 		// return formatted XML
 		return $this->format_XML($xml);
-		
+
 	}
 
 	/**
 	 * Generates a menu of timezones with values as UTC offsets.
-	 * 
+	 *
 	 * @param string $name			- name and ID of form element
 	 * @param string $presel		- (optional) timezone (record ID) to which menu should be pre-selected, If not passed then Europe/London is used
 	 * @param string $cssclass		- (optional) set to true to apply the "wide" CSS class to the form element. Disregarded in DHTML mode
-	 * 
+	 *
 	 * @return string			- HTML code for menu
 	 * @access public
 	 */
 	public function timezone_menu($name,$presel=false,$cssclass=false) {
-			
+
 		// set default preselection
 		if (!$presel) $presel = 419;
 
@@ -1385,107 +1385,107 @@ class Utilities {
 		$html = "<select name=\"$name\" id=\"$name\" ";
 		if ($cssclass) $html .= "class=\"{$cssclass}\"";
 		$html .= ">\n";
-			
+
 		// add timezones
 		foreach ($this->timezone_info() as $id => $tzd) {
-				
+
 			// build label
 			$label = sprintf("%s: %s (GMT+%d)",$tzd["continent"],$tzd["city"],($tzd["offset"]/3600000));
-				
+
 			// add menu option
 			$html .= "<option value=\"{$id}\"";
 			if ($id == $presel) $html .= " selected";
 			$html .= ">$label</option>\n";
-				
+
 		}
-		
+
 		// complete HTML
 		$html .= "</select>";
-	
+
 		// return menu code
-		return $html;	
-		
+		return $html;
+
 	}
-	
+
 	/**
 	 * Count the number of pages in a PDF document.
-	 * 
+	 *
 	 * @param string $fullpdfpath		- path to PDF document
-	 * 
+	 *
 	 * @return integer			- number of pages in document, or false if file wasn't found or there weren't any pages
 	 * @access public
 	 */
 	public function count_pdf_pages($fullpdfpath) {
-		
+
 		if (file_exists($fullpdfpath)) {
-						
+
 			// open the file for reading
 			if ($handle = fopen($fullpdfpath, "rb")) {
-				
+
 				$count = 0;
 				$i = 0;
-				
+
 				while (!feof($handle)) {
-					
+
 					if ($i > 0) {
-						
+
 						$contents .= fread($handle,8152);
-						
+
 					} else {
-						
+
 						// In some pdf files, there is an N tag containing the number of
 						// of pages. This doesn't seem to be a result of the PDF version.
 						// Saves reading the whole file if it's present.
-						
+
 						$contents = fread($handle, 1000);
-				 		
+
 						if (preg_match("/\/N\s+([0-9]+)/", $contents, $found)) return $found[1];
-						
+
 					}
-					
+
 					$i++;
-					
+
 				}
-				
+
 				fclose($handle);
-				
+
 				// get all the trees with 'pages' and 'count'. the biggest number
 				// is the total number of pages, if we couldn't find the /N switch above.
-								 
+
 				if (preg_match_all("/Count\s+([0-9]+)/", $contents, $capture, PREG_SET_ORDER)) {
-					
+
 					foreach ($capture as $c) {
 						if ($c[1] > $count) {
 							$count = $c[1];
 						}
 					}
-					
-					return $count;	 
-									 
+
+					return $count;
+
 				}
-				
+
 			}
-			
+
 		}
-		
+
 		// unable to determine the number of pages, or there simply isn't any
 		return false;
-			
+
 	}
 
 	/**
 	 * Given a number of bytes, return the most appropriate representation of it in B, KB, MB, GB or TB.
-	 * 
+	 *
 	 * @param unknown_type $number		- number to sizify
-	 * 
+	 *
 	 * @return string			- suffixed number of bytes, kilobytes, megabytes, gigabytes or terabytes, or false if argument passed wasn't a number
 	 * @access public
 	 */
 	public function data_sizify($number) {
-		
+
 		// check that argument is numeric
 		if (!is_numeric($number)) return $number;
-		
+
 		if ($number < 1024) {
 			return $number."B";
 		} else if ($number < (1024*1024)) {
@@ -1497,33 +1497,33 @@ class Utilities {
 		} else {
 			return number_format($number/(1024*1024*1024*1024),2)."GB";
 		}
-		
+
 	}
-	
+
 	/**
 	 * Recursively build a multidimensional array representing a directory tree structure.
-	 * 
+	 *
 	 * @param string $path			- path to directory
 	 * @param boolean $ignore_rcs		- ignore revision control system directories (currently supports CVS and SVN)
-	 * 
+	 *
 	 * @return array			- recursive associative array of files (with file sizes) and subdirectories, or false if path not found
 	 * @access public
 	 */
 	public function directory_tree($path,$ignore_rcs=true) {
-		
+
 		// check that path exists
 		if (!is_dir($path)) return false;
-		
+
 		$fso = array();
 		$dh = opendir($path);
-		
+
 		// list of banned object names
 		$banned_names = array(".","..","Thumbs.db");
 		if ($ignore_rcs) {
 			$rcs_files = array(".svn",".cvsignore");
-			$banned_names = array_merge($banned_names,$rcs_files);	
+			$banned_names = array_merge($banned_names,$rcs_files);
 		}
-		
+
 		// scan directory and recurse if necessary
 		while (($file = readdir($dh) ) !== false) {
 			if (!in_array($file,$banned_names)) {
@@ -1534,106 +1534,106 @@ class Utilities {
 				}
 			}
 		}
-		
+
 		closedir($dh);
-		
+
 		// return array
 		return $fso;
-		
+
 	}
-	
+
 	/**
 	 * Create a tag cloud.
-	 * 
+	 *
 	 * @param array $data			- associative array of labels and importance integers
 	 * @param string $baselink		- (optional) base hyperlink (default "#")
 	 * @param string $cssclass		- (optional) CSS class apply (default "tag_cloud")
 	 * @param integer $minfontsize		- (optional) minimum font size (default 10)
 	 * @param integer $maxfontsize		- (optional) maximum font size (default 30)
-	 * 
+	 *
 	 * @return string			- tag cloud HTML
 	 * @access public
 	 */
 	public function tag_cloud($data = array(),$baselink="#",$cssclass="tag_cloud",$minfontsize=10,$maxfontsize=30) {
-	
+
 		// check data
 		if (!is_array($data) || count($data) == 0) return false;
-		
+
 		$mincount = min($data);
 		$maxcount = max($data);
 		$spread = $maxcount-$mincount;
 		$spread == 0 && $spread = 1;
 
 		$cloudtags = array();
-	
+
 		foreach ($data as $tag => $count) {
 			$size = $minfontsize + ($count-$mincount) * ($maxfontsize-$minfontsize) / $spread;
 			$tag = htmlspecialchars(stripslashes($tag));
 			$cloudtags[] = '<a style="font-size: '.floor($size).'px;" class="'.$cssclass.'" href="'.$baselink.$tag.'" title="\''.$tag.'\' returned a count of '.$count.'">'.$tag.'</a>';
 		}
-	
+
 		// return combined array
 		return join("\n",$cloudtags)."\n";
-		
+
 	}
 
 	/**
 	 * Add anchor HTML to URLs in a string.
-	 * 
-	 * This functions deserves credit to the fine folks at phpbb.com 
-	 * 
+	 *
+	 * This functions deserves credit to the fine folks at phpbb.com
+	 *
 	 * @param string $text			- text string
-	 * 
+	 *
 	 * @return string			- text string with hyperlinks
 	 * @access public
 	 */
 	public function clickable_links($text) {
 
 		$text = preg_replace('#(script|about|applet|activex|chrome):#is', "\\1:", $text);
-		
+
 		// pad it with a space so we can match things at the start of the 1st line.
 		$ret = ' '.$text;
-		
+
 		// matches an "xxxx://yyyy" URL at the start of a line, or after a space.
 		// xxxx can only be alpha characters.
 		// yyyy is anything up to the first space, newline, comma, double quote or <
 		$ret = preg_replace("#(^|[\n ])([\w]+?://[\w\#$%&~/.\-;:=,?@\[\]+]*)#is","\\1<a href=\"\\2\" target=\"_blank\">\\2</a>",$ret);
-		
+
 		// matches a "www|ftp.xxxx.yyyy[/zzzz]" kinda lazy URL thing
 		// must contain at least 2 dots. xxxx contains either alphanum, or "-"
 		// zzzz is optional, will contain everything up to the first space, newline, comma, double quote or <.
 		$ret = preg_replace("#(^|[\n ])((www|ftp)\.[\w\#$%&~/.\-;:=,?@\[\]+]*)#is","\\1<a href=\"http://\\2\" target=\"_blank\">\\2</a>",$ret);
-		
+
 		// matches an email@domain type address at the start of a line, or after a space.
 		// note: only the followed chars are valid; alphanums, "-", "_" and or ".".
 		$ret = preg_replace("#(^|[\n ])([a-z0-9&\-_.]+?)@([\w\-]+\.([\w\-\.]+\.)*[\w]+)#i","\\1<a href=\"mailto:\\2@\\3\">\\2@\\3</a>",$ret);
-		
+
 		// remove our padding and return
 		$ret = substr($ret,1);
-		return $ret; 
+		return $ret;
 
 	}
 
 	/**
 	 * Validate credit card number and return card type.
-	 * 
+	 *
 	 * Optionally you can validate if it is a specific type.
 	 *
 	 * @param string $ccnumber		- credit card number
 	 * @param string $cardtype		- (optional) credit card type to verify (see array list)
 	 * @param string $allowtest		- (optional) allow test card number 411111111111111 (default false)
-	 * 
+	 *
 	 * @return array			- associate array of card information, including its validity
 	 * @access public
 	 */
 	public function validate_creditcard($ccnumber,$cardtype="",$allowtest=false) {
-		
+
 		// check for test card number
 		if ($allowtest == false && $ccnumber == "4111111111111111") return false;
- 
+
 		// Strip non-numeric characters
 		$ccnumber = preg_replace("/[^0-9]/","",$ccnumber);
- 
+
 		// array of card types and matching regular expressions
 		$creditcard = array(
 			'visa'		=>	"/^4\d{3}-?\d{4}-?\d{4}-?\d{4}$/",
@@ -1646,9 +1646,9 @@ class Utilities {
 			'enroute'	=>	"/^[2014|2149]\d{11}$/",
 			'switch'	=>	"/^[4903|4911|4936|5641|6333|6759|6334|6767]\d{12}$/"
 		);
- 
+
 		if (empty($cardtype)) {
-			
+
 			$match = false;
 			foreach ($creditcard as $cardtype => $pattern) {
 				if (preg_match($pattern,$ccnumber) ==1 ) {
@@ -1656,44 +1656,44 @@ class Utilities {
 					break;
 				}
 			}
-			
+
 			if (!$match) return false;
-			
+
 		} elseif (preg_match($creditcard[strtolower(trim($cardtype))],$ccnumber) == 0) {
-			
+
 			return false;
-			
-		}		
- 
+
+		}
+
 		// build return array
 		$return['valid'] = $this->luhn_check($ccnumber);
 		$return['ccnum'] = $ccnumber;
 		$return['type']	= $cardtype;
-		
+
 		return $return;
-		
+
 	}
- 
+
 	/**
 	 * Perform a modulus 10 (Luhn algorithm) check.
-	 * 
+	 *
 	 * More information on this algorithim can be found at:
 	 * http://blog.phpkemist.com/2007/03/22/modulus-10-checking-with-php-programming/
 	 *
 	 * @param string $ccnum			- credit card number
-	 * 
+	 *
 	 * @return boolean			- true if valid, otherwise false
 	 * @access public
 	 */
 	public function luhn_check($ccnum) {
-		
+
 		$checksum = 0;
 		for ($i=(2-(strlen($ccnum) % 2)); $i<=strlen($ccnum); $i+=2) {
 			$checksum += (int)($ccnum{$i-1});
 		}
- 
+
 		// analyze odd digits in even length strings or even digits in odd length strings
-		for ($i=(strlen($ccnum) % 2)+1; $i<strlen($ccnum); $i+=2){ 
+		for ($i=(strlen($ccnum) % 2)+1; $i<strlen($ccnum); $i+=2){
 			$digit = (int)($ccnum{$i-1}) * 2;
 			if ($digit < 10) {
 				$checksum += $digit;
@@ -1701,61 +1701,61 @@ class Utilities {
 				$checksum += ($digit-9);
 			}
 		}
- 
+
 		if (($checksum % 10) == 0) {
-			return true; 
+			return true;
 		} else {
 			return false;
 		}
-		
+
 	}
 
 	/**
 	 * Takes two or more arguments and returns the value of the first non-NULL argument.
-	 * 
+	 *
 	 * If all the arguments evaluate to NULL, NULL is returned. One of those
 	 * functions that should be part of PHP, so will be deleted from this
 	 * library when it eventually makes it.
-	 * 
+	 *
 	 * @param mixed $args			- two or more arguments
-	 * 
+	 *
 	 * @return string			- coalesced string, or null
 	 * @access public
 	 */
 	public function coalesce() {
-	
+
 		foreach (func_get_args() as $arg) {
 			if (!empty($arg)) {
 				return $arg;
 			}
 		}
-		
+
 		return null;
-		
+
 	}
 
 	/**
 	 * Calculate the date $interval working days from a date, not including bank holidays or weekends.
-	 * 
+	 *
 	 * Recursive function with comprehensive United Kingdom bank holiday checker.
 	 * Do not use stupidly large intervals!
-	 * 
+	 *
 	 * @param integer $day			- day of start date
 	 * @param integer $month		- month of start date
 	 * @param integer $year			- year of start date
 	 * @param integer $interval		- number of days
-	 * 
+	 *
 	 * @return string			- calculated date
 	 * @access public
 	 */
 	public function working_days_from($day,$month,$year,$interval) {
-		
+
 		// get date + 1 day
 		$date = date("Y-m-d", mktime(0, 0, 0, $month, $day, $year)+60*60*24);
-		
+
 		// array for bank holidays
 		$bankhols = array();
-		
+
 		// New year's day
 		switch (date("w", strtotime("$year-01-01 12:00:00"))) {
 			case 6:
@@ -1768,13 +1768,13 @@ class Utilities {
 				$bankhols[] = "$year-01-01";
 				break;
 		}
-		
+
 		// Good Friday
 		$bankhols[] = date("Y-m-d",strtotime( "+".(easter_days($year) - 2)." days",strtotime("$year-03-21 12:00:00")));
-		
+
 		// Easter Monday
 		$bankhols[] = date("Y-m-d",strtotime( "+".(easter_days($year) + 1)." days",strtotime("$year-03-21 12:00:00")));
-		
+
 		// May Day
 		if ($year == 1995) {
 			// VE day 50th anniversary year exception
@@ -1804,7 +1804,7 @@ class Utilities {
 				break;
 			}
 		}
-		
+
 		// Whitsun
 		if ($year == 2002) {
 			// exception year
@@ -1835,7 +1835,7 @@ class Utilities {
 				break;
 			}
 		}
-		
+
 		// Summer Bank Holiday:
 		switch (date("w", strtotime("$year-08-31 12:00:00"))) {
 			case 0:
@@ -1860,7 +1860,7 @@ class Utilities {
 				$bankhols[] = "$year-08-26";
 				break;
 		}
-		
+
 		// Christmas
 		switch (date("w", strtotime("$year-12-25 12:00:00"))) {
 			case 5:
@@ -1879,19 +1879,19 @@ class Utilities {
 				$bankhols[] = "$year-12-25";
 				$bankhols[] = "$year-12-26";
 		}
-		
+
 		// Millenium eve
 		if ($year == 1999) $bankhols[] = "1999-12-31";
-		
+
 		// William and Kate royal wedding
 		if ($year == 2011) $bankhols[] = "2011-04-29";
-		
+
 		// Queen golden jubilee
 		if ($year == 2002) $bankhols[] = "2002-06-03";
-		
+
 		// Queen diamond jubilee
 		if ($year == 2012) $bankhols[] = "2012-06-05";
-		
+
 		if (date("l", mktime(0, 0, 0, $month, $day, $year)+60*60*24) == "Saturday" || date("l", mktime(0, 0, 0, $month, $day, $year)+60*60*24) == "Sunday") {
 			// day is weekend, do not count as working day
 			null;
@@ -1913,10 +1913,10 @@ class Utilities {
 			$nyear = date("Y",mktime(0, 0, 0, $month, $day, $year)+60*60*24);
 			$date = $this->working_days_from($nday,$nmonth,$nyear,$interval);
 		}
-		
+
 		// return calculated date
 		return $date;
-		
+
 	}
 
 	/**
@@ -1924,19 +1924,19 @@ class Utilities {
 	 *
 	 * @param array $arrObjData		- object data
 	 * @param array $arrSkipIndices		- used internally for recursion, do not pass
-	 * 
+	 *
 	 * @return array			- converted array
 	 * @access public
 	 */
 	public function object2array($arrObjData,$arrSkipIndices = array()) {
 
 		$arrData = array();
-		 
+
 		// if input is object, convert into array
 		if (is_object($arrObjData)) {
 			$arrObjData = get_object_vars($arrObjData);
 		}
-		 
+
 		if (is_array($arrObjData)) {
 			foreach ($arrObjData as $index => $value) {
 				if (is_object($value) || is_array($value)) {
@@ -1953,9 +1953,9 @@ class Utilities {
 
 	/**
 	 * Translate English text into Facebook drivel.
-	 * 
+	 *
 	 * @param string $english		- English text, with proper spelling and punctuation, to translate.
-	 * 
+	 *
 	 * @return string			- Translate text, or false if no text passed.
 	 * @access public
 	 */
@@ -1963,17 +1963,17 @@ class Utilities {
 
 		// setup
 		$fb = stripslashes($english);
-		
+
 		// trap empty queries
 		if (strlen($fb) == 0) return false;
-		
+
 		// remove all commas and apostrophes
 		$fb = preg_replace("/\,/"," ",$fb);
 		$fb = preg_replace("/\'/","",$fb);
-		
+
 		// replace all full stops with a couple of exclamation marks
 		$fb = preg_replace("/\./","!! ",$fb);
-		
+
 		// simple word translations
 		$fb = preg_replace("/ your /i"," ur ",$fb);
 		$fb = preg_replace("/ you /i"," u ",$fb);
@@ -1987,10 +1987,10 @@ class Utilities {
 		$fb = preg_replace("/ some /i"," sum ",$fb);
 		$fb = preg_replace("/ because /i"," cuz ",$fb);
 		$fb = preg_replace("/ youre /i"," your ",$fb);
-		
+
 		// remove "g" from all words ending in "ing"
 		$fb = preg_replace("/ing /i","in ",$fb);
-	
+
 		// replace all number words with numbers
 		$fb = preg_replace("/ one /i"," 1 ",$fb);
 		$fb = preg_replace("/ two /i"," 2 ",$fb);
@@ -2002,7 +2002,7 @@ class Utilities {
 		$fb = preg_replace("/ eight /i"," 8 ",$fb);
 		$fb = preg_replace("/ nine /i"," 9 ",$fb);
 		$fb = preg_replace("/ ten /i"," 10 ",$fb);
-		
+
 		// similarly, replace all number-th words with numeric abbreviations
 		$fb = preg_replace("/ first /i"," 1st ",$fb);
 		$fb = preg_replace("/ second /i"," 2nd ",$fb);
@@ -2014,68 +2014,68 @@ class Utilities {
 		$fb = preg_replace("/ eighth /i"," 8th ",$fb);
 		$fb = preg_replace("/ nineth /i"," 9th ",$fb);
 		$fb = preg_replace("/ tenth /i"," 10th ",$fb);
-	
+
 		// remove trailing space(s) and double spaces
 		$fb = preg_replace("/	/"," ",$fb);
 		$fb = rtrim($fb);
-		
+
 		// add random number of exclamation marks
 		for ($i=1; $i<=rand(1,8); $i++) $fb = $fb."!";
-		
+
 		// and then a few 1s
 		for ($i=1; $i<=rand(1,3); $i++) $fb = $fb."1";
-		
+
 		// and the compulsory LOL and kisses
 		$fb = $fb." LOL xx";
-	
+
 		// lastly, convert to either all uppercase or all lowercase
 		if (rand(1,4) <= 2) {
 			$fb = strtoupper($fb);
 		} else {
 			$fb = strtolower($fb);
 		}
-		
+
 		// replace ampersands
 		$fb = preg_replace("/ and /"," &amp; ",$fb);
-		
+
 		// return translated
 		return $fb;
-	
+
 	}
 
 	/**
 	 * Export an array of data as a CSV file.
-	 * 
+	 *
 	 * @param array $data		- array of data, each element to be an associative array representing a row
 	 * @param string filename	- (optional) file name, if omitted, one will be generated randomly
 	 * @param boolean $header	- (optional) include header row (default true)
 	 * @param boolean $http_headers	- (optional) send HTTP headers (default true)
-	 * 
+	 *
 	 * @return void
 	 * @access public
 	 */
-	public function alt_export($data,$filename=false,$header=true,$http_headers=true) {
-		
+	public function csv_export($data,$filename=false,$header=true,$http_headers=true) {
+
 		// create temporary filename
 		$tmpname = "data-".time().".".rand(100000,999999).".csv";
-		
+
 		// create temporary CSV file
 		$csv = fopen("/tmp/{$tmpname}","w");
-		
+
 		// add header row
 		if ($header) {
 			$egrow = array_shift($data);
 			array_unshift($data,$egrow);
 			fwrite($csv,implode(",",array_keys($egrow))."\n");
 		}
-		
+
 		// add rows and close file
 		foreach ($data as $id => $row) fwrite($csv,"\"".implode("\",\"",$row)."\"\n");
 		fclose($csv);
-		
+
 		// set filename if one wasn't passed
 		if (!$filename) $filename = $tmpname;
-		
+
 		// send HTTP headers
 		if ($http_headers) {
 			ob_start();
@@ -2087,160 +2087,160 @@ class Utilities {
 			header("Content-length: ".filesize("/tmp/{$tmpname}"));
 			ob_end_flush();
 		}
-		
+
 		// send CSV data
 		print file_get_contents("/tmp/{$tmpname}");
-		
+
 		// remove temporary file
 		unlink("/tmp/{$tmpname}");
 		// remove temporary file
 		unlink("/tmp/{$tmpname}");
-		
+
 	}
-	
+
 	/**
 	 * Checks if a string is a valid UK postcode.
-	 * 
-	 * This function checks the value of the parameter for a valid postcode format. The 
-	 * space between the inward part and the outward part is optional, although is 
+	 *
+	 * This function checks the value of the parameter for a valid postcode format. The
+	 * space between the inward part and the outward part is optional, although is
 	 * inserted if not there as it is part of the official postcode.
-	 * 
-	 * The functions returns a value of false if the postcode is in an invalid format, 
-	 * and a value of true if it is in a valid format. If the postcode is valid, the 
-	 * parameter is loaded up with the postcode in capitals, and a space between the 
+	 *
+	 * The functions returns a value of false if the postcode is in an invalid format,
+	 * and a value of true if it is in a valid format. If the postcode is valid, the
+	 * parameter is loaded up with the postcode in capitals, and a space between the
 	 * outward and the inward code to conform to the correct format.
-	 * 
+	 *
 	 * Credit due to John Gardner.
 	 * @see http://www.braemoor.co.uk/software/postcodes.shtml
-	 * 
+	 *
 	 * @param string $toCheck	- postcode to check
-	 * 
+	 *
 	 * @return boolean		- true if postcode is valid, otherwise false
 	 * @access public
 	 */
 	public function is_uk_postcode (&$toCheck) {
-	
+
 		// Permitted letters depend upon their position in the postcode.
 		$alpha1 = "[abcdefghijklmnoprstuwyz]";	// Character 1
 		$alpha2 = "[abcdefghklmnopqrstuvwxy]";	// Character 2
 		$alpha3 = "[abcdefghjkpmnrstuvwxy]";	// Character 3
 		$alpha4 = "[abehmnprvwxy]";		// Character 4
 		$alpha5 = "[abdefghjlnpqrstuwxyz]";	// Character 5
-		
+
 		// Expression for postcodes: AN NAA, ANN NAA, AAN NAA, and AANN NAA with a space
 		$pcexp[0] = '^('.$alpha1.'{1}'.$alpha2.'{0,1}[0-9]{1,2})([[:space:]]{0,})([0-9]{1}'.$alpha5.'{2})$';
-	
+
 		// Expression for postcodes: ANA NAA
 		$pcexp[1] = '^('.$alpha1.'{1}[0-9]{1}'.$alpha3.'{1})([[:space:]]{0,})([0-9]{1}'.$alpha5.'{2})$';
-	
+
 		// Expression for postcodes: AANA NAA
 		$pcexp[2] = '^('.$alpha1.'{1}'.$alpha2.'{1}[0-9]{1}'.$alpha4.')([[:space:]]{0,})([0-9]{1}'.$alpha5.'{2})$';
-		
+
 		// Exception for the special postcode GIR 0AA
 		$pcexp[3] = '^(gir)(0aa)$';
-		
+
 		// Standard BFPO numbers
 		$pcexp[4] = '^(bfpo)([0-9]{1,4})$';
-		
+
 		// c/o BFPO numbers
 		$pcexp[5] = '^(bfpo)(c\/o[0-9]{1,3})$';
-		
+
 		// Overseas Territories
 		$pcexp[6] = '^([a-z]{4})(1zz)$/i';
-	
+
 		// Load up the string to check, converting into lowercase
 		$postcode = strtolower($toCheck);
-	
+
 		// Assume we are not going to find a valid postcode
 		$valid = false;
-		
+
 		// Check the string against the six types of postcodes
 		foreach ($pcexp as $regexp) {
-		
+
 			if (ereg($regexp,$postcode, $matches)) {
-				
-				// Load new postcode back into the form element	
+
+				// Load new postcode back into the form element
 				$postcode = strtoupper ($matches[1] . ' ' . $matches [3]);
-				
+
 				// Take account of the special BFPO c/o format
 				$postcode = ereg_replace ('C\/O', 'c/o ', $postcode);
-				
+
 				// Remember that we have found that the code is valid and break from loop
 				$valid = true;
 				break;
 			}
 		}
-			
+
 		// Return with the reformatted valid postcode in uppercase if the postcode was valid
 		if ($valid){
-			$toCheck = $postcode; 
+			$toCheck = $postcode;
 			return true;
 		} else {
 			return false;
 		}
-		
+
 	}
-	
+
 	/**
 	 * Checks if a string is a valid UK telephone number.
-	 * 
+	 *
 	 * This routine checks the value of the string variable specified by the parameter
-	 * for a valid UK telphone number. It returns true for a valid number and false for 
+	 * for a valid UK telphone number. It returns true for a valid number and false for
 	 * an invalid number.
-	 * 
+	 *
 	 * The definition of a valid telephone number has been taken from:
 	 * 	http://www.ofcom.org.uk/telecoms/ioi/numbers/numplan310507.pdf
 	 * 	http://www.ofcom.org.uk/telecoms/ioi/numbers/num_drama
-	 * 
-	 * All inappropriate telephone numbers are disallowed (e.g. premium lines, sex 
+	 *
+	 * All inappropriate telephone numbers are disallowed (e.g. premium lines, sex
 	 * lines, radio-paging services etc.)
-	 * 
+	 *
 	 * Credit due to John Gardner.
 	 * @see http://www.braemoor.co.uk/software/telnumbers.shtml
-	 * 
+	 *
 	 * @param string $strTelephoneNumber	- telephone number to check
 	 * @param integer $intError		- variable into which error numbers will be inserted upon error
 	 * @param string $strError		- variable into which error messages will be inserted upon error
-	 * 
+	 *
 	 * @return boolean		- true if postcode is valid, otherwise false
 	 * @access public
 	 */
 	public function is_uk_telephone (&$strTelephoneNumber,&$intError,&$strError) {
-		
+
 		// Copy the parameter and strip out the spaces
 		$strTelephoneNumberCopy = str_replace (' ', '', $strTelephoneNumber);
-	
+
 		// Convert into a string and check that we were provided with something
 		if (empty($strTelephoneNumberCopy)) {
 			$intError = 1;
 			$strError = 'Telephone number not provided';
 			return false;
 		}
-		
-		// Don't allow country codes to be included (assumes a leading "+") 
+
+		// Don't allow country codes to be included (assumes a leading "+")
 		if (ereg('^(\+)[\s]*(.*)$',$strTelephoneNumberCopy)) {
 			$intError = 2;
 			$strError = 'UK telephone number without the country code, please';
 			return false;
 		}
-		
+
 		// Remove hyphens - they are not part of a telephine number
 		$strTelephoneNumberCopy = str_replace ('-', '', $strTelephoneNumberCopy);
-		
+
 		// Now check that all the characters are digits
 		if (!ereg('^[0-9]{10,11}$',$strTelephoneNumberCopy)) {
 			$intError = 3;
 			$strError = 'UK telephone numbers should contain 10 or 11 digits';
 			return false;
 		}
-		
+
 		// Now check that the first digit is 0
 		if (!ereg('^0[0-9]{9,10}$',$strTelephoneNumberCopy)) {
 			$intError = 4;
 			$strError = 'The telephone number should start with a 0';
 			return false;
-		}		
-		
+		}
+
 		// Check the string against the numbers allocated for dramas
 		$tnexp[0] = '^(0113|0114|0115|0116|0117|0118|0121|0131|0141|0151|0161)(4960)[0-9]{3}$';
 		$tnexp[1] = '^02079460[0-9]{3}$';
@@ -2252,30 +2252,30 @@ class Utilities {
 		$tnexp[7] = '^08081570[0-9]{3}$';
 		$tnexp[8] = '^09098790[0-9]{3}$';
 		$tnexp[9] = '^03069990[0-9]{3}$';
-		
-		foreach ($tnexp as $regexp) {	
+
+		foreach ($tnexp as $regexp) {
 			if (ereg($regexp,$strTelephoneNumberCopy, $matches)) {
 				$intError = 5;
 				$strError = 'The telephone number is either invalid or inappropriate';
 				return false;
 			}
 		}
-		
+
 		// Finally, check that the telephone number is appropriate.
 		if (!ereg('^(01|02|03|05|070|071|072|073|074|075|07624|077|078|079)[0-9]+$',$strTelephoneNumberCopy)) {
 			$intError = 5;
 			$strError = 'The telephone number is either invalid or inappropriate';
 			return false;
 		}
-		
+
 		// Seems to be valid - return the stripped telephone number
 		$strTelephoneNumberCopy = $strTelephoneNumberCopy;
 		$intError = 0;
 		$strError = '';
 		return true;
-		
+
 	}
 
 }
-	
+
 ?>

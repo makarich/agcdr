@@ -2,7 +2,7 @@
 
 /**
  * Manages individual caller detail records.
- * 
+ *
  * @package	AGCDR.
  * @author	Various, SBF
  * @copyright	2011
@@ -12,28 +12,28 @@
  * CdrController.
  */
 class CdrController extends BaseController {
-	
+
 	/**
 	 * Construct via parent.
-	 * 
+	 *
 	 * @return void
 	 */
 	public function __construct() {
-		parent::__construct(get_class());	
+		parent::__construct(get_class());
 	}
-	
+
 	/**
 	 * There is no index for this controller but we have to define the method
 	 * because the abstract class demands it.
-	 * 
+	 *
 	 * @return void
 	 * @access public
 	 */
 	public function index() { }
-	
+
 	/**
 	 * View a CDR.
-	 * 
+	 *
 	 * @return void
 	 * @access public
 	 */
@@ -52,25 +52,25 @@ class CdrController extends BaseController {
 		// render page
 		$this->template->cdr = $cdr;
 		$this->template->show("view");
-		
+
 	}
 
 	/**
 	 * Generate table of CDRs.
-	 * 
+	 *
 	 * @return void
 	 * @access public
 	 */
 	public function table() {
-		
+
 		// CSV mode?
 		$csvmode = (isset($this->get["csv"]) && $this->get["csv"] == "on") ? true : false;
-		
+
 		if (isset($this->get["number"])) {
-			
+
 			// restrict by one specific number
 			$number = $this->get["number"];
-			
+
 			// retrieve records
 			$cdrs = $this->db->GetAssoc("
 				SELECT	".DB_TABLE.".uniqueid, ".DB_TABLE.".*,
@@ -80,36 +80,36 @@ class CdrController extends BaseController {
 				WHERE clid = '{$number}' OR src = '{$number}' OR dst = '{$number}'
 				ORDER BY calldate ASC;
 			");
-			
+
 		} else {
-		
+
 			// restrict by date range
-			
+
 			// determine dates
 			if (isset($this->get["year"])) {
-				
+
 				// calculate overview for year
 				$from = "'{$this->get['year']}-01-01 00:00:00'";
 				$to = "DATE_ADD('{$this->get['year']}-01-01 00:00:00', INTERVAL 1 YEAR)";
 				if ($csvmode) $csvlabel = $this->get['year'];
-				
+
 			} else if (isset($this->get["month"])) {
-				
+
 				// calculate overview for month
 				$from = "'{$this->get['month']}-01 00:00:00'";
 				$to = "DATE_ADD('{$this->get['month']}-01 00:00:00', INTERVAL 1 MONTH)";
 				if ($csvmode) $csvlabel = $this->get['month'];
-				
+
 			} else {
-				
+
 				// no date data passed, just do today
 				$today = date("Y-m-d");
 				$from = "'{$today} 00:00:00'";
 				$to = "DATE_ADD('{$today} 00:00:00', INTERVAL 1 DAY)";
 				if ($csvmode) $csvlabel = $today;
-				
+
 			}
-	
+
 			// retrieve records
 			$cdrs = $this->db->GetAssoc("
 				SELECT	".DB_TABLE.".uniqueid, ".DB_TABLE.".*,
@@ -119,15 +119,15 @@ class CdrController extends BaseController {
 				WHERE calldate >= {$from} AND calldate < {$to}
 				ORDER BY calldate ASC;
 			");
-		
+
 		}
 
 		if ($csvmode) {
 
 			// export data as CSV file
-			$this->utils->export_CSV($cdrs,"agcdr-cdrs-{$csvlabel}.csv");
+			$this->utils->csv_export($cdrs,"agcdr-cdrs-{$csvlabel}.csv");
 			exit;
-			
+
 		} else {
 
 			// build CSV request variables
@@ -135,20 +135,20 @@ class CdrController extends BaseController {
 			if (isset($this->get["month"])) $csvrequest = "month={$this->get["month"]}";
 			$csvrequest .= "&csv=on";
 			$this->template->csvrequest = $csvrequest;
-			
+
 			// calculate totals
 			$totals = LocalLib::calculate_duration_totals($cdrs);
-			
+
 			// assign to template and render page
 			$this->template->cdrs = $cdrs;
 			$this->template->totals = $totals;
 			$this->template->menuoptions = $this->template->datatablesRecordCountMenu(count($cdrs));
 			$this->template->show("table");
-			
+
 		}
-		
+
 	}
-	
+
 }
 
 ?>
