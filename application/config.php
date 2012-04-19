@@ -9,16 +9,16 @@
  */
 
 // full URL of your virtual host
-define('LIVE_URL','http://your.virtual.host.com/');
+define('LIVE_URL','http://pbx.snwo.org/');
 
 // main database server configuration (first server is the default)
 $_SESSION["servers"] = array(
-	"full.hostname.com" => array(
-		"description"	=> "Example configuration",
+	"zaleriza.snwo.org" => array(
+		"description"	=> "Heddon/SNWO PBX",
 		"type"		=> "mysql",
-		"hostname"	=> "full.hostname/com",
-		"username"	=> "dbuser",
-		"password"	=> "dbpass",
+		"hostname"	=> "pbx.snwo.org",
+		"username"	=> "asterisk",
+		"password"	=> "flygHypwonIo",
 		"dbname"	=> "asterisk",
 		"tablename"	=> "cdr"
 		
@@ -50,5 +50,8 @@ define('CHART_PALETTE','pastel');
 
 // chart cache expiry (seconds, 86400 = 1 day, 604800 = 1 week)
 define('CHART_CACHE_EXPIRE',604800);
+
+// debugging file path
+define('DEBUG_FILE','/tmp/agcdr-debug.log');
 
 ?>
